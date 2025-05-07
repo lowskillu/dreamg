@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSFW Adventure App</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'SF Pro Display', sans-serif;
+            background: #0d0816;
+            color: #d4af37;
+            height: 100vh;
+            overflow-y: auto;
+            background: radial-gradient(circle, #0d0816 0%, #1a1226 70%, #0d0816 100%);
+        }
+        .card {
+            background: linear-gradient(145deg, #1f1733, #2e204d);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #a33bff;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 20px rgba(163, 59, 255, 0.4), 0 0 10px rgba(163, 59, 255, 0.2) inset;
+            position: relative;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(163, 59, 255, 0.6), 0 0 15px rgba(163, 59, 255, 0.3) inset;
+        }
+        .product-image {
+            height: 220px;
+            width: 100%;
+            background-size: contain; /* Изменено с cover на contain для полного отображения изображений */
+            background-position: center;
+            background-repeat: no-repeat;
+            border-bottom: 2px solid #a33bff;
+            transition: transform 0.5s ease;
+        }
+        .card:hover .product-image {
+            transform: scale(1.05);
+        }
+        .custom-button {
+            background: linear-gradient(90deg, #2a1b3d, #4b2e6e);
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-family: 'SF Pro Display', sans-serif;
+            font-weight: 600;
+            border: none;
+            color: #e6d5ff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            box-shadow: 0 0 15px rgba(163, 59, 255, 0.5), 0 2px 10px rgba(163, 59, 255, 0.3);
+        }
+        .custom-button:hover {
+            background: linear-gradient(90deg, #4b2e6e, #2a1b3d);
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(163, 59, 255, 0.7), 0 4px 15px rgba(163, 59, 255, 0.4);
+        }
+        .buy-button {
+            background: linear-gradient(90deg, #3d1f4e, #6b3d8d);
+            border-radius: 10px;
+            padding: 12px 20px;
+            font-family: 'SF Pro Display', sans-serif;
+            font-weight: 600;
+            border: none;
+            color: #e6d5ff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 0 15px rgba(163, 59, 255, 0.5), 0 2px 10px rgba(163, 59, 255, 0.3);
+            width: 100%;
+        }
+        .buy-button:hover {
+            background: linear-gradient(90deg, #6b3d8d, #3d1f4e);
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(163, 59, 255, 0.7), 0 4px 15px rgba(163, 59, 255, 0.4);
+        }
+        .modal {
+            background: rgba(13, 8, 22, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            font-family: 'SF Pro Display', sans-serif;
+            color: #e6e6e6;
+            text-shadow: 0 0 10px rgba(163, 59, 255, 0.8), 0 0 20px rgba(163, 59, 255, 0.5);
+        }
+        h2, h3 {
+            font-family: 'Monoton', cursive;
+            color: #e6e6e6;
+            font-weight: 400;
+            text-shadow: 0 0 10px rgba(163, 59, 255, 0.8), 0 0 20px rgba(163, 59, 255, 0.5);
+        }
+        p {
+            font-family: 'SF Pro Text', sans-serif;
+            line-height: 1.6;
+            color: #c8b8e0;
+            opacity: 0.9;
+        }
+        .neon-text {
+            font-family: 'Monoton', cursive;
+            color: #e6e6e6;
+            font-weight: 400;
+            text-shadow: 0 0 10px rgba(163, 59, 255, 0.8), 0 0 20px rgba(163, 59, 255, 0.5);
+        }
+        .category-buttons {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 10;
+        }
+        .content-section {
+            padding-bottom: 80px;
+        }
+        .hidden {
+            display: none;
+        }
+        .token-display {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .subscription-status {
+            font-size: 14px;
+            color: #e0b68a;
+            font-family: 'SF Pro Text', sans-serif;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+        .discount {
+            color: #e06666;
+            text-decoration: line-through;
+            margin-left: 5px;
+            font-family: 'SF Pro Text', sans-serif;
+        }
+        .language-button {
+            background: linear-gradient(90deg, #2a1b3d, #4b2e6e);
+            border-radius: 10px;
+            padding: 4px 8px;
+            font-family: 'SF Pro Display', sans-serif;
+            font-weight: 600;
+            font-size: 12px;
+            border: none;
+            color: #e6d5ff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            box-shadow: 0 0 10px rgba(163, 59, 255, 0.3), 0 2px 5px rgba(163, 59, 255, 0.2);
+        }
+        .language-button:hover {
+            background: linear-gradient(90deg, #4b2e6e, #2a1b3d);
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(163, 59, 255, 0.5), 0 3px 8px rgba(163, 59, 255, 0.3);
+        }
+        .checkmark {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            background: #6b3d8d;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #e6d5ff;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+        .card.selected .checkmark {
+            opacity: 1;
+        }
+        .subscription-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 15px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+        .subscription-card:hover {
+            transform: translateY(-3px);
+        }
+        .subscription-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .price-text {
+            font-size: 14px;
+            color: #e0b68a;
+        }
+        .subscription-details {
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(145deg, #2e204d, #1f1733);
+            border-radius: 15px;
+            border: 1px solid #a33bff;
+            box-shadow: 0 0 30px rgba(163, 59, 255, 0.6), 0 0 15px rgba(163, 59, 255, 0.3) inset;
+            backdrop-filter: blur(10px);
+        }
+        .details-header {
+            font-family: 'Monoton', cursive;
+            color: #e6e6e6;
+            font-size: 24px;
+            text-shadow: 0 0 10px rgba(163, 59, 255, 0.8), 0 0 20px rgba(163, 59, 255, 0.5);
+            margin-bottom: 10px;
+        }
+        .details-content p {
+            margin-bottom: 10px;
+        }
+        .details-content p:last-child {
+            margin-bottom: 0;
+        }
+        .details-content .highlight {
+            color: #e06666;
+            font-weight: 600;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600&family=SF+Pro+Text:wght@400;500&family=Monoton&display=swap" rel="stylesheet">
+</head>
+<body class="flex flex-col items-center p-4">
+    <div class="fixed top-4 left-4">
+        <button id="languageBtn" class="language-button" onclick="toggleLanguage()">
+            <span id="currentFlag"></span>
+            <span id="languageText"></span>
+        </button>
+    </div>
+
+    <div class="fixed top-4 right-4 flex flex-col items-end space-y-2 bg-gray-900 bg-opacity-90 p-3 rounded-xl shadow-lg">
+        <div class="token-display flex items-center gap-2">
+            <span id="tokenCount" class="text-2xl font-bold"></span>
+            <span class="text-2xl">🔥</span>
+            <button id="addTokensBtn" class="custom-button p-2">
+                <span>+</span>
+            </button>
+        </div>
+        <div id="subscriptionStatus" class="subscription-status"></div>
+        <div id="limitsStatus" class="subscription-status hidden"></div>
+    </div>
+
+    <div id="mainContent" class="w-full max-w-4xl space-y-8 content-section">
+        <h1 id="welcomeTitle" class="text-5xl font-bold text-center mt-16 mb-8"></h1>
+
+        <div id="scenariosSection">
+            <h2 id="scenariosTitle" class="text-3xl font-semibold text-center"></h2>
+            <div class="grid grid-cols-2 gap-6">
+                <div class="card">
+                    <div class="product-image"></div>
+                    <div class="p-4">
+                        <h3 id="scenario1Title" class="text-xl font-semibold"></h3>
+                        <p id="scenario1Desc" class="mt-2"></p>
+                        <button class="custom-button mt-4" onclick="selectScenario(1)">
+                            <span>🔥</span> <span id="scenario1Btn"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="product-image"></div>
+                    <div class="p-4">
+                        <h3 id="scenario2Title" class="text-xl font-semibold"></h3>
+                        <p id="scenario2Desc" class="mt-2"></p>
+                        <button class="custom-button mt-4" onclick="selectScenario(2)">
+                            <span>🔥</span> <span id="scenario2Btn"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="product-image"></div>
+                    <div class="p-4">
+                        <h3 id="scenario3Title" class="text-xl font-semibold"></h3>
+                        <p id="scenario3Desc" class="mt-2"></p>
+                        <button class="custom-button mt-4" onclick="selectScenario(3)">
+                            <span>🔥</span> <span id="scenario3Btn"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="product-image"></div>
+                    <div class="p-4">
+                        <h3 id="scenario4Title" class="text-xl font-semibold"></h3>
+                        <p id="scenario4Desc" class="mt-2"></p>
+                        <button class="custom-button mt-4" onclick="selectScenario(4)">
+                            <span>🔥</span> <span id="scenario4Btn"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="subscriptionsSection" class="hidden">
+            <h2 id="subscriptionsTitle" class="text-3xl font-semibold text-center"></h2>
+            <div id="subscriptionDetails" class="subscription-details">
+                <h3 id="detailsHeader" class="details-header"></h3>
+                <div id="subscriptionsDesc" class="details-content">
+                    <p>Premium Benefits 🔥✨</p>
+                    <p id="photoLimitText">New Limit: 50 Photos/Day + Unlimited Chat! 💬💃</p>
+                    <p>Dress Better 🌟</p>
+                    <p>Reply Faster ⚡</p>
+                    <p>Enhanced Image Quality 🎨</p>
+                    <p>Priority Scenarios Access 🚀</p>
+                </div>
+            </div>
+            <div class="mt-4">
+                <div class="card subscription-card" onclick="selectPlan(1)">
+                    <div class="subscription-info">
+                        <p id="sub1Day" class="neon-text text-lg font-medium">1 Day</p>
+                        <p class="price-text">$2.00</p>
+                    </div>
+                    <div class="checkmark">✔</div>
+                </div>
+                <div class="card subscription-card" onclick="selectPlan(2)">
+                    <div class="subscription-info">
+                        <p id="sub3Days" class="neon-text text-lg font-medium">3 Days</p>
+                        <p class="price-text">$5.00</p>
+                    </div>
+                    <div class="checkmark">✔</div>
+                </div>
+                <div class="card subscription-card" onclick="selectPlan(3)">
+                    <div class="subscription-info">
+                        <p id="sub1Week" class="neon-text text-lg font-medium">1 Week</p>
+                        <p class="price-text">$13.00</p>
+                    </div>
+                    <div class="checkmark">✔</div>
+                </div>
+                <div class="card subscription-card" onclick="selectPlan(4)">
+                    <div class="subscription-info">
+                        <p id="sub1Month" class="neon-text text-lg font-medium">1 Month +30🔥 Fires</p>
+                        <p class="price-text">$25.00</p>
+                    </div>
+                    <div class="checkmark">✔</div>
+                </div>
+                <div class="card subscription-card" onclick="selectPlan(5)">
+                    <div class="subscription-info">
+                        <p id="sub3Months" class="neon-text text-lg font-medium">3 Months +100🔥 Fires</p>
+                        <p class="price-text">$70.00</p>
+                    </div>
+                    <div class="checkmark">✔</div>
+                </div>
+                <div class="card subscription-card" onclick="selectPlan(6)">
+                    <div class="subscription-info">
+                        <p id="subForever" class="neon-text text-lg font-medium">Forever +200🔥 Fires</p>
+                        <p class="price-text">$50.00</p>
+                    </div>
+                    <div class="checkmark">✔</div>
+                </div>
+                <div class="card subscription-card" onclick="selectPlan(7)">
+                    <div class="subscription-info">
+                        <p id="subDeluxe" class="neon-text text-lg font-medium">Deluxe (Unlimited) +500🔥 Fires</p>
+                        <p class="price-text">$100.00</p>
+                    </div>
+                    <div class="checkmark">✔</div>
+                </div>
+            </div>
+            <button id="buySubscriptionBtn" class="buy-button mt-4" onclick="buySelectedSubscription()">
+                <span id="buyBtnText"></span>
+            </button>
+        </div>
+
+        <div id="currencySection" class="hidden">
+            <h2 id="currencyTitle" class="text-3xl font-semibold text-center"></h2>
+            <p id="currencyBalanceText" class="text-center mt-4"></p>
+            <div class="grid grid-cols-2 gap-6 mt-6">
+                <div class="card">
+                    <div class="product-image"></div>
+                    <div class="p-4 text-center">
+                        <p id="smallPack" class="neon-text text-lg"></p>
+                        <p id="smallPackDesc" class="text-sm mt-1"></p>
+                        <button class="buy-button mt-4" onclick="buyTokens(100, 6)">
+                            <span id="buyBtnSmallPack"></span>
+                        </button>
+                        <p class="text-gray-400 mt-2">$10<span class="discount">$6</span></p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="product-image"></div>
+                    <div class="p-4 text-center">
+                        <p id="mediumPack" class="neon-text text-lg"></p>
+                        <p id="mediumPackDesc" class="text-sm mt-1"></p>
+                        <button class="buy-button mt-4" onclick="buyTokens(200, 12)">
+                            <span id="buyBtnMediumPack"></span>
+                        </button>
+                        <p class="text-gray-400 mt-2">$20<span class="discount">$12</span></p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="product-image"></div>
+                    <div class="p-4 text-center">
+                        <p id="largePack" class="neon-text text-lg"></p>
+                        <p id="largePackDesc" class="text-sm mt-1"></p>
+                        <button class="buy-button mt-4" onclick="buyTokens(500, 25)">
+                            <span id="buyBtnLargePack"></span>
+                        </button>
+                        <p class="text-gray-400 mt-2">$30<span class="discount">$25</span></p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="product-image"></div>
+                    <div class="p-4 text-center">
+                        <p id="megaPack" class="neon-text text-lg"></p>
+                        <p id="megaPackDesc" class="text-sm mt-1"></p>
+                        <button class="buy-button mt-4" onclick="buyTokens(1000, 45)">
+                            <span id="buyBtnMegaPack"></span>
+                        </button>
+                        <p class="text-gray-400 mt-2">$60<span class="discount">$45</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="category-buttons">
+        <button id="scenariosBtn" class="custom-button" onclick="showSection('scenariosSection')">
+            <span>🎬</span> <span id="scenariosBtnText"></span>
+        </button>
+        <button id="subscriptionsBtn" class="custom-button" onclick="showSection('subscriptionsSection')">
+            <span>💰</span> <span id="subscriptionsBtnText"></span>
+        </button>
+        <button id="currencyBtn" class="custom-button" onclick="showSection('currencySection')">
+            <span>🔥</span> <span id="currencyBtnText"></span>
+        </button>
+    </div>
+
+    <div id="languageModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-gray-900 p-6 rounded-lg shadow-lg w-80">
+            <h3 id="languageTitle" class="text-2xl font-bold mb-4"></h3>
+            <button class="custom-button mb-2 w-full" onclick="setLanguage('en')">
+                <span>🇬🇧</span> English
+            </button>
+            <button class="custom-button mb-2 w-full" onclick="setLanguage('ru')">
+                <span>🇷🇺</span> Русский
+            </button>
+            <button class="custom-button bg-red-600 hover:bg-red-700 w-full" onclick="closeLanguageModal()">
+                <span>✖</span> <span id="closeBtnText"></span>
+            </button>
+        </div>
+    </div>
+
+    <div id="buyModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-gray-900 p-6 rounded-lg shadow-lg w-80">
+            <h3 id="buyModalTitle" class="text-2xl font-bold mb-4"></h3>
+            <div class="card">
+                <div class="product-image"></div>
+                <div class="p-4 text-center">
+                    <p id="smallPackModal" class="neon-text text-lg"></p>
+                    <p id="smallPackDescModal" class="text-sm mt-1"></p>
+                    <button class="buy-button mt-4" onclick="buyTokens(100, 6)">
+                        <span id="buyBtnSmallPackModal"></span>
+                    </button>
+                    <p class="text-gray-400 mt-2">$10<span class="discount">$6</span></p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="product-image"></div>
+                <div class="p-4 text-center">
+                    <p id="mediumPackModal" class="neon-text text-lg"></p>
+                    <p id="mediumPackDescModal" class="text-sm mt-1"></p>
+                    <button class="buy-button mt-4" onclick="buyTokens(200, 12)">
+                        <span id="buyBtnMediumPackModal"></span>
+                    </button>
+                    <p class="text-gray-400 mt-2">$20<span class="discount">$12</span></p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="product-image"></div>
+                <div class="p-4 text-center">
+                    <p id="largePackModal" class="neon-text text-lg"></p>
+                    <p id="largePackDescModal" class="text-sm mt-1"></p>
+                    <button class="buy-button mt-4" onclick="buyTokens(500, 25)">
+                        <span id="buyBtnLargePackModal"></span>
+                    </button>
+                    <p class="text-gray-400 mt-2">$30<span class="discount">$25</span></p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="product-image"></div>
+                <div class="p-4 text-center">
+                    <p id="megaPackModal" class="neon-text text-lg"></p>
+                    <p id="megaPackDescModal" class="text-sm mt-1"></p>
+                    <button class="buy-button mt-4" onclick="buyTokens(1000, 45)">
+                        <span id="buyBtnMegaPackModal"></span>
+                    </button>
+                    <p class="text-gray-400 mt-2">$60<span class="discount">$45</span></p>
+                </div>
+            </div>
+            <button class="custom-button bg-red-600 hover:bg-red-700 w-full" onclick="closeModal()">
+                <span>✖</span> <span id="closeModalBtnText"></span>
+            </button>
+        </div>
+    </div>
+
+    <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-gray-900 p-6 rounded-lg shadow-lg w-80">
+            <h3 id="confirmTitle" class="text-2xl font-bold mb-4"></h3>
+            <p id="confirmText" class="mb-4"></p>
+            <button id="confirmBtn" class="custom-button bg-green-600 hover:bg-green-700 mr-2"></button>
+            <button class="custom-button bg-red-600 hover:bg-red-700" onclick="closeConfirmModal()">
+                <span>✖</span> <span id="cancelBtnText"></span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+
+        const userData = {
+            user1: { fires: 0, subscriptionDaysLeft: 0, photoLimit: 0, dailyPhotoCount: 0 },
+            user2: { fires: 0, subscriptionDaysLeft: 0, photoLimit: 0, dailyPhotoCount: 0 },
+        };
+
+        let currentUser = 'user1';
+        let tokens = userData[currentUser].fires;
+        let maxTokens = 100;
+        const scenarios = [];
+        let language = 'en';
+        let subscriptionDaysLeft = userData[currentUser].subscriptionDaysLeft;
+        let photoLimit = userData[currentUser].photoLimit;
+        let dailyPhotoCount = userData[currentUser].dailyPhotoCount;
+        let selectedPlan = null;
+
+        const translations = {
+            en: {
+                welcome: 'Unleash Your Fantasies! 💫',
+                scenarios: 'Scenarios',
+                subscriptions: 'Premium Subscriptions',
+                currency: 'Currency',
+                languages: 'Languages',
+                scenario1Title: 'Tutor Asleep',
+                scenario1Desc: 'You enter her home, door ajar, finding her naked and dreaming of you. Wake her with a sinful touch! 😈',
+                scenario1Btn: 'Unlock (100 Fires)',
+                scenario2Title: 'Teacher After School',
+                scenario2Desc: 'Alone with her to fix grades, her tight skirt teases as she bends over. 🔥',
+                scenario2Btn: 'Unlock (100 Fires)',
+                scenario3Title: 'Policewoman Stop',
+                scenario3Desc: 'She pulls you over in the wild, no license—her smirk promises a naughty punishment! 💋',
+                scenario3Btn: 'Unlock (100 Fires)',
+                scenario4Title: 'Helping Friend',
+                scenario4Desc: 'Her computer’s stuck, and her shy glances turn into wild invites as you lean in. 😏',
+                scenario4Btn: 'Unlock (100 Fires)',
+                detailsHeader: 'Premium Benefits',
+                subscriptionsDesc: 'Premium Benefits 🔥✨\nNew Limit: 50 Photos/Day + Unlimited Chat! 💬💃\nDress Better 🌟\nReply Faster ⚡\nEnhanced Image Quality 🎨\nPriority Scenarios Access 🚀',
+                subscriptionsDescDeluxe: 'Premium Benefits 🔥✨\nNew Limit: Unlimited Photos/Day + Unlimited Chat! 💬💃\nDress Better 🌟\nReply Faster ⚡\nEnhanced Image Quality 🎨\nPriority Scenarios Access 🚀',
+                sub1Day: '1 Day',
+                sub3Days: '3 Days',
+                sub1Week: '1 Week',
+                sub1Month: '1 Month +30🔥 Fires',
+                sub3Months: '3 Months +100🔥 Fires',
+                subForever: 'Forever +200🔥 Fires',
+                subDeluxe: 'Deluxe (Unlimited) +500🔥 Fires',
+                buyBtn: 'Buy Subscription',
+                buyBtnSmallPack: 'Buy for $6',
+                buyBtnMediumPack: 'Buy for $12',
+                buyBtnLargePack: 'Buy for $25',
+                buyBtnMegaPack: 'Buy for $45',
+                currencyBalance: 'Your current balance: ',
+                smallPack: 'Small Pack',
+                smallPackDesc: 'A quick boost with 100🔥 Fires! 🚀',
+                mediumPack: 'Medium Pack',
+                mediumPackDesc: 'Fuel your fantasies with 200🔥 Fires! 💥',
+                largePack: 'Large Pack',
+                largePackDesc: 'Unleash the heat with 500🔥 Fires! 🔥',
+                megaPack: 'Mega Pack',
+                megaPackDesc: 'Go all out with 1000🔥 Fires! 🌟',
+                languageTitle: 'Select Language',
+                closeBtn: 'Close',
+                buyModalTitle: 'Buy Fires',
+                closeModalBtn: 'Close',
+                confirmUnlock: 'Confirm Unlock',
+                notEnoughFires: 'Not Enough Fires!',
+                buyMore: 'You need 100 Fires. Buy more? 💦',
+                buyFiresBtn: 'Buy Fires',
+                cancelBtn: 'Cancel',
+                scenarioUnlock: scenarioId => `Scenario "${['Tutor Asleep', 'Teacher After School', 'Policewoman Stop', 'Helping Friend'][scenarioId - 1]}" unlocked! Enjoy! 😏`,
+                buyTokensMsg: (amount, price) => `You bought ${amount} Fires for $${price}! Dive in! 😈`,
+                buySubMsg: (price, bonus) => `Subscription activated for $${price}! ${bonus > 0 ? `+${bonus} Fires bonus! ` : ''}Enjoy! 💋`,
+                maxTokensMsg: max => `Maximum limit of ${max} Fires reached!`,
+                languageSetMsg: 'Language set to English!'
+            },
+            ru: {
+                welcome: 'Раскрой свои фантазии! 💫',
+                scenarios: 'Сценарии',
+                subscriptions: 'Премиум подписки',
+                currency: 'Валюта',
+                languages: 'Языки',
+                scenario1Title: 'Спящий репетитор',
+                scenario1Desc: 'Ты заходишь к ней домой, дверь приоткрыта, она спит голая и видит тебя во сне. Разбуди её греховным прикосновением! 😈',
+                scenario1Btn: 'Разблокировать (100 огней)',
+                scenario2Title: 'Учительница после уроков',
+                scenario2Desc: 'Наедине с ней ради исправления оценок, её обтягивающая юбка дразнит, когда она наклоняется. 🔥',
+                scenario2Btn: 'Разблокировать (100 огней)',
+                scenario3Title: 'Остановка полицейской',
+                scenario3Desc: 'Она останавливает тебя в глуши, прав нет — её ухмылка обещает развратное наказание! 💋',
+                scenario3Btn: 'Разблокировать (100 огней)',
+                scenario4Title: 'Помощь подруге',
+                scenario4Desc: 'Её компьютер завис, а робкие взгляды превращаются в жаркие намёки, когда ты наклоняешься ближе. 😏',
+                scenario4Btn: 'Разблокировать (100 огней)',
+                detailsHeader: 'Преимущества премиума',
+                subscriptionsDesc: 'Преимущества премиума 🔥✨\nНовый лимит: 50 фото/день + Безлимитный чат! 💬💃\nОдевайся лучше 🌟\nОтвечай быстрее ⚡\nУлучшенное качество изображений 🎨\nПриоритетный доступ к сценариям 🚀',
+                subscriptionsDescDeluxe: 'Преимущества премиума 🔥✨\nНовый лимит: Безлимит фото/день + Безлимитный чат! 💬💃\nОдевайся лучше 🌟\nОтвечай быстрее ⚡\nУлучшенное качество изображений 🎨\nПриоритетный доступ к сценариям 🚀',
+                sub1Day: '1 день',
+                sub3Days: '3 дня',
+                sub1Week: '1 неделя',
+                sub1Month: '1 месяц +30🔥 огней',
+                sub3Months: '3 месяца +100🔥 огней',
+                subForever: 'Навсегда +200🔥 огней',
+                subDeluxe: 'Делюкс (безлимит) +500🔥 огней',
+                buyBtn: 'Купить подписку',
+                buyBtnSmallPack: 'Купить за $6',
+                buyBtnMediumPack: 'Купить за $12',
+                buyBtnLargePack: 'Купить за $25',
+                buyBtnMegaPack: 'Купить за $45',
+                currencyBalance: 'Ваш текущий баланс: ',
+                smallPack: 'Малый набор',
+                smallPackDesc: 'Быстрый буст с 100🔥 огней! 🚀',
+                mediumPack: 'Средний набор',
+                mediumPackDesc: 'Разожги фантазии с 200🔥 огней! 💥',
+                largePack: 'Большой набор',
+                largePackDesc: 'Раскрой жар с 500🔥 огней! 🔥',
+                megaPack: 'Мега набор',
+                megaPackDesc: 'Выложись на полную с 1000🔥 огней! 🌟',
+                languageTitle: 'Выберите язык',
+                closeBtn: 'Закрыть',
+                buyModalTitle: 'Купить огни',
+                closeModalBtn: 'Закрыть',
+                confirmUnlock: 'Подтвердить разблокировку',
+                notEnoughFires: 'Недостаточно огней!',
+                buyMore: 'Нужно 100 огней. Купить? 💦',
+                buyFiresBtn: 'Купить огни',
+                cancelBtn: 'Отмена',
+                scenarioUnlock: scenarioId => `Сценарий "${['Спящий репетитор', 'Учительница после уроков', 'Остановка полицейской', 'Помощь подруге'][scenarioId - 1]}" разблокирован! Наслаждайся! 😏`,
+                buyTokensMsg: (amount, price) => `Вы купили ${amount} огней за $${price}! Погружайся! 😈`,
+                buySubMsg: (price, bonus) => `Подписка активирована за $${price}! ${bonus > 0 ? `+${bonus} огней бонусом! ` : ''}Наслаждайся! 💋`,
+                maxTokensMsg: max => `Достигнут максимальный лимит в ${max} огней!`,
+                languageSetMsg: 'Язык установлен на Русский!'
+            }
+        };
+
+        function updateUI() {
+            tokens = userData[currentUser].fires;
+            subscriptionDaysLeft = userData[currentUser].subscriptionDaysLeft;
+            photoLimit = userData[currentUser].photoLimit;
+            dailyPhotoCount = userData[currentUser].dailyPhotoCount;
+
+            document.getElementById('tokenCount').innerText = tokens;
+            document.getElementById('currencyBalanceText').innerText = `${translations[language].currencyBalance}${tokens} Fires`;
+            if (subscriptionDaysLeft > 0) {
+                document.getElementById('subscriptionStatus').innerText = `Active: ${subscriptionDaysLeft} day${subscriptionDaysLeft === 1 ? '' : 's'} left`;
+                document.getElementById('limitsStatus').classList.remove('hidden');
+                document.getElementById('limitsStatus').innerText = `Limits: ${photoLimit === Infinity ? 'Unlimited' : photoLimit} photos/day, Unlimited messages`;
+            } else {
+                document.getElementById('subscriptionStatus').innerText = language === 'en' ? 'No active subscription' : 'Нет активной подписки';
+                document.getElementById('limitsStatus').classList.add('hidden');
+            }
+
+            // Update subscription description based on selected plan
+            const deluxeSelected = selectedPlan === 7;
+            document.getElementById('subscriptionsDesc').innerHTML = (deluxeSelected ? translations[language].subscriptionsDescDeluxe : translations[language].subscriptionsDesc)
+                .split('\n')
+                .map(line => `<p>${line}</p>`)
+                .join('');
+
+            // Update scenario images
+            document.querySelectorAll('#scenariosSection .product-image')[0].style.backgroundImage = `url(${tutorAsleep})`;
+            document.querySelectorAll('#scenariosSection .product-image')[1].style.backgroundImage = `url(${teacherAfterSchool})`;
+            document.querySelectorAll('#scenariosSection .product-image')[2].style.backgroundImage = `url(${policewomanStop})`;
+            document.querySelectorAll('#scenariosSection .product-image')[3].style.backgroundImage = `url(${helpingFriend})`;
+
+            // Update currency images
+            document.querySelectorAll('#currencySection .product-image')[0].style.backgroundImage = `url(${smallPack})`;
+            document.querySelectorAll('#currencySection .product-image')[1].style.backgroundImage = `url(${mediumPack})`;
+            document.querySelectorAll('#currencySection .product-image')[2].style.backgroundImage = `url(${largePack})`;
+            document.querySelectorAll('#currencySection .product-image')[3].style.backgroundImage = `url(${megaPack})`;
+
+            // Update buy modal images
+            document.querySelectorAll('#buyModal .product-image')[0].style.backgroundImage = `url(${smallPack})`;
+            document.querySelectorAll('#buyModal .product-image')[1].style.backgroundImage = `url(${mediumPack})`;
+            document.querySelectorAll('#buyModal .product-image')[2].style.backgroundImage = `url(${largePack})`;
+            document.querySelectorAll('#buyModal .product-image')[3].style.backgroundImage = `url(${megaPack})`;
+
+            updateLanguageButton();
+        }
+
+        document.getElementById('addTokensBtn').addEventListener('click', () => {
+            showSection('currencySection');
+        });
+
+        function buyTokens(amount, price) {
+            if (tokens + amount > maxTokens) {
+                showAlert(translations[language].maxTokensMsg(maxTokens));
+                return;
+            }
+            userData[currentUser].fires += amount;
+            updateUI();
+            closeModal();
+            showAlert(translations[language].buyTokensMsg(amount, price));
+        }
+
+        function closeModal() {
+            document.getElementById('buyModal').classList.add('hidden');
+        }
+
+        function toggleLanguage() {
+            language = language === 'en' ? 'ru' : 'en';
+            updateLanguage();
+            updateLanguageButton();
+            showAlert(translations[language].languageSetMsg);
+        }
+
+        function updateLanguageButton() {
+            const flag = language === 'en' ? '🇬🇧' : '🇷🇺';
+            const text = language === 'en' ? 'English' : 'Русский';
+            document.getElementById('currentFlag').innerText = flag;
+            document.getElementById('languageText').innerText = text;
+        }
+
+        function setLanguage(lang) {
+            language = lang;
+            updateLanguage();
+            updateLanguageButton();
+            closeLanguageModal();
+            showAlert(translations[language].languageSetMsg);
+        }
+
+        function closeLanguageModal() {
+            document.getElementById('languageModal').classList.add('hidden');
+        }
+
+        function updateLanguage() {
+            document.getElementById('welcomeTitle').innerText = translations[language].welcome;
+            document.getElementById('scenariosTitle').innerText = translations[language].scenarios;
+            document.getElementById('subscriptionsTitle').innerText = translations[language].subscriptions;
+            document.getElementById('detailsHeader').innerText = translations[language].detailsHeader;
+            const deluxeSelected = selectedPlan === 7;
+            document.getElementById('subscriptionsDesc').innerHTML = (deluxeSelected ? translations[language].subscriptionsDescDeluxe : translations[language].subscriptionsDesc)
+                .split('\n')
+                .map(line => `<p>${line}</p>`)
+                .join('');
+            document.getElementById('currencyTitle').innerText = translations[language].currency;
+            document.getElementById('scenariosBtnText').innerText = translations[language].scenarios;
+            document.getElementById('subscriptionsBtnText').innerText = translations[language].subscriptions;
+            document.getElementById('currencyBtnText').innerText = translations[language].currency;
+
+            document.getElementById('scenario1Title').innerText = translations[language].scenario1Title;
+            document.getElementById('scenario1Desc').innerText = translations[language].scenario1Desc;
+            document.getElementById('scenario1Btn').innerText = translations[language].scenario1Btn;
+            document.getElementById('scenario2Title').innerText = translations[language].scenario2Title;
+            document.getElementById('scenario2Desc').innerText = translations[language].scenario2Desc;
+            document.getElementById('scenario2Btn').innerText = translations[language].scenario2Btn;
+            document.getElementById('scenario3Title').innerText = translations[language].scenario3Title;
+            document.getElementById('scenario3Desc').innerText = translations[language].scenario3Desc;
+            document.getElementById('scenario3Btn').innerText = translations[language].scenario3Btn;
+            document.getElementById('scenario4Title').innerText = translations[language].scenario4Title;
+            document.getElementById('scenario4Desc').innerText = translations[language].scenario4Desc;
+            document.getElementById('scenario4Btn').innerText = translations[language].scenario4Btn;
+
+            document.getElementById('sub1Day').innerText = translations[language].sub1Day;
+            document.getElementById('sub3Days').innerText = translations[language].sub3Days;
+            document.getElementById('sub1Week').innerText = translations[language].sub1Week;
+            document.getElementById('sub1Month').innerText = translations[language].sub1Month;
+            document.getElementById('sub3Months').innerText = translations[language].sub3Months;
+            document.getElementById('subForever').innerText = translations[language].subForever;
+            document.getElementById('subDeluxe').innerText = translations[language].subDeluxe;
+            document.getElementById('buyBtnText').innerText = translations[language].buyBtn;
+
+            document.getElementById('currencyBalanceText').innerText = `${translations[language].currencyBalance}${tokens} Fires`;
+            document.getElementById('smallPack').innerText = translations[language].smallPack;
+            document.getElementById('smallPackDesc').innerText = translations[language].smallPackDesc;
+            document.getElementById('mediumPack').innerText = translations[language].mediumPack;
+            document.getElementById('mediumPackDesc').innerText = translations[language].mediumPackDesc;
+            document.getElementById('largePack').innerText = translations[language].largePack;
+            document.getElementById('largePackDesc').innerText = translations[language].largePackDesc;
+            document.getElementById('megaPack').innerText = translations[language].megaPack;
+            document.getElementById('megaPackDesc').innerText = translations[language].megaPackDesc;
+            document.getElementById('buyBtnSmallPack').innerText = translations[language].buyBtnSmallPack;
+            document.getElementById('buyBtnMediumPack').innerText = translations[language].buyBtnMediumPack;
+            document.getElementById('buyBtnLargePack').innerText = translations[language].buyBtnLargePack;
+            document.getElementById('buyBtnMegaPack').innerText = translations[language].buyBtnMegaPack;
+
+            document.getElementById('languageTitle').innerText = translations[language].languageTitle;
+            document.getElementById('closeBtnText').innerText = translations[language].closeBtn;
+            document.getElementById('buyModalTitle').innerText = translations[language].buyModalTitle;
+            document.getElementById('smallPackModal').innerText = translations[language].smallPack;
+            document.getElementById('smallPackDescModal').innerText = translations[language].smallPackDesc;
+            document.getElementById('mediumPackModal').innerText = translations[language].mediumPack;
+            document.getElementById('mediumPackDescModal').innerText = translations[language].mediumPackDesc;
+            document.getElementById('largePackModal').innerText = translations[language].largePack;
+            document.getElementById('largePackDescModal').innerText = translations[language].largePackDesc;
+            document.getElementById('megaPackModal').innerText = translations[language].megaPack;
+            document.getElementById('megaPackDescModal').innerText = translations[language].megaPackDesc;
+            document.getElementById('buyBtnSmallPackModal').innerText = translations[language].buyBtnSmallPack;
+            document.getElementById('buyBtnMediumPackModal').innerText = translations[language].buyBtnMediumPack;
+            document.getElementById('buyBtnLargePackModal').innerText = translations[language].buyBtnLargePack;
+            document.getElementById('buyBtnMegaPackModal').innerText = translations[language].buyBtnMegaPack;
+            document.getElementById('closeModalBtnText').innerText = translations[language].closeModalBtn;
+            document.getElementById('cancelBtnText').innerText = translations[language].cancelBtn;
+        }
+
+        function showSection(sectionId) {
+            const sections = ['scenariosSection', 'subscriptionsSection', 'currencySection'];
+            sections.forEach(sec => {
+                document.getElementById(sec).classList.add('hidden');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
+
+        function selectScenario(id) {
+            if (tokens < 100) {
+                document.getElementById('confirmTitle').innerText = translations[language].notEnoughFires;
+                document.getElementById('confirmText').innerText = translations[language].buyMore;
+                document.getElementById('confirmBtn').innerText = translations[language].buyFiresBtn;
+                document.getElementById('confirmBtn').onclick = () => {
+                    closeConfirmModal();
+                    showSection('currencySection');
+                };
+            } else {
+                document.getElementById('confirmTitle').innerText = translations[language].confirmUnlock;
+                document.getElementById('confirmText').innerText = language === 'en' ?
+                    `Unlock "${translations[language]['scenario' + id + 'Title']}" for 100 Fires?` :
+                    `Разблокировать "${translations[language]['scenario' + id + 'Title']}" за 100 огней?`;
+                document.getElementById('confirmBtn').innerText = language === 'en' ? 'Confirm' : 'Подтвердить';
+                document.getElementById('confirmBtn').onclick = () => {
+                    userData[currentUser].fires -= 100;
+                    scenarios.push(id);
+                    updateUI();
+                    closeConfirmModal();
+                    showAlert(translations[language].scenarioUnlock(id));
+                };
+            }
+            document.getElementById('confirmModal').classList.remove('hidden');
+        }
+
+        function selectPlan(planId) {
+            const cards = document.querySelectorAll('#subscriptionsSection .subscription-card');
+            cards.forEach(card => card.classList.remove('selected'));
+            cards[planId - 1].classList.add('selected');
+            selectedPlan = planId;
+            updateUI(); // Update UI to reflect subscription description change
+        }
+
+        function buySelectedSubscription() {
+            if (!selectedPlan) {
+                showAlert(language === 'en' ? 'Please select a subscription plan!' : 'Пожалуйста, выберите план подписки!');
+                return;
+            }
+
+            const plans = [
+                { days: 1, price: 2, bonusFires: 0 },
+                { days: 3, price: 5, bonusFires: 0 },
+                { days: 7, price: 13, bonusFires: 0 },
+                { days: 30, price: 25, bonusFires: 30 },
+                { days: 90, price: 70, bonusFires: 100 },
+                { days: 0, price: 50, bonusFires: 200 },
+                { days: -1, price: 100, bonusFires: 500 }
+            ];
+
+            const plan = plans[selectedPlan - 1];
+            buySubscription(plan.days, plan.price, plan.bonusFires, selectedPlan);
+        }
+
+        function buySubscription(days, price, bonusFires, planId) {
+            if (days === 0) {
+                userData[currentUser].subscriptionDaysLeft = 9999;
+                userData[currentUser].fires += bonusFires;
+                userData[currentUser].photoLimit = 50;
+            } else if (days === -1) {
+                userData[currentUser].subscriptionDaysLeft = 99999;
+                userData[currentUser].photoLimit = Infinity;
+                userData[currentUser].fires += bonusFires;
+            } else {
+                userData[currentUser].subscriptionDaysLeft = days;
+                userData[currentUser].photoLimit = 50;
+                userData[currentUser].fires += bonusFires;
+            }
+            updateUI();
+            showAlert(translations[language].buySubMsg(price, bonusFires));
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').classList.add('hidden');
+        }
+
+        function showAlert(message) {
+            tg.showAlert(message);
+        }
+
+        // Image URLs for Scenarios and Currency Packs
+        const tutorAsleep = 'https://media.discordapp.net/attachments/1349800672035475533/1369662280500777020/repetition_1.jpg?ex=681cace6&is=681b5b66&hm=42edd1a255e846546bd5d3aa8895c4ca68032600cdf01e89d110cb167dec5344&=&format=webp&width=527&height=527';
+        const teacherAfterSchool = 'https://media.discordapp.net/attachments/1349800672035475533/1369662280865812570/teacher_1.jpg?ex=681cace6&is=681b5b66&hm=e065d5bb71013f5d2c9837420bd042c5c51fed59a8bcc3a7aa5fe4697e8105e3&=&format=webp&width=527&height=527';
+        const policewomanStop = 'https://media.discordapp.net/attachments/1349800672035475533/1369662279628624033/1.jpg?ex=681cace6&is=681b5b66&hm=9ddc5d6491a81469742f2ce0c942d2538c102625bb9d379c729de631a1a08413&=&format=webp&width=527&height=527';
+        const helpingFriend = 'https://media.discordapp.net/attachments/1349800672035475533/1369662280152780860/computer_fix_1.jpg?ex=681cace6&is=681b5b66&hm=1ee8c8236b014cf6ed37098906accd277c464a017a9c61c44d79a26388413bd8&=&format=webp&width=527&height=527';
+        const smallPack = 'https://media.discordapp.net/attachments/1349800672035475533/1369663971279507586/100fire_1.jpg?ex=681cae79&is=681b5cf9&hm=3061fea39527f44770f1286b4c0ebd5c417c1f35037c8d8130c021b46a74cc8b&=&format=webp&width=527&height=527';
+        const mediumPack = 'https://media.discordapp.net/attachments/1349800672035475533/1369663971677704202/200_fire_1.jpg?ex=681cae79&is=681b5cf9&hm=e858d7b6f20d3d9ef7b3bd6269524d727c0127d2a66ad3f1277850a195ed1997&=&format=webp&width=527&height=527';
+        const largePack = 'https://media.discordapp.net/attachments/1349800672035475533/1369663971971432519/500_fire_1.jpg?ex=681cae7a&is=681b5cfa&hm=279f44b592a0ba21679e5a32b9c08c1bf38a943a00d7f999548e4bf506178f21&=&format=webp&width=527&height=527';
+        const megaPack = 'https://media.discordapp.net/attachments/1349800672035475533/1369663972281946123/1000_fire_1.jpg?ex=681cae7a&is=681b5cfa&hm=812177400d08ea5fbae8220aa48aa1682e232a2f371e0cf9f025b483e5ada4bb&=&format=webp&width=527&height=527';
+
+        updateUI();
+        updateLanguage();
+        showSection('scenariosSection');
+    </script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93c1e82759a4bfa7',t:'MTc0NjYzMzM4MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>
