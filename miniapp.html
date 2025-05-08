@@ -19,36 +19,40 @@
         }
         .card {
             background: linear-gradient(145deg, #1f1733, #2e204d);
-            border-radius: 20px;
-            overflow: hidden;
+            border-radius: 10px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             border: 1px solid #a33bff;
             backdrop-filter: blur(8px);
             box-shadow: 0 0 20px rgba(163, 59, 255, 0.4), 0 0 10px rgba(163, 59, 255, 0.2) inset;
             position: relative;
+            animation: slideIn 0.5s ease-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-5px) rotate(1deg);
             box-shadow: 0 0 30px rgba(163, 59, 255, 0.6), 0 0 15px rgba(163, 59, 255, 0.3) inset;
         }
         .product-image {
-            height: 220px;
-            width: 100%;
-            background-size: contain; /* Изменено с cover на contain для полного отображения изображений */
+            height: 200px;
+            width: 200px;
+            aspect-ratio: 1/1;
+            background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            border-bottom: 2px solid #a33bff;
+            border-radius: 10px 10px 0 0;
             transition: transform 0.5s ease;
-        }
-        .card:hover .product-image {
-            transform: scale(1.05);
+            display: block;
+            margin: 0 auto;
         }
         .custom-button {
             background: linear-gradient(90deg, #2a1b3d, #4b2e6e);
-            border-radius: 10px;
-            padding: 8px 12px;
+            border-radius: 12px;
+            padding: 12px 16px;
             font-family: 'SF Pro Display', sans-serif;
             font-weight: 600;
+            font-size: 16px;
             border: none;
             color: #e6d5ff;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
@@ -56,20 +60,22 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
+            gap: 8px;
             box-shadow: 0 0 15px rgba(163, 59, 255, 0.5), 0 2px 10px rgba(163, 59, 255, 0.3);
         }
         .custom-button:hover {
             background: linear-gradient(90deg, #4b2e6e, #2a1b3d);
             transform: scale(1.05);
             box-shadow: 0 0 20px rgba(163, 59, 255, 0.7), 0 4px 15px rgba(163, 59, 255, 0.4);
+            animation: buttonPulse 1.5s infinite;
         }
         .buy-button {
             background: linear-gradient(90deg, #3d1f4e, #6b3d8d);
-            border-radius: 10px;
-            padding: 12px 20px;
+            border-radius: 12px;
+            padding: 14px 20px;
             font-family: 'SF Pro Display', sans-serif;
             font-weight: 600;
+            font-size: 16px;
             border: none;
             color: #e6d5ff;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
@@ -89,29 +95,34 @@
         .modal {
             background: rgba(13, 8, 22, 0.95);
             backdrop-filter: blur(10px);
+            animation: fadeIn 0.3s ease-out;
         }
         h1 {
             font-family: 'SF Pro Display', sans-serif;
             color: #e6e6e6;
             text-shadow: 0 0 10px rgba(163, 59, 255, 0.8), 0 0 20px rgba(163, 59, 255, 0.5);
+            font-size: 2.5rem;
         }
         h2, h3 {
             font-family: 'Monoton', cursive;
             color: #e6e6e6;
             font-weight: 400;
             text-shadow: 0 0 10px rgba(163, 59, 255, 0.8), 0 0 20px rgba(163, 59, 255, 0.5);
+            font-size: 1.75rem;
         }
         p {
             font-family: 'SF Pro Text', sans-serif;
             line-height: 1.6;
             color: #c8b8e0;
             opacity: 0.9;
+            font-size: 1rem;
         }
         .neon-text {
             font-family: 'Monoton', cursive;
             color: #e6e6e6;
             font-weight: 400;
             text-shadow: 0 0 10px rgba(163, 59, 255, 0.8), 0 0 20px rgba(163, 59, 255, 0.5);
+            animation: neonFlicker 2s infinite;
         }
         .category-buttons {
             position: fixed;
@@ -119,11 +130,12 @@
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 15px;
+            gap: 10px;
             z-index: 10;
         }
         .content-section {
-            padding-bottom: 80px;
+            padding-bottom: 100px;
+            animation: slideSection 0.5s ease-out;
         }
         .hidden {
             display: none;
@@ -131,7 +143,17 @@
         .token-display {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
+            background: linear-gradient(135deg, rgba(45, 28, 72, 0.9), rgba(107, 61, 141, 0.9));
+            border-radius: 15px;
+            padding: 10px 14px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(163, 59, 255, 0.5), inset 0 0 10px rgba(163, 59, 255, 0.3);
+            animation: pulseGlow 2s infinite;
+        }
+        .token-display .fire-icon {
+            font-size: 28px;
+            animation: flicker 1.5s infinite;
         }
         .subscription-status {
             font-size: 14px;
@@ -149,10 +171,10 @@
         .language-button {
             background: linear-gradient(90deg, #2a1b3d, #4b2e6e);
             border-radius: 10px;
-            padding: 4px 8px;
+            padding: 6px 10px;
             font-family: 'SF Pro Display', sans-serif;
             font-weight: 600;
-            font-size: 12px;
+            font-size: 14px;
             border: none;
             color: #e6d5ff;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
@@ -171,15 +193,15 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             background: #6b3d8d;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #e6d5ff;
-            font-size: 14px;
+            font-size: 16px;
             transition: all 0.3s ease;
             opacity: 0;
         }
@@ -188,20 +210,26 @@
         }
         .subscription-card {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: space-between;
-            padding: 10px 15px;
+            padding: 12px 16px;
             margin: 10px 0;
             cursor: pointer;
+            position: relative;
+            width: 100%;
         }
         .subscription-card:hover {
             transform: translateY(-3px);
         }
         .subscription-info {
-            display: flex;
-            flex-direction: column;
+            text-align: left;
+            margin: 0 auto;
+            max-width: 70%;
+            width: 100%;
         }
         .price-text {
+            text-align: left;
+            margin-top: 5px;
             font-size: 14px;
             color: #e0b68a;
         }
@@ -231,6 +259,132 @@
             color: #e06666;
             font-weight: 600;
         }
+        .confirm-modal-content {
+            background: linear-gradient(145deg, #2e204d, #1f1733);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 0 30px rgba(163, 59, 255, 0.6), inset 0 0 15px rgba(163, 59, 255, 0.3);
+            backdrop-filter: blur(12px);
+            border: 1px solid #a33bff;
+            animation: slideUp 0.4s ease-out;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+            overflow: hidden;
+        }
+        .confirm-modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 0%, rgba(163, 59, 255, 0.2), transparent 70%);
+            pointer-events: none;
+        }
+        .confirm-title {
+            animation: slideLeft 0.5s ease-out;
+        }
+        .confirm-text {
+            animation: slideRight 0.5s ease-out 0.1s;
+            animation-fill-mode: both;
+        }
+        .confirm-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+            animation: slideUp 0.5s ease-out 0.2s;
+            animation-fill-mode: both;
+        }
+        @media (max-width: 640px) {
+            .card {
+                border-radius: 10px;
+            }
+            .product-image {
+                height: 180px;
+                width: 180px;
+            }
+            .grid-cols-2 {
+                grid-template-columns: 1fr;
+                gap: 4px;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            h2, h3 {
+                font-size: 1.5rem;
+            }
+            p {
+                font-size: 0.9rem;
+            }
+            .custom-button {
+                padding: 10px 14px;
+                font-size: 14px;
+            }
+            .buy-button {
+                padding: 12px 16px;
+                font-size: 14px;
+            }
+            .category-buttons {
+                gap: 8px;
+                bottom: 15px;
+            }
+            .content-section {
+                padding-bottom: 80px;
+            }
+            .token-display {
+                padding: 8px 12px;
+            }
+            .token-display .fire-icon {
+                font-size: 24px;
+            }
+            .subscription-info {
+                max-width: 85%; /* Увеличиваем ширину для мобильных устройств */
+            }
+        }
+        @keyframes slideIn {
+            from { transform: translateX(-50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideSection {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes slideLeft {
+            from { transform: translateX(-30px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideRight {
+            from { transform: translateX(30px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 20px rgba(163, 59, 255, 0.5), inset 0 0 10px rgba(163, 59, 255, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(163, 59, 255, 0.7), inset 0 0 15px rgba(163, 59, 255, 0.4); }
+            100% { box-shadow: 0 0 20px rgba(163, 59, 255, 0.5), inset 0 0 10px rgba(163, 59, 255, 0.3); }
+        }
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        @keyframes neonFlicker {
+            0%, 100% { text-shadow: 0 0 10px rgba(163, 59, 255, 0.8), 0 0 20px rgba(163, 59, 255, 0.5); }
+            50% { text-shadow: 0 0 15px rgba(163, 59, 255, 1), 0 0 25px rgba(163, 59, 255, 0.7); }
+        }
+        @keyframes buttonPulse {
+            0% { box-shadow: 0 0 15px rgba(163, 59, 255, 0.5), 0 2px 10px rgba(163, 59, 255, 0.3); }
+            50% { box-shadow: 0 0 25px rgba(163, 59, 255, 0.8), 0 4px 15px rgba(163, 59, 255, 0.5); }
+            100% { box-shadow: 0 0 15px rgba(163, 59, 255, 0.5), 0 2px 10px rgba(163, 59, 255, 0.3); }
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600&family=SF+Pro+Text:wght@400;500&family=Monoton&display=swap" rel="stylesheet">
 </head>
@@ -242,10 +396,10 @@
         </button>
     </div>
 
-    <div class="fixed top-4 right-4 flex flex-col items-end space-y-2 bg-gray-900 bg-opacity-90 p-3 rounded-xl shadow-lg">
-        <div class="token-display flex items-center gap-2">
+    <div class="fixed top-4 right-4 flex flex-col items-end space-y-2">
+        <div class="token-display">
             <span id="tokenCount" class="text-2xl font-bold"></span>
-            <span class="text-2xl">🔥</span>
+            <span class="fire-icon">🔥</span>
             <button id="addTokensBtn" class="custom-button p-2">
                 <span>+</span>
             </button>
@@ -254,15 +408,15 @@
         <div id="limitsStatus" class="subscription-status hidden"></div>
     </div>
 
-    <div id="mainContent" class="w-full max-w-4xl space-y-8 content-section">
+    <div id="mainContent" class="w-full max-w-[95%] space-y-8 content-section">
         <h1 id="welcomeTitle" class="text-5xl font-bold text-center mt-16 mb-8"></h1>
 
         <div id="scenariosSection">
             <h2 id="scenariosTitle" class="text-3xl font-semibold text-center"></h2>
-            <div class="grid grid-cols-2 gap-6">
+            <div class="grid grid-cols-2 gap-4">
                 <div class="card">
                     <div class="product-image"></div>
-                    <div class="p-4">
+                    <div class="p-3">
                         <h3 id="scenario1Title" class="text-xl font-semibold"></h3>
                         <p id="scenario1Desc" class="mt-2"></p>
                         <button class="custom-button mt-4" onclick="selectScenario(1)">
@@ -272,7 +426,7 @@
                 </div>
                 <div class="card">
                     <div class="product-image"></div>
-                    <div class="p-4">
+                    <div class="p-3">
                         <h3 id="scenario2Title" class="text-xl font-semibold"></h3>
                         <p id="scenario2Desc" class="mt-2"></p>
                         <button class="custom-button mt-4" onclick="selectScenario(2)">
@@ -282,7 +436,7 @@
                 </div>
                 <div class="card">
                     <div class="product-image"></div>
-                    <div class="p-4">
+                    <div class="p-3">
                         <h3 id="scenario3Title" class="text-xl font-semibold"></h3>
                         <p id="scenario3Desc" class="mt-2"></p>
                         <button class="custom-button mt-4" onclick="selectScenario(3)">
@@ -292,7 +446,7 @@
                 </div>
                 <div class="card">
                     <div class="product-image"></div>
-                    <div class="p-4">
+                    <div class="p-3">
                         <h3 id="scenario4Title" class="text-xl font-semibold"></h3>
                         <p id="scenario4Desc" class="mt-2"></p>
                         <button class="custom-button mt-4" onclick="selectScenario(4)">
@@ -375,10 +529,10 @@
         <div id="currencySection" class="hidden">
             <h2 id="currencyTitle" class="text-3xl font-semibold text-center"></h2>
             <p id="currencyBalanceText" class="text-center mt-4"></p>
-            <div class="grid grid-cols-2 gap-6 mt-6">
+            <div class="grid grid-cols-2 gap-4 mt-6">
                 <div class="card">
                     <div class="product-image"></div>
-                    <div class="p-4 text-center">
+                    <div class="p-3 text-center">
                         <p id="smallPack" class="neon-text text-lg"></p>
                         <p id="smallPackDesc" class="text-sm mt-1"></p>
                         <button class="buy-button mt-4" onclick="buyTokens(100, 6)">
@@ -389,7 +543,7 @@
                 </div>
                 <div class="card">
                     <div class="product-image"></div>
-                    <div class="p-4 text-center">
+                    <div class="p-3 text-center">
                         <p id="mediumPack" class="neon-text text-lg"></p>
                         <p id="mediumPackDesc" class="text-sm mt-1"></p>
                         <button class="buy-button mt-4" onclick="buyTokens(200, 12)">
@@ -400,7 +554,7 @@
                 </div>
                 <div class="card">
                     <div class="product-image"></div>
-                    <div class="p-4 text-center">
+                    <div class="p-3 text-center">
                         <p id="largePack" class="neon-text text-lg"></p>
                         <p id="largePackDesc" class="text-sm mt-1"></p>
                         <button class="buy-button mt-4" onclick="buyTokens(500, 25)">
@@ -411,7 +565,7 @@
                 </div>
                 <div class="card">
                     <div class="product-image"></div>
-                    <div class="p-4 text-center">
+                    <div class="p-3 text-center">
                         <p id="megaPack" class="neon-text text-lg"></p>
                         <p id="megaPackDesc" class="text-sm mt-1"></p>
                         <button class="buy-button mt-4" onclick="buyTokens(1000, 45)">
@@ -437,8 +591,8 @@
     </div>
 
     <div id="languageModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-        <div class="bg-gray-900 p-6 rounded-lg shadow-lg w-80">
-            <h3 id="languageTitle" class="text-2xl font-bold mb-4"></h3>
+        <div class="confirm-modal-content">
+            <h3 id="languageTitle" class="text-3xl font-bold mb-4"></h3>
             <button class="custom-button mb-2 w-full" onclick="setLanguage('en')">
                 <span>🇬🇧</span> English
             </button>
@@ -451,67 +605,14 @@
         </div>
     </div>
 
-    <div id="buyModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-        <div class="bg-gray-900 p-6 rounded-lg shadow-lg w-80">
-            <h3 id="buyModalTitle" class="text-2xl font-bold mb-4"></h3>
-            <div class="card">
-                <div class="product-image"></div>
-                <div class="p-4 text-center">
-                    <p id="smallPackModal" class="neon-text text-lg"></p>
-                    <p id="smallPackDescModal" class="text-sm mt-1"></p>
-                    <button class="buy-button mt-4" onclick="buyTokens(100, 6)">
-                        <span id="buyBtnSmallPackModal"></span>
-                    </button>
-                    <p class="text-gray-400 mt-2">$10<span class="discount">$6</span></p>
-                </div>
-            </div>
-            <div class="card">
-                <div class="product-image"></div>
-                <div class="p-4 text-center">
-                    <p id="mediumPackModal" class="neon-text text-lg"></p>
-                    <p id="mediumPackDescModal" class="text-sm mt-1"></p>
-                    <button class="buy-button mt-4" onclick="buyTokens(200, 12)">
-                        <span id="buyBtnMediumPackModal"></span>
-                    </button>
-                    <p class="text-gray-400 mt-2">$20<span class="discount">$12</span></p>
-                </div>
-            </div>
-            <div class="card">
-                <div class="product-image"></div>
-                <div class="p-4 text-center">
-                    <p id="largePackModal" class="neon-text text-lg"></p>
-                    <p id="largePackDescModal" class="text-sm mt-1"></p>
-                    <button class="buy-button mt-4" onclick="buyTokens(500, 25)">
-                        <span id="buyBtnLargePackModal"></span>
-                    </button>
-                    <p class="text-gray-400 mt-2">$30<span class="discount">$25</span></p>
-                </div>
-            </div>
-            <div class="card">
-                <div class="product-image"></div>
-                <div class="p-4 text-center">
-                    <p id="megaPackModal" class="neon-text text-lg"></p>
-                    <p id="megaPackDescModal" class="text-sm mt-1"></p>
-                    <button class="buy-button mt-4" onclick="buyTokens(1000, 45)">
-                        <span id="buyBtnMegaPackModal"></span>
-                    </button>
-                    <p class="text-gray-400 mt-2">$60<span class="discount">$45</span></p>
-                </div>
-            </div>
-            <button class="custom-button bg-red-600 hover:bg-red-700 w-full" onclick="closeModal()">
-                <span>✖</span> <span id="closeModalBtnText"></span>
-            </button>
-        </div>
-    </div>
-
     <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-        <div class="bg-gray-900 p-6 rounded-lg shadow-lg w-80">
-            <h3 id="confirmTitle" class="text-2xl font-bold mb-4"></h3>
-            <p id="confirmText" class="mb-4"></p>
-            <button id="confirmBtn" class="custom-button bg-green-600 hover:bg-green-700 mr-2"></button>
-            <button class="custom-button bg-red-600 hover:bg-red-700" onclick="closeConfirmModal()">
-                <span>✖</span> <span id="cancelBtnText"></span>
-            </button>
+        <div class="confirm-modal-content">
+            <h3 id="confirmTitle" class="confirm-title text-3xl font-bold mb-4"></h3>
+            <p id="confirmText" class="confirm-text mb-4"></p>
+            <div class="confirm-buttons">
+                <button id="confirmBtn" class="custom-button bg-green-600 hover:bg-green-700 w-full"></button>
+                <button id="cancelBtn" class="custom-button bg-red-600 hover:bg-red-700 w-full"></button>
+            </div>
         </div>
     </div>
 
@@ -580,11 +681,9 @@
                 megaPackDesc: 'Go all out with 1000🔥 Fires! 🌟',
                 languageTitle: 'Select Language',
                 closeBtn: 'Close',
-                buyModalTitle: 'Buy Fires',
-                closeModalBtn: 'Close',
                 confirmUnlock: 'Confirm Unlock',
                 notEnoughFires: 'Not Enough Fires!',
-                buyMore: 'You need 100 Fires. Buy more? 💦',
+                missingFires: amount => `You need ${amount} more Fires!`,
                 buyFiresBtn: 'Buy Fires',
                 cancelBtn: 'Cancel',
                 scenarioUnlock: scenarioId => `Scenario "${['Tutor Asleep', 'Teacher After School', 'Policewoman Stop', 'Helping Friend'][scenarioId - 1]}" unlocked! Enjoy! 😏`,
@@ -637,12 +736,10 @@
                 megaPackDesc: 'Выложись на полную с 1000🔥 огней! 🌟',
                 languageTitle: 'Выберите язык',
                 closeBtn: 'Закрыть',
-                buyModalTitle: 'Купить огни',
-                closeModalBtn: 'Закрыть',
                 confirmUnlock: 'Подтвердить разблокировку',
                 notEnoughFires: 'Недостаточно огней!',
-                buyMore: 'Нужно 100 огней. Купить? 💦',
-                buyFiresBtn: 'Купить огни',
+                missingFires: amount => `Недостаточно ${amount} огней!`,
+                buyFiresBtn: 'Докупить',
                 cancelBtn: 'Отмена',
                 scenarioUnlock: scenarioId => `Сценарий "${['Спящий репетитор', 'Учительница после уроков', 'Остановка полицейской', 'Помощь подруге'][scenarioId - 1]}" разблокирован! Наслаждайся! 😏`,
                 buyTokensMsg: (amount, price) => `Вы купили ${amount} огней за $${price}! Погружайся! 😈`,
@@ -669,7 +766,6 @@
                 document.getElementById('limitsStatus').classList.add('hidden');
             }
 
-            // Update subscription description based on selected plan
             const deluxeSelected = selectedPlan === 7;
             document.getElementById('subscriptionsDesc').innerHTML = (deluxeSelected ? translations[language].subscriptionsDescDeluxe : translations[language].subscriptionsDesc)
                 .split('\n')
@@ -688,12 +784,6 @@
             document.querySelectorAll('#currencySection .product-image')[2].style.backgroundImage = `url(${largePack})`;
             document.querySelectorAll('#currencySection .product-image')[3].style.backgroundImage = `url(${megaPack})`;
 
-            // Update buy modal images
-            document.querySelectorAll('#buyModal .product-image')[0].style.backgroundImage = `url(${smallPack})`;
-            document.querySelectorAll('#buyModal .product-image')[1].style.backgroundImage = `url(${mediumPack})`;
-            document.querySelectorAll('#buyModal .product-image')[2].style.backgroundImage = `url(${largePack})`;
-            document.querySelectorAll('#buyModal .product-image')[3].style.backgroundImage = `url(${megaPack})`;
-
             updateLanguageButton();
         }
 
@@ -708,12 +798,7 @@
             }
             userData[currentUser].fires += amount;
             updateUI();
-            closeModal();
             showAlert(translations[language].buyTokensMsg(amount, price));
-        }
-
-        function closeModal() {
-            document.getElementById('buyModal').classList.add('hidden');
         }
 
         function toggleLanguage() {
@@ -795,40 +880,34 @@
 
             document.getElementById('languageTitle').innerText = translations[language].languageTitle;
             document.getElementById('closeBtnText').innerText = translations[language].closeBtn;
-            document.getElementById('buyModalTitle').innerText = translations[language].buyModalTitle;
-            document.getElementById('smallPackModal').innerText = translations[language].smallPack;
-            document.getElementById('smallPackDescModal').innerText = translations[language].smallPackDesc;
-            document.getElementById('mediumPackModal').innerText = translations[language].mediumPack;
-            document.getElementById('mediumPackDescModal').innerText = translations[language].mediumPackDesc;
-            document.getElementById('largePackModal').innerText = translations[language].largePack;
-            document.getElementById('largePackDescModal').innerText = translations[language].largePackDesc;
-            document.getElementById('megaPackModal').innerText = translations[language].megaPack;
-            document.getElementById('megaPackDescModal').innerText = translations[language].megaPackDesc;
-            document.getElementById('buyBtnSmallPackModal').innerText = translations[language].buyBtnSmallPack;
-            document.getElementById('buyBtnMediumPackModal').innerText = translations[language].buyBtnMediumPack;
-            document.getElementById('buyBtnLargePackModal').innerText = translations[language].buyBtnLargePack;
-            document.getElementById('buyBtnMegaPackModal').innerText = translations[language].buyBtnMegaPack;
-            document.getElementById('closeModalBtnText').innerText = translations[language].closeModalBtn;
-            document.getElementById('cancelBtnText').innerText = translations[language].cancelBtn;
         }
 
         function showSection(sectionId) {
             const sections = ['scenariosSection', 'subscriptionsSection', 'currencySection'];
             sections.forEach(sec => {
-                document.getElementById(sec).classList.add('hidden');
+                const section = document.getElementById(sec);
+                section.classList.add('hidden');
+                section.style.animation = '';
             });
-            document.getElementById(sectionId).classList.remove('hidden');
+            const activeSection = document.getElementById(sectionId);
+            activeSection.classList.remove('hidden');
+            activeSection.style.animation = 'slideSection 0.5s ease-out';
         }
 
         function selectScenario(id) {
-            if (tokens < 100) {
+            const requiredTokens = 100;
+            if (tokens < requiredTokens) {
+                const missing = requiredTokens - tokens;
                 document.getElementById('confirmTitle').innerText = translations[language].notEnoughFires;
-                document.getElementById('confirmText').innerText = translations[language].buyMore;
+                document.getElementById('confirmText').innerText = translations[language].missingFires(missing);
                 document.getElementById('confirmBtn').innerText = translations[language].buyFiresBtn;
                 document.getElementById('confirmBtn').onclick = () => {
                     closeConfirmModal();
                     showSection('currencySection');
                 };
+                document.getElementById('cancelBtn').innerText = translations[language].cancelBtn;
+                document.getElementById('cancelBtn').onclick = closeConfirmModal;
+                document.getElementById('confirmModal').classList.remove('hidden');
             } else {
                 document.getElementById('confirmTitle').innerText = translations[language].confirmUnlock;
                 document.getElementById('confirmText').innerText = language === 'en' ?
@@ -842,8 +921,10 @@
                     closeConfirmModal();
                     showAlert(translations[language].scenarioUnlock(id));
                 };
+                document.getElementById('cancelBtn').innerText = translations[language].cancelBtn;
+                document.getElementById('cancelBtn').onclick = closeConfirmModal;
+                document.getElementById('confirmModal').classList.remove('hidden');
             }
-            document.getElementById('confirmModal').classList.remove('hidden');
         }
 
         function selectPlan(planId) {
@@ -851,7 +932,7 @@
             cards.forEach(card => card.classList.remove('selected'));
             cards[planId - 1].classList.add('selected');
             selectedPlan = planId;
-            updateUI(); // Update UI to reflect subscription description change
+            updateUI();
         }
 
         function buySelectedSubscription() {
@@ -900,20 +981,19 @@
             tg.showAlert(message);
         }
 
-        // Image URLs for Scenarios and Currency Packs
-        const tutorAsleep = 'https://media.discordapp.net/attachments/1349800672035475533/1369662280500777020/repetition_1.jpg?ex=681cace6&is=681b5b66&hm=42edd1a255e846546bd5d3aa8895c4ca68032600cdf01e89d110cb167dec5344&=&format=webp&width=527&height=527';
-        const teacherAfterSchool = 'https://media.discordapp.net/attachments/1349800672035475533/1369662280865812570/teacher_1.jpg?ex=681cace6&is=681b5b66&hm=e065d5bb71013f5d2c9837420bd042c5c51fed59a8bcc3a7aa5fe4697e8105e3&=&format=webp&width=527&height=527';
-        const policewomanStop = 'https://media.discordapp.net/attachments/1349800672035475533/1369662279628624033/1.jpg?ex=681cace6&is=681b5b66&hm=9ddc5d6491a81469742f2ce0c942d2538c102625bb9d379c729de631a1a08413&=&format=webp&width=527&height=527';
-        const helpingFriend = 'https://media.discordapp.net/attachments/1349800672035475533/1369662280152780860/computer_fix_1.jpg?ex=681cace6&is=681b5b66&hm=1ee8c8236b014cf6ed37098906accd277c464a017a9c61c44d79a26388413bd8&=&format=webp&width=527&height=527';
-        const smallPack = 'https://media.discordapp.net/attachments/1349800672035475533/1369663971279507586/100fire_1.jpg?ex=681cae79&is=681b5cf9&hm=3061fea39527f44770f1286b4c0ebd5c417c1f35037c8d8130c021b46a74cc8b&=&format=webp&width=527&height=527';
-        const mediumPack = 'https://media.discordapp.net/attachments/1349800672035475533/1369663971677704202/200_fire_1.jpg?ex=681cae79&is=681b5cf9&hm=e858d7b6f20d3d9ef7b3bd6269524d727c0127d2a66ad3f1277850a195ed1997&=&format=webp&width=527&height=527';
-        const largePack = 'https://media.discordapp.net/attachments/1349800672035475533/1369663971971432519/500_fire_1.jpg?ex=681cae7a&is=681b5cfa&hm=279f44b592a0ba21679e5a32b9c08c1bf38a943a00d7f999548e4bf506178f21&=&format=webp&width=527&height=527';
-        const megaPack = 'https://media.discordapp.net/attachments/1349800672035475533/1369663972281946123/1000_fire_1.jpg?ex=681cae7a&is=681b5cfa&hm=812177400d08ea5fbae8220aa48aa1682e232a2f371e0cf9f025b483e5ada4bb&=&format=webp&width=527&height=527';
+        // Image URLs (updated with Imgur links)
+        const tutorAsleep = 'https://i.imgur.com/PLFfgE3.png';
+        const teacherAfterSchool = 'https://i.imgur.com/x5qpjFu.png';
+        const policewomanStop = 'https://i.imgur.com/Y0kIyVQ.png';
+        const helpingFriend = 'https://i.imgur.com/vlsALsH.png';
+        const smallPack = 'https://i.imgur.com/2MtgJl7.png';
+        const mediumPack = 'https://i.imgur.com/2HWxUMb.png';
+        const largePack = 'https://i.imgur.com/xSJRMNo.png';
+        const megaPack = 'https://i.imgur.com/rg8546H.png';
 
         updateUI();
         updateLanguage();
         showSection('scenariosSection');
     </script>
-    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93c1e82759a4bfa7',t:'MTc0NjYzMzM4MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
