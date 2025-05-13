@@ -1,309 +1,445 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NSFW Adventure App</title>
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
             margin: 0;
             padding: 0;
-            font-family: 'SF Pro Display', sans-serif;
-            background: #0d0816;
+            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+            background: url('https://i.imgur.com/1PUcNC8.jpg') no-repeat center center fixed;
+            background-size: cover;
             color: #d4af37;
-            height: 100vh;
+            min-height: 100vh;
             overflow-y: auto;
-            background: radial-gradient(circle, #0d0816 0%, #1a1226 70%, #0d0816 100%);
         }
+
         .card {
-            background: linear-gradient(145deg, #1f1733, #2e204d);
+            background: linear-gradient(145deg, rgba(35, 30, 55, 0.9), rgba(50, 40, 80, 0.9));
             border-radius: 20px;
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid #a33bff;
-            backdrop-filter: blur(8px);
-            box-shadow: 0 0 20px rgba(163, 59, 255, 0.4), 0 0 10px rgba(163, 59, 255, 0.2) inset;
+            border: 2px solid #a33bff;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 15px rgba(163, 59, 255, 0.3), 0 0 8px rgba(163, 59, 255, 0.2) inset;
             position: relative;
             animation: slideIn 0.5s ease-out;
         }
+
         .card:hover {
-            transform: translateY(-5px) rotate(1deg);
-            box-shadow: 0 0 30px rgba(163, 59, 255, 0.6), 0 0 15px rgba(163, 59, 255, 0.3) inset;
+            transform: translateY(-4px) rotate(0.3deg);
+            box-shadow: 0 6px 20px rgba(163, 59, 255, 0.4), 0 0 10px rgba(163, 59, 255, 0.25) inset;
         }
+
+        .card.selected {
+            border-color: #00ffcc;
+            box-shadow: 0 0 20px #00ffcc, 0 0 12px #00ffcc inset;
+        }
+
         .product-image {
             height: 200px;
-            width: 200px;
-            margin: 0 auto;
+            width: 100%;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            border-bottom: 2px solid #a33bff;
+            border-bottom: 3px solid #a33bff;
             transition: transform 0.5s ease;
+            border-radius: 18px 18px 0 0;
+            position: relative;
+            overflow: hidden;
         }
+
+        .product-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(163, 59, 255, 0.1), rgba(50, 40, 80, 0.3));
+            pointer-events: none;
+        }
+
         .card:hover .product-image {
             transform: scale(1.05);
         }
+
         .custom-button {
-            background: linear-gradient(90deg, #2a1b3d, #4b2e6e);
+            background: linear-gradient(90deg, #ff69b4, #c71585);
             border-radius: 12px;
-            padding: 12px 16px;
-            font-family: 'SF Pro Display', sans-serif;
-            font-weight: 600;
-            font-size: 16px;
+            padding: 8px 12px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
             border: none;
-            color: #e6d5ff;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            color: #ffffff;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            box-shadow: 0 0 15px rgba(163, 59, 255, 0.5), 0 2px 10px rgba(163, 59, 255, 0.3);
+            gap: 6px;
+            box-shadow: 0 0 8px rgba(255, 105, 180, 0.3), 0 1px 5px rgba(255, 105, 180, 0.2);
+            opacity: 0.9;
         }
+
         .custom-button:hover {
-            background: linear-gradient(90deg, #4b2e6e, #2a1b3d);
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(163, 59, 255, 0.7), 0 4px 15px rgba(163, 59, 255, 0.4);
-            animation: buttonPulse 1.5s infinite;
+            background: linear-gradient(90deg, #c71585, #ff69b4);
+            transform: scale(1.03);
+            box-shadow: 0 0 12px rgba(255, 105, 180, 0.4), 0 2px 8px rgba(255, 105, 180, 0.25);
+            animation: buttonPulse 2s infinite;
         }
+
         .buy-button {
-            background: linear-gradient(90deg, #3d1f4e, #6b3d8d);
+            background: linear-gradient(90deg, #ff69b4, #c71585);
             border-radius: 12px;
-            padding: 14px 20px;
-            font-family: 'SF Pro Display', sans-serif;
-            font-weight: 600;
-            font-size: 16px;
+            padding: 10px 14px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
             border: none;
-            color: #e6d5ff;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            color: #ffffff;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            box-shadow: 0 0 15px rgba(163, 59, 255, 0.5), 0 2px 10px rgba(163, 59, 255, 0.3);
+            gap: 6px;
+            box-shadow: 0 0 8px rgba(255, 105, 180, 0.3), 0 1px 5px rgba(255, 105, 180, 0.2);
             width: 100%;
+            opacity: 0.9;
         }
+
         .buy-button:hover {
-            background: linear-gradient(90deg, #6b3d8d, #3d1f4e);
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(163, 59, 255, 0.7), 0 4px 15px rgba(163, 59, 255, 0.4);
+            background: linear-gradient(90deg, #c71585, #ff69b4);
+            transform: scale(1.03);
+            box-shadow: 0 0 12px rgba(255, 105, 180, 0.4), 0 2px 8px rgba(255, 105, 180, 0.25);
         }
+
+        #buySubscriptionBtn {
+            background: linear-gradient(90deg, #ff69b4, #c71585);
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            border: none;
+            color: #ffffff;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 0 8px rgba(255, 105, 180, 0.3), 0 1px 5px rgba(255, 105, 180, 0.2);
+            width: 100%;
+            opacity: 0.9;
+        }
+
+        #buySubscriptionBtn:hover {
+            background: linear-gradient(90deg, #c71585, #ff69b4);
+            transform: scale(1.03);
+            box-shadow: 0 0 12px rgba(255, 105, 180, 0.4), 0 2px 8px rgba(255, 105, 180, 0.25);
+        }
+
         .modal {
-            background: rgba(13, 8, 22, 0.95);
+            background: rgba(20, 15, 30, 0.95);
             backdrop-filter: blur(10px);
             animation: fadeIn 0.3s ease-out;
         }
-        h1 {
-            font-family: 'SF Pro Display', sans-serif;
-            color: #e6e6e6;
-            text-shadow: 0 0 10px rgba(163, 59, 255, 0.8), 0 0 20px rgba(163, 59, 255, 0.5);
-            font-size: 2.5rem;
-        }
+
         h2, h3 {
-            font-family: 'Monoton', cursive;
+            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
             color: #e6e6e6;
             font-weight: 400;
-            text-shadow: 0 0 10px rgba(163, 59, 255, 0.8), 0 0 20px rgba(163, 59, 255, 0.5);
-            font-size: 1.75rem;
+            text-shadow: 0 0 5px rgba(163, 59, 255, 0.5), 0 0 10px rgba(163, 59, 255, 0.3);
+            font-size: 1.5rem;
         }
+
         p {
-            font-family: 'SF Pro Text', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
             line-height: 1.6;
             color: #c8b8e0;
-            opacity: 0.9;
-            font-size: 1rem;
+            opacity: 0.85;
+            font-size: 0.9rem;
         }
+
         .neon-text {
-            font-family: 'Monoton', cursive;
-            color: #e6e6e6;
-            font-weight: 400;
-            text-shadow: 0 0 10px rgba(163, 59, 255, 0.8), 0 0 20px rgba(163, 59, 255, 0.5);
-            animation: neonFlicker 2s infinite;
+            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+            color: #d9ccff;
+            font-weight: 500;
+            text-shadow: 0 0 5px rgba(163, 59, 255, 0.5), 0 0 10px rgba(163, 59, 255, 0.3);
+            animation: neonFlicker 2.5s infinite;
         }
+
         .category-buttons {
             position: fixed;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 10px;
+            justify-content: center;
+            gap: 8px;
             z-index: 10;
+            background: linear-gradient(135deg, rgba(50, 40, 80, 0.8), rgba(80, 60, 110, 0.8));
+            border-radius: 20px;
+            padding: 8px 12px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 10px rgba(163, 59, 255, 0.3), inset 0 0 5px rgba(163, 59, 255, 0.15);
+            opacity: 0.9;
         }
+
+        .category-button {
+            background: linear-gradient(90deg, #ff69b4, #c71585);
+            border-radius: 10px;
+            padding: 5px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+            font-size: 16px;
+            border: none;
+            color: #ffffff;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            box-shadow: 0 0 8px rgba(255, 105, 180, 0.3);
+            opacity: 0.9;
+        }
+
+        .category-button:hover {
+            background: linear-gradient(90deg, #c71585, #ff69b4);
+            transform: scale(1.05);
+            box-shadow: 0 0 12px rgba(255, 105, 180, 0.4);
+            animation: buttonPulse 2s infinite;
+        }
+
         .content-section {
-            padding-bottom: 100px;
+            padding-top: 80px;
+            padding-bottom: 80px;
             animation: slideSection 0.5s ease-out;
+            width: 100%;
+            max-width: 95%;
+            margin: 0 auto;
         }
+
         .hidden {
             display: none;
         }
-        .token-display {
+
+        .header-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background: linear-gradient(145deg, rgba(35, 30, 55, 0.85), rgba(50, 40, 80, 0.85));
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid #a33bff;
+            box-shadow: 0 0 10px rgba(163, 59, 255, 0.3);
+            z-index: 20;
+        }
+
+        .section-title {
+            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #ff69b4, #c71585);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.7), 0 0 20px rgba(199, 21, 133, 0.5);
+            animation: neonFlicker 2.5s infinite;
+            margin: 0;
+        }
+
+        .section-title::before,
+        .section-title::after {
+            content: '🔥';
+            font-size: 20px;
+            margin: 0 5px;
+        }
+
+        .balance-display {
             display: flex;
             align-items: center;
             gap: 8px;
-            background: linear-gradient(135deg, rgba(45, 28, 72, 0.9), rgba(107, 61, 141, 0.9));
-            border-radius: 15px;
-            padding: 10px 14px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 20px rgba(163, 59, 255, 0.5), inset 0 0 10px rgba(163, 59, 255, 0.3);
-            animation: pulseGlow 2s infinite;
-        }
-        .token-display .fire-icon {
-            font-size: 28px;
-            animation: flicker 1.5s infinite;
-        }
-        .subscription-status {
-            font-size: 14px;
-            color: #e0b68a;
-            font-family: 'SF Pro Text', sans-serif;
-            font-weight: 500;
-            margin-top: 5px;
-        }
-        .discount {
-            color: #e06666;
-            text-decoration: line-through;
-            margin-left: 5px;
-            font-family: 'SF Pro Text', sans-serif;
-        }
-        .language-button {
-            background: linear-gradient(90deg, #2a1b3d, #4b2e6e);
-            border-radius: 10px;
+            background: linear-gradient(90deg, #ff69b4, #c71585);
             padding: 6px 10px;
-            font-family: 'SF Pro Display', sans-serif;
-            font-weight: 600;
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 8px rgba(255, 105, 180, 0.3);
+        }
+
+        .balance-item {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 500;
+            color: #ffffff;
+            gap: 3px;
+        }
+
+        .balance-item .fire-icon, .balance-item .photo-icon {
+            font-size: 14px;
+            animation: flicker 2s infinite;
+        }
+
+        .add-fires-btn {
+            background: linear-gradient(90deg, #00ffcc, #00b894);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            border: none;
+            color: #ffffff;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 6px rgba(0, 255, 204, 0.3);
+            opacity: 0.9;
+        }
+
+        .add-fires-btn:hover {
+            background: linear-gradient(90deg, #00b894, #00ffcc);
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.4);
+        }
+
+        .language-button {
+            position: fixed;
+            bottom: 20px;
+            right: 15px;
+            background: linear-gradient(90deg, #ff69b4, #c71585);
+            border-radius: 12px;
+            padding: 6px 10px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+            font-weight: 500;
             font-size: 14px;
             border: none;
-            color: #e6d5ff;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            color: #ffffff;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 3px;
-            box-shadow: 0 0 10px rgba(163, 59, 255, 0.3), 0 2px 5px rgba(163, 59, 255, 0.2);
+            box-shadow: 0 0 6px rgba(255, 105, 180, 0.2);
+            opacity: 0.9;
+            z-index: 10;
         }
+
         .language-button:hover {
-            background: linear-gradient(90deg, #4b2e6e, #2a1b3d);
-            transform: scale(1.1);
-            box-shadow: 0 0 15px rgba(163, 59, 255, 0.5), 0 3px 8px rgba(163, 59, 255, 0.3);
+            background: linear-gradient(90deg, #c71585, #ff69b4);
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.3);
         }
+
         .checkmark {
             position: absolute;
             top: 10px;
             right: 10px;
-            width: 24px;
-            height: 24px;
+            width: 20px;
+            height: 20px;
             background: #6b3d8d;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #e6d5ff;
-            font-size: 16px;
+            color: #d9ccff;
+            font-size: 12px;
             transition: all 0.3s ease;
             opacity: 0;
         }
+
         .card.selected .checkmark {
             opacity: 1;
         }
+
         .subscription-card {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 16px;
-            margin: 10px 0;
+            padding: 8px 12px;
+            margin: 6px 0;
             cursor: pointer;
         }
+
         .subscription-card:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
+
+        .subscription-card.selected {
+            border-color: #00ffcc;
+            box-shadow: 0 0 15px #00ffcc, 0 0 8px #00ffcc inset;
+        }
+
         .subscription-info {
             display: flex;
             flex-direction: column;
         }
+
         .price-text {
-            font-size: 14px;
+            font-size: 12px;
             color: #e0b68a;
         }
+
         .subscription-details {
-            margin-top: 20px;
-            padding: 20px;
-            background: linear-gradient(145deg, #2e204d, #1f1733);
-            border-radius: 15px;
+            margin-top: 15px;
+            padding: 15px;
+            background: linear-gradient(145deg, rgba(50, 40, 80, 0.85), rgba(35, 30, 55, 0.85));
+            border-radius: 12px;
             border: 1px solid #a33bff;
-            box-shadow: 0 0 30px rgba(163, 59, 255, 0.6), 0 0 15px rgba(163, 59, 255, 0.3) inset;
+            box-shadow: 0 0 15px rgba(163, 59, 255, 0.4), 0 0 8px rgba(163, 59, 255, 0.2) inset;
             backdrop-filter: blur(10px);
         }
+
         .details-header {
-            font-family: 'Monoton', cursive;
+            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
             color: #e6e6e6;
-            font-size: 24px;
-            text-shadow: 0 0 10px rgba(163, 59, 255, 0.8), 0 0 20px rgba(163, 59, 255, 0.5);
-            margin-bottom: 10px;
+            font-size: 20px;
+            text-shadow: 0 0 5px rgba(163, 59, 255, 0.5), 0 0 10px rgba(163, 59, 255, 0.3);
+            margin-bottom: 8px;
         }
+
         .details-content p {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
+
         .details-content p:last-child {
             margin-bottom: 0;
         }
+
         .details-content .highlight {
             color: #e06666;
-            font-weight: 600;
+            font-weight: 500;
         }
+
         .confirm-modal-content {
-            background: linear-gradient(145deg, #2e204d, #1f1733);
-            border-radius: 20px;
-            padding: 24px;
-            box-shadow: 0 0 30px rgba(163, 59, 255, 0.6), inset 0 0 15px rgba(163, 59, 255, 0.3);
+            background: linear-gradient(145deg, rgba(50, 40, 80, 0.85), rgba(35, 30, 55, 0.85));
+            border-radius: 16px;
+            padding: 15px;
+            box-shadow: 0 0 15px rgba(163, 59, 255, 0.4), inset 0 0 8px rgba(163, 59, 255, 0.2);
             backdrop-filter: blur(12px);
             border: 1px solid #a33bff;
             animation: slideUp 0.4s ease-out;
             width: 90%;
-            max-width: 400px;
+            max-width: 360px;
             position: relative;
             overflow: hidden;
         }
+
         .confirm-modal-content::before {
             content: '';
             position: absolute;
@@ -311,142 +447,222 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 50% 0%, rgba(163, 59, 255, 0.2), transparent 70%);
+            background: radial-gradient(circle at 50% 0%, rgba(163, 59, 255, 0.15), transparent 70%);
             pointer-events: none;
         }
+
         .confirm-title {
             animation: slideLeft 0.5s ease-out;
         }
+
         .confirm-text {
             animation: slideRight 0.5s ease-out 0.1s;
             animation-fill-mode: both;
         }
+
         .confirm-buttons {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 8px;
+            margin-top: 15px;
             animation: slideUp 0.5s ease-out 0.2s;
             animation-fill-mode: both;
         }
+
         @media (max-width: 640px) {
             .card {
                 border-radius: 16px;
+                margin: 0 5px;
             }
             .product-image {
-                height: 180px;
-                width: 180px;
+                height: 160px;
             }
             .grid-cols-2 {
                 grid-template-columns: 1fr;
-                gap: 4px;
-            }
-            h1 {
-                font-size: 2rem;
+                gap: 8px;
             }
             h2, h3 {
-                font-size: 1.5rem;
+                font-size: 1.2rem;
             }
             p {
-                font-size: 0.9rem;
+                font-size: 0.8rem;
             }
             .custom-button {
-                padding: 10px 14px;
-                font-size: 14px;
+                padding: 6px 10px;
+                font-size: 12px;
             }
-            .buy-button {
-                padding: 12px 16px;
-                font-size: 14px;
+            .buy-button, #buySubscriptionBtn {
+                padding: 8px 12px;
+                font-size: 12px;
             }
             .category-buttons {
-                gap: 8px;
-                bottom: 15px;
+                gap: 6px;
+                padding: 6px 10px;
+                width: auto;
+            }
+            .category-button {
+                width: 30px;
+                height: 30px;
+                font-size: 14px;
             }
             .content-section {
-                padding-bottom: 80px;
+                padding-top: 60px;
+                padding-bottom: 70px;
             }
-            .token-display {
-                padding: 8px 12px;
+            .header-container {
+                padding: 8px 10px;
             }
-            .token-display .fire-icon {
-                font-size: 24px;
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .section-title::before,
+            .section-title::after {
+                font-size: 18px;
+            }
+            .balance-display {
+                gap: 6px;
+                padding: 5px 8px;
+            }
+            .balance-item {
+                font-size: 12px;
+            }
+            .balance-item .fire-icon, .balance-item .photo-icon {
+                font-size: 12px;
+            }
+            .add-fires-btn {
+                width: 18px;
+                height: 18px;
+                font-size: 10px;
+            }
+            .language-button {
+                bottom: 70px;
+                right: 10px;
+                padding: 5px 8px;
+                font-size: 12px;
+            }
+            .subscription-card {
+                padding: 6px 10px;
+                margin: 5px 0;
+            }
+            .subscription-details {
+                padding: 12px;
+            }
+            .details-header {
+                font-size: 18px;
+            }
+            .confirm-modal-content {
+                padding: 12px;
+                max-width: 320px;
             }
         }
+
+        @media (max-width: 360px) {
+            .section-title {
+                font-size: 1.5rem;
+            }
+            .balance-display {
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 4px;
+            }
+            .category-buttons {
+                padding: 5px 8px;
+            }
+            .category-button {
+                width: 28px;
+                height: 28px;
+                font-size: 12px;
+            }
+        }
+
         @keyframes slideIn {
-            from { transform: translateX(-50px); opacity: 0; }
+            from { transform: translateX(-30px); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
+
         @keyframes slideSection {
-            from { transform: translateY(20px); opacity: 0; }
+            from { transform: translateY(15px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
+
         @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
+            from { transform: translateY(40px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
+
         @keyframes slideLeft {
-            from { transform: translateX(-30px); opacity: 0; }
+            from { transform: translateX(-20px); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
+
         @keyframes slideRight {
-            from { transform: translateX(30px); opacity: 0; }
+            from { transform: translateX(20px); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
+
         @keyframes pulseGlow {
-            0% { box-shadow: 0 0 20px rgba(163, 59, 255, 0.5), inset 0 0 10px rgba(163, 59, 255, 0.3); }
-            50% { box-shadow: 0 0 30px rgba(163, 59, 255, 0.7), inset 0 0 15px rgba(163, 59, 255, 0.4); }
-            100% { box-shadow: 0 0 20px rgba(163, 59, 255, 0.5), inset 0 0 10px rgba(163, 59, 255, 0.3); }
+            0% { box-shadow: 0 0 10px rgba(163, 59, 255, 0.3), inset 0 0 5px rgba(163, 59, 255, 0.15); }
+            50% { box-shadow: 0 0 15px rgba(163, 59, 255, 0.4), inset 0 0 8px rgba(163, 59, 255, 0.2); }
+            100% { box-shadow: 0 0 10px rgba(163, 59, 255, 0.3), inset 0 0 5px rgba(163, 59, 255, 0.15); }
         }
+
         @keyframes flicker {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
+            50% { opacity: 0.85; }
         }
+
         @keyframes neonFlicker {
-            0%, 100% { text-shadow: 0 0 10px rgba(163, 59, 255, 0.8), 0 0 20px rgba(163, 59, 255, 0.5); }
-            50% { text-shadow: 0 0 15px rgba(163, 59, 255, 1), 0 0 25px rgba(163, 59, 255, 0.7); }
+            0%, 100% { text-shadow: 0 0 5px rgba(255, 105, 180, 0.5), 0 0 10px rgba(255, 105, 180, 0.3); }
+            50% { text-shadow: 0 0 8px rgba(255, 105, 180, 0.6), 0 0 15px rgba(255, 105, 180, 0.4); }
         }
+
         @keyframes buttonPulse {
-            0% { box-shadow: 0 0 15px rgba(163, 59, 255, 0.5), 0 2px 10px rgba(163, 59, 255, 0.3); }
-            50% { box-shadow: 0 0 25px rgba(163, 59, 255, 0.8), 0 4px 15px rgba(163, 59, 255, 0.5); }
-            100% { box-shadow: 0 0 15px rgba(163, 59, 255, 0.5), 0 2px 10px rgba(163, 59, 255, 0.3); }
+            0% { box-shadow: 0 0 8px rgba(255, 105, 180, 0.3), 0 1px 5px rgba(255, 105, 180, 0.2); }
+            50% { box-shadow: 0 0 12px rgba(255, 105, 180, 0.4), 0 2px 8px rgba(255, 105, 180, 0.25); }
+            100% { box-shadow: 0 0 8px rgba(255, 105, 180, 0.3), 0 1px 5px rgba(255, 105, 180, 0.2); }
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600&family=SF+Pro+Text:wght@400;500&family=Monoton&display=swap" rel="stylesheet">
 </head>
 <body class="flex flex-col items-center p-4">
-    <div class="fixed top-4 left-4">
-        <button id="languageBtn" class="language-button" onclick="toggleLanguage()">
-            <span id="currentFlag"></span>
-            <span id="languageText"></span>
-        </button>
-    </div>
-
-    <div class="fixed top-4 right-4 flex flex-col items-end space-y-2">
-        <div class="token-display">
-            <span id="tokenCount" class="text-2xl font-bold"></span>
-            <span class="fire-icon">🔥</span>
-            <button id="addTokensBtn" class="custom-button p-2">
-                <span>+</span>
-            </button>
+    <div class="header-container">
+        <div id="sectionTitle" class="section-title"></div>
+        <div class="balance-display">
+            <div class="balance-item">
+                <span class="photo-icon">📷</span>
+                <span id="photoLimitDisplay"></span>
+            </div>
+            <div class="balance-item">
+                <span id="tokenCount" class="font-bold"></span>
+                <span class="fire-icon">🔥</span>
+                <button class="add-fires-btn" onclick="showSection('currencySection')">+</button>
+            </div>
         </div>
-        <div id="subscriptionStatus" class="subscription-status"></div>
-        <div id="limitsStatus" class="subscription-status hidden"></div>
     </div>
 
-    <div id="mainContent" class="w-full max-w-[95%] space-y-8 content-section">
-        <h1 id="welcomeTitle" class="text-5xl font-bold text-center mt-16 mb-8"></h1>
+    <button id="languageBtn" class="language-button" onclick="toggleLanguage()">
+        <span id="currentFlag"></span>
+        <span id="languageText"></span>
+    </button>
 
+    <div class="category-buttons">
+        <button id="scenariosBtn" class="category-button" onclick="showSection('scenariosSection')">📖</button>
+        <button id="itemsBtn" class="category-button" onclick="showSection('itemsSection')">🛍️</button>
+        <button id="subscriptionsBtn" class="category-button" onclick="showSection('subscriptionsSection')">⭐</button>
+        <button id="currencyBtn" class="category-button" onclick="showSection('currencySection')">💰</button>
+    </div>
+
+    <div id="mainContent" class="content-section">
         <div id="scenariosSection">
-            <h2 id="scenariosTitle" class="text-3xl font-semibold text-center"></h2>
             <div class="grid grid-cols-2 gap-4">
                 <div class="card">
                     <div class="product-image"></div>
                     <div class="p-4">
-                        <h3 id="scenario1Title" class="text-xl font-semibold"></h3>
+                        <h3 id="scenario1Title" class="text-lg font-semibold"></h3>
                         <p id="scenario1Desc" class="mt-2"></p>
                         <button class="custom-button mt-4" onclick="selectScenario(1)">
                             <span>🔥</span> <span id="scenario1Btn"></span>
@@ -456,7 +672,7 @@
                 <div class="card">
                     <div class="product-image"></div>
                     <div class="p-4">
-                        <h3 id="scenario2Title" class="text-xl font-semibold"></h3>
+                        <h3 id="scenario2Title" class="text-lg font-semibold"></h3>
                         <p id="scenario2Desc" class="mt-2"></p>
                         <button class="custom-button mt-4" onclick="selectScenario(2)">
                             <span>🔥</span> <span id="scenario2Btn"></span>
@@ -466,7 +682,7 @@
                 <div class="card">
                     <div class="product-image"></div>
                     <div class="p-4">
-                        <h3 id="scenario3Title" class="text-xl font-semibold"></h3>
+                        <h3 id="scenario3Title" class="text-lg font-semibold"></h3>
                         <p id="scenario3Desc" class="mt-2"></p>
                         <button class="custom-button mt-4" onclick="selectScenario(3)">
                             <span>🔥</span> <span id="scenario3Btn"></span>
@@ -476,7 +692,7 @@
                 <div class="card">
                     <div class="product-image"></div>
                     <div class="p-4">
-                        <h3 id="scenario4Title" class="text-xl font-semibold"></h3>
+                        <h3 id="scenario4Title" class="text-lg font-semibold"></h3>
                         <p id="scenario4Desc" class="mt-2"></p>
                         <button class="custom-button mt-4" onclick="selectScenario(4)">
                             <span>🔥</span> <span id="scenario4Btn"></span>
@@ -487,141 +703,218 @@
         </div>
 
         <div id="subscriptionsSection" class="hidden">
-            <h2 id="subscriptionsTitle" class="text-3xl font-semibold text-center"></h2>
             <div id="subscriptionDetails" class="subscription-details">
                 <h3 id="detailsHeader" class="details-header"></h3>
                 <div id="subscriptionsDesc" class="details-content">
-                    <p>Premium Benefits 🔥✨</p>
-                    <p id="photoLimitText">New Limit: 50 Photos/Day + Unlimited Chat! 💬💃</p>
-                    <p>Dress Better 🌟</p>
-                    <p>Reply Faster ⚡</p>
-                    <p>Enhanced Image Quality 🎨</p>
-                    <p>Priority Scenarios Access 🚀</p>
+                    <p>Преимущества премиума 🔥✨</p>
+                    <p id="photoLimitText">Новый лимит: 50 фото/день + Безлимитный чат! 💬💃</p>
+                    <p>Одевайся лучше 🌟</p>
+                    <p>Отвечай быстрее ⚡</p>
+                    <p>Улучшенное качество изображений 🎨</p>
+                    <p>Приоритетный доступ к сценариям 🚀</p>
                 </div>
             </div>
             <div class="mt-4">
                 <div class="card subscription-card" onclick="selectPlan(1)">
                     <div class="subscription-info">
-                        <p id="sub1Day" class="neon-text text-lg font-medium">1 Day</p>
+                        <p id="sub1Day" class="neon-text text-md font-medium">1 день</p>
                         <p class="price-text">$2.00</p>
                     </div>
                     <div class="checkmark">✔</div>
                 </div>
                 <div class="card subscription-card" onclick="selectPlan(2)">
                     <div class="subscription-info">
-                        <p id="sub3Days" class="neon-text text-lg font-medium">3 Days</p>
+                        <p id="sub3Days" class="neon-text text-md font-medium">3 дня</p>
                         <p class="price-text">$5.00</p>
                     </div>
                     <div class="checkmark">✔</div>
                 </div>
                 <div class="card subscription-card" onclick="selectPlan(3)">
                     <div class="subscription-info">
-                        <p id="sub1Week" class="neon-text text-lg font-medium">1 Week</p>
+                        <p id="sub1Week" class="neon-text text-md font-medium">1 неделя</p>
                         <p class="price-text">$13.00</p>
                     </div>
                     <div class="checkmark">✔</div>
                 </div>
                 <div class="card subscription-card" onclick="selectPlan(4)">
                     <div class="subscription-info">
-                        <p id="sub1Month" class="neon-text text-lg font-medium">1 Month +30🔥 Fires</p>
+                        <p id="sub1Month" class="neon-text text-md font-medium">1 месяц +30🔥 огней</p>
                         <p class="price-text">$25.00</p>
                     </div>
                     <div class="checkmark">✔</div>
                 </div>
                 <div class="card subscription-card" onclick="selectPlan(5)">
                     <div class="subscription-info">
-                        <p id="sub3Months" class="neon-text text-lg font-medium">3 Months +100🔥 Fires</p>
+                        <p id="sub3Months" class="neon-text text-md font-medium">3 месяца +100🔥 огней</p>
                         <p class="price-text">$70.00</p>
                     </div>
                     <div class="checkmark">✔</div>
                 </div>
                 <div class="card subscription-card" onclick="selectPlan(6)">
                     <div class="subscription-info">
-                        <p id="subForever" class="neon-text text-lg font-medium">Forever +200🔥 Fires</p>
+                        <p id="subForever" class="neon-text text-md font-medium">Навсегда +200🔥 огней</p>
                         <p class="price-text">$50.00</p>
                     </div>
                     <div class="checkmark">✔</div>
                 </div>
                 <div class="card subscription-card" onclick="selectPlan(7)">
                     <div class="subscription-info">
-                        <p id="subDeluxe" class="neon-text text-lg font-medium">Deluxe (Unlimited) +500🔥 Fires</p>
+                        <p id="subDeluxe" class="neon-text text-md font-medium">Делюкс (безлимит) +500🔥 огней</p>
                         <p class="price-text">$100.00</p>
                     </div>
                     <div class="checkmark">✔</div>
                 </div>
             </div>
-            <button id="buySubscriptionBtn" class="buy-button mt-4" onclick="buySelectedSubscription()">
+            <button id="buySubscriptionBtn" class="mt-4" onclick="buySelectedSubscription()">
                 <span id="buyBtnText"></span>
             </button>
         </div>
 
         <div id="currencySection" class="hidden">
-            <h2 id="currencyTitle" class="text-3xl font-semibold text-center"></h2>
             <p id="currencyBalanceText" class="text-center mt-4"></p>
             <div class="grid grid-cols-2 gap-4 mt-6">
                 <div class="card">
                     <div class="product-image"></div>
                     <div class="p-4 text-center">
-                        <p id="smallPack" class="neon-text text-lg"></p>
+                        <p id="smallPack" class="neon-text text-md"></p>
                         <p id="smallPackDesc" class="text-sm mt-1"></p>
-                        <button class="buy-button mt-4" onclick="buyTokens(100, 6)">
+                        <button class="buy-button mt-4" onclick="buyTokens(100, PRICES.currency.smallPack)">
                             <span id="buyBtnSmallPack"></span>
                         </button>
-                        <p class="text-gray-400 mt-2">$10<span class="discount">$6</span></p>
                     </div>
                 </div>
                 <div class="card">
                     <div class="product-image"></div>
                     <div class="p-4 text-center">
-                        <p id="mediumPack" class="neon-text text-lg"></p>
+                        <p id="mediumPack" class="neon-text text-md"></p>
                         <p id="mediumPackDesc" class="text-sm mt-1"></p>
-                        <button class="buy-button mt-4" onclick="buyTokens(200, 12)">
+                        <button class="buy-button mt-4" onclick="buyTokens(200, PRICES.currency.mediumPack)">
                             <span id="buyBtnMediumPack"></span>
                         </button>
-                        <p class="text-gray-400 mt-2">$20<span class="discount">$12</span></p>
                     </div>
                 </div>
                 <div class="card">
                     <div class="product-image"></div>
                     <div class="p-4 text-center">
-                        <p id="largePack" class="neon-text text-lg"></p>
+                        <p id="largePack" class="neon-text text-md"></p>
                         <p id="largePackDesc" class="text-sm mt-1"></p>
-                        <button class="buy-button mt-4" onclick="buyTokens(500, 25)">
+                        <button class="buy-button mt-4" onclick="buyTokens(500, PRICES.currency.largePack)">
                             <span id="buyBtnLargePack"></span>
                         </button>
-                        <p class="text-gray-400 mt-2">$30<span class="discount">$25</span></p>
                     </div>
                 </div>
                 <div class="card">
                     <div class="product-image"></div>
                     <div class="p-4 text-center">
-                        <p id="megaPack" class="neon-text text-lg"></p>
+                        <p id="megaPack" class="neon-text text-md"></p>
                         <p id="megaPackDesc" class="text-sm mt-1"></p>
-                        <button class="buy-button mt-4" onclick="buyTokens(1000, 45)">
+                        <button class="buy-button mt-4" onclick="buyTokens(1000, PRICES.currency.megaPack)">
                             <span id="buyBtnMegaPack"></span>
                         </button>
-                        <p class="text-gray-400 mt-2">$60<span class="discount">$45</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="itemsSection" class="hidden">
+            <div class="grid grid-cols-2 gap-4 mt-6">
+                <div class="card">
+                    <div class="product-image"></div>
+                    <div class="p-4 text-center">
+                        <p id="analPlug" class="neon-text text-md"></p>
+                        <p id="analPlugDesc" class="text-sm mt-1"></p>
+                        <button class="buy-button mt-4" onclick="buyItem('analPlug', PRICES.items.analPlug.fires)">
+                            <span id="buyBtnAnalPlug"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="product-image"></div>
+                    <div class="p-4 text-center">
+                        <p id="pajamas" class="neon-text text-md"></p>
+                        <p id="pajamasDesc" class="text-sm mt-1"></p>
+                        <button class="buy-button mt-4" onclick="buyItem('pajamas', PRICES.items.pajamas.fires)">
+                            <span id="buyBtnPajamas"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="product-image"></div>
+                    <div class="p-4 text-center">
+                        <p id="stockings" class="neon-text text-md"></p>
+                        <p id="stockingsDesc" class="text-sm mt-1"></p>
+                        <button class="buy-button mt-4" onclick="buyItem('stockings', PRICES.items.stockings.fires)">
+                            <span id="buyBtnStockings"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="product-image"></div>
+                    <div class="p-4 text-center">
+                        <p id="handcuffs" class="neon-text text-md"></p>
+                        <p id="handcuffsDesc" class="text-sm mt-1"></p>
+                        <button class="buy-button mt-4" onclick="buyItem('handcuffs', PRICES.items.handcuffs.fires)">
+                            <span id="buyBtnHandcuffs"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="product-image"></div>
+                    <div class="p-4 text-center">
+                        <p id="lubricants" class="neon-text text-md"></p>
+                        <p id="lubricantsDesc" class="text-sm mt-1"></p>
+                        <button class="buy-button mt-4" onclick="buyItem('lubricants', PRICES.items.lubricants.fires)">
+                            <span id="buyBtnLubricants"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="product-image"></div>
+                    <div class="p-4 text-center">
+                        <p id="truthOrDare" class="neon-text text-md"></p>
+                        <p id="truthOrDareDesc" class="text-sm mt-1"></p>
+                        <button class="buy-button mt-4" onclick="buyItem('truthOrDare', PRICES.items.truthOrDare.fires)">
+                            <span id="buyBtnTruthOrDare"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="product-image"></div>
+                    <div class="p-4 text-center">
+                        <p id="masksBlindfolds" class="neon-text text-md"></p>
+                        <p id="masksBlindfoldsDesc" class="text-sm mt-1"></p>
+                        <button class="buy-button mt-4" onclick="buyItem('masksBlindfolds', PRICES.items.masksBlindfolds.fires)">
+                            <span id="buyBtnMasksBlindfolds"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="product-image"></div>
+                    <div class="p-4 text-center">
+                        <p id="massageFoam" class="neon-text text-md"></p>
+                        <p id="massageFoamDesc" class="text-sm mt-1"></p>
+                        <button class="buy-button mt-4" onclick="buyItem('massageFoam', PRICES.items.massageFoam.fires)">
+                            <span id="buyBtnMassageFoam"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="product-image"></div>
+                    <div class="p-4 text-center">
+                        <p id="sexSwing" class="neon-text text-md"></p>
+                        <p id="sexSwingDesc" class="text-sm mt-1"></p>
+                        <button class="buy-button mt-4" onclick="buyItem('sexSwing', PRICES.items.sexSwing.fires)">
+                            <span id="buyBtnSexSwing"></span>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="category-buttons">
-        <button id="scenariosBtn" class="custom-button" onclick="showSection('scenariosSection')">
-            <span>🎬</span> <span id="scenariosBtnText"></span>
-        </button>
-        <button id="subscriptionsBtn" class="custom-button" onclick="showSection('subscriptionsSection')">
-            <span>💰</span> <span id="subscriptionsBtnText"></span>
-        </button>
-        <button id="currencyBtn" class="custom-button" onclick="showSection('currencySection')">
-            <span>🔥</span> <span id="currencyBtnText"></span>
-        </button>
-    </div>
-
     <div id="languageModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
         <div class="confirm-modal-content">
-            <h3 id="languageTitle" class="text-3xl font-bold mb-4"></h3>
+            <h3 id="languageTitle" class="text-2xl font-bold mb-4"></h3>
             <button class="custom-button mb-2 w-full" onclick="setLanguage('en')">
                 <span>🇬🇧</span> English
             </button>
@@ -636,7 +929,7 @@
 
     <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
         <div class="confirm-modal-content">
-            <h3 id="confirmTitle" class="confirm-title text-3xl font-bold mb-4"></h3>
+            <h3 id="confirmTitle" class="confirm-title text-2xl font-bold mb-4"></h3>
             <p id="confirmText" class="confirm-text mb-4"></p>
             <div class="confirm-buttons">
                 <button id="confirmBtn" class="custom-button bg-green-600 hover:bg-green-700 w-full"></button>
@@ -646,31 +939,34 @@
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
+        const tg = window.Telegram ? window.Telegram.WebApp : { ready: () => {}, expand: () => {} };
         tg.ready();
         tg.expand();
 
         const userData = {
-            user1: { fires: 0, subscriptionDaysLeft: 0, photoLimit: 0, dailyPhotoCount: 0 },
+            user1: { fires: 0, subscriptionDaysLeft: 0, photoLimit: 100, dailyPhotoCount: 18 },
             user2: { fires: 0, subscriptionDaysLeft: 0, photoLimit: 0, dailyPhotoCount: 0 },
         };
 
         let currentUser = 'user1';
         let tokens = userData[currentUser].fires;
-        let maxTokens = 100;
+        let maxTokens = Infinity;
         const scenarios = [];
-        let language = 'en';
+        let language = 'ru';
         let subscriptionDaysLeft = userData[currentUser].subscriptionDaysLeft;
         let photoLimit = userData[currentUser].photoLimit;
         let dailyPhotoCount = userData[currentUser].dailyPhotoCount;
         let selectedPlan = null;
+        let selectedCard = null;
+        const ownedItems = [];
+        let currentSection = 'scenariosSection';
 
         const translations = {
             en: {
-                welcome: 'Unleash Your Fantasies! 💫',
                 scenarios: 'Scenarios',
-                subscriptions: 'Premium Subscriptions',
+                subscriptions: 'Subscriptions',
                 currency: 'Currency',
+                items: 'Shop',
                 languages: 'Languages',
                 scenario1Title: 'Tutor Asleep',
                 scenario1Desc: 'You enter her home, door ajar, finding her naked and dreaming of you. Wake her with a sinful touch! 😈',
@@ -708,6 +1004,34 @@
                 largePackDesc: 'Unleash the heat with 500🔥 Fires! 🔥',
                 megaPack: 'Mega Pack',
                 megaPackDesc: 'Go all out with 1000🔥 Fires! 🌟',
+                itemsTitle: 'Explore Naughty Items',
+                analPlug: 'Anal Plug',
+                analPlugDesc: 'Smooth silicone plug for beginners. 💜',
+                buyBtnAnalPlug: 'Buy for 50🔥',
+                pajamas: 'Naughty Pajamas',
+                pajamasDesc: 'Silky set to set the mood. 🌙',
+                buyBtnPajamas: 'Buy for 80🔥',
+                stockings: 'Seductive Stockings',
+                stockingsDesc: 'Lace stockings to tease. 🖤',
+                buyBtnStockings: 'Buy for 60🔥',
+                handcuffs: 'Furry Handcuffs',
+                handcuffsDesc: 'Soft cuffs for playful restraint. 🖐️',
+                buyBtnHandcuffs: 'Buy for 70🔥',
+                lubricants: 'Water-Based Lubricants',
+                lubricantsDesc: 'Smooth glide for extra fun. 💦',
+                buyBtnLubricants: 'Buy for 40🔥',
+                truthOrDare: 'Truth or Dare Game',
+                truthOrDareDesc: 'Spicy game for daring couples. 🎲',
+                buyBtnTruthOrDare: 'Buy for 90🔥',
+                masksBlindfolds: 'Masks & Blindfolds',
+                masksBlindfoldsDesc: 'Satin set to heighten senses. 😷',
+                buyBtnMasksBlindfolds: 'Buy for 50🔥',
+                massageFoam: 'Massage Foam',
+                massageFoamDesc: 'Aromatic foam for sensual touch. 🫧',
+                buyBtnMassageFoam: 'Buy for 60🔥',
+                sexSwing: 'Sex Swing',
+                sexSwingDesc: 'Unlock new positions with ease. 🏋️',
+                buyBtnSexSwing: 'Buy for 150🔥',
                 languageTitle: 'Select Language',
                 closeBtn: 'Close',
                 confirmUnlock: 'Confirm Unlock',
@@ -718,14 +1042,16 @@
                 scenarioUnlock: scenarioId => `Scenario "${['Tutor Asleep', 'Teacher After School', 'Policewoman Stop', 'Helping Friend'][scenarioId - 1]}" unlocked! Enjoy! 😏`,
                 buyTokensMsg: (amount, price) => `You bought ${amount} Fires for $${price}! Dive in! 😈`,
                 buySubMsg: (price, bonus) => `Subscription activated for $${price}! ${bonus > 0 ? `+${bonus} Fires bonus! ` : ''}Enjoy! 💋`,
-                maxTokensMsg: max => `Maximum limit of ${max} Fires reached!`,
-                languageSetMsg: 'Language set to English!'
+                buyItemMsg: (item) => `You bought ${item}! Enjoy the naughty fun! 😈`,
+                alreadyOwnedMsg: (item) => `You already own ${item}!`,
+                languageSetMsg: 'Language set to English!',
+                selectPlanMsg: 'Please select a subscription plan!'
             },
             ru: {
-                welcome: 'Раскрой свои фантазии! 💫',
                 scenarios: 'Сценарии',
-                subscriptions: 'Премиум подписки',
+                subscriptions: 'Подписки',
                 currency: 'Валюта',
+                items: 'Магазин',
                 languages: 'Языки',
                 scenario1Title: 'Спящий репетитор',
                 scenario1Desc: 'Ты заходишь к ней домой, дверь приоткрыта, она спит голая и видит тебя во сне. Разбуди её греховным прикосновением! 😈',
@@ -763,6 +1089,34 @@
                 largePackDesc: 'Раскрой жар с 500🔥 огней! 🔥',
                 megaPack: 'Мега набор',
                 megaPackDesc: 'Выложись на полную с 1000🔥 огней! 🌟',
+                itemsTitle: 'Исследуй пикантные предметы',
+                analPlug: 'Анусная пробка',
+                analPlugDesc: 'Гладкая силиконовая пробка для новичков. 💜',
+                buyBtnAnalPlug: 'Купить за 50🔥',
+                pajamas: 'Соблазнительная пижама',
+                pajamasDesc: 'Шелковый комплект для настроения. 🌙',
+                buyBtnPajamas: 'Купить за 80🔥',
+                stockings: 'Соблазнительные чулки',
+                stockingsDesc: 'Кружевные чулки для дразнящего эффекта. 🖤',
+                buyBtnStockings: 'Купить за 60🔥',
+                handcuffs: 'Наручники с мехом',
+                handcuffsDesc: 'Мягкие наручники для игривых ограничений. 🖐️',
+                buyBtnHandcuffs: 'Купить за 70🔥',
+                lubricants: 'Смазки на водной основе',
+                lubricantsDesc: 'Плавное скольжение для большего удовольствия. 💦',
+                buyBtnLubricants: 'Купить за 40🔥',
+                truthOrDare: 'Игра "Правда или действие"',
+                truthOrDareDesc: 'Пикантная игра для смелых пар. 🎲',
+                buyBtnTruthOrDare: 'Купить за 90🔥',
+                masksBlindfolds: 'Маски и повязки на глаза',
+                masksBlindfoldsDesc: 'Атласный набор для усиления ощущений. 😷',
+                buyBtnMasksBlindfolds: 'Купить за 50🔥',
+                massageFoam: 'Пена для массажа',
+                massageFoamDesc: 'Ароматная пена для чувственного прикосновения. 🫧',
+                buyBtnMassageFoam: 'Купить за 60🔥',
+                sexSwing: 'Секс-качели',
+                sexSwingDesc: 'Открой новые позы с легкостью. 🏋️',
+                buyBtnSexSwing: 'Купить за 150🔥',
                 languageTitle: 'Выберите язык',
                 closeBtn: 'Закрыть',
                 confirmUnlock: 'Подтвердить разблокировку',
@@ -773,8 +1127,10 @@
                 scenarioUnlock: scenarioId => `Сценарий "${['Спящий репетитор', 'Учительница после уроков', 'Остановка полицейской', 'Помощь подруге'][scenarioId - 1]}" разблокирован! Наслаждайся! 😏`,
                 buyTokensMsg: (amount, price) => `Вы купили ${amount} огней за $${price}! Погружайся! 😈`,
                 buySubMsg: (price, bonus) => `Подписка активирована за $${price}! ${bonus > 0 ? `+${bonus} огней бонусом! ` : ''}Наслаждайся! 💋`,
-                maxTokensMsg: max => `Достигнут максимальный лимит в ${max} огней!`,
-                languageSetMsg: 'Язык установлен на Русский!'
+                buyItemMsg: (item) => `Вы купили ${item}! Наслаждайтесь пикантным удовольствием! 😈`,
+                alreadyOwnedMsg: (item) => `У вас уже есть ${item}!`,
+                languageSetMsg: 'Язык установлен на Русский!',
+                selectPlanMsg: 'Пожалуйста, выберите план подписки!'
             }
         };
 
@@ -785,49 +1141,100 @@
             dailyPhotoCount = userData[currentUser].dailyPhotoCount;
 
             document.getElementById('tokenCount').innerText = tokens;
+            document.getElementById('photoLimitDisplay').innerText = `${dailyPhotoCount} / ${photoLimit}`;
             document.getElementById('currencyBalanceText').innerText = `${translations[language].currencyBalance}${tokens} Fires`;
-            if (subscriptionDaysLeft > 0) {
-                document.getElementById('subscriptionStatus').innerText = `Active: ${subscriptionDaysLeft} day${subscriptionDaysLeft === 1 ? '' : 's'} left`;
-                document.getElementById('limitsStatus').classList.remove('hidden');
-                document.getElementById('limitsStatus').innerText = `Limits: ${photoLimit === Infinity ? 'Unlimited' : photoLimit} photos/day, Unlimited messages`;
-            } else {
-                document.getElementById('subscriptionStatus').innerText = language === 'en' ? 'No active subscription' : 'Нет активной подписки';
-                document.getElementById('limitsStatus').classList.add('hidden');
-            }
+
+            document.getElementById('sectionTitle').innerText = translations[language][{
+                'scenariosSection': 'scenarios',
+                'itemsSection': 'items',
+                'subscriptionsSection': 'subscriptions',
+                'currencySection': 'currency'
+            }[currentSection]];
 
             const deluxeSelected = selectedPlan === 7;
-            document.getElementById('subscriptionsDesc').innerHTML = (deluxeSelected ? translations[language].subscriptionsDescDeluxe : translations[language].subscriptionsDesc)
+            const subscriptionsDesc = document.getElementById('subscriptionsDesc');
+            subscriptionsDesc.innerHTML = (deluxeSelected ? translations[language].subscriptionsDescDeluxe : translations[language].subscriptionsDesc)
                 .split('\n')
                 .map(line => `<p>${line}</p>`)
                 .join('');
 
-            // Update scenario images
-            document.querySelectorAll('#scenariosSection .product-image')[0].style.backgroundImage = `url(${tutorAsleep})`;
-            document.querySelectorAll('#scenariosSection .product-image')[1].style.backgroundImage = `url(${teacherAfterSchool})`;
-            document.querySelectorAll('#scenariosSection .product-image')[2].style.backgroundImage = `url(${policewomanStop})`;
-            document.querySelectorAll('#scenariosSection .product-image')[3].style.backgroundImage = `url(${helpingFriend})`;
+            const scenarioImages = document.querySelectorAll('#scenariosSection .product-image');
+            scenarioImages[0].style.backgroundImage = `url(${SCENARIO_TUTOR_ASLEEP})`;
+            scenarioImages[1].style.backgroundImage = `url(${SCENARIO_TEACHER_AFTER_SCHOOL})`;
+            scenarioImages[2].style.backgroundImage = `url(${SCENARIO_POLICEWOMAN_STOP})`;
+            scenarioImages[3].style.backgroundImage = `url(${SCENARIO_HELPING_FRIEND})`;
 
-            // Update currency images
-            document.querySelectorAll('#currencySection .product-image')[0].style.backgroundImage = `url(${smallPack})`;
-            document.querySelectorAll('#currencySection .product-image')[1].style.backgroundImage = `url(${mediumPack})`;
-            document.querySelectorAll('#currencySection .product-image')[2].style.backgroundImage = `url(${largePack})`;
-            document.querySelectorAll('#currencySection .product-image')[3].style.backgroundImage = `url(${megaPack})`;
+            const currencyImages = document.querySelectorAll('#currencySection .product-image');
+            currencyImages[0].style.backgroundImage = `url(${CURRENCY_SMALL_PACK})`;
+            currencyImages[1].style.backgroundImage = `url(${CURRENCY_MEDIUM_PACK})`;
+            currencyImages[2].style.backgroundImage = `url(${CURRENCY_LARGE_PACK})`;
+            currencyImages[3].style.backgroundImage = `url(${CURRENCY_MEGA_PACK})`;
 
-            updateLanguageButton();
+            const itemImages = document.querySelectorAll('#itemsSection .product-image');
+            itemImages[0].style.backgroundImage = `url(${ITEM_ANAL_PLUG})`;
+            itemImages[1].style.backgroundImage = `url(${ITEM_PAJAMAS})`;
+            itemImages[2].style.backgroundImage = `url(${ITEM_STOCKINGS})`;
+            itemImages[3].style.backgroundImage = `url(${ITEM_HANDCUFFS})`;
+            itemImages[4].style.backgroundImage = `url(${ITEM_LUBRICANTS})`;
+            itemImages[5].style.backgroundImage = `url(${ITEM_TRUTH_OR_DARE})`;
+            itemImages[6].style.backgroundImage = `url(${ITEM_MASKS_BLINDFOLDS})`;
+            itemImages[7].style.backgroundImage = `url(${ITEM_MASSAGE_FOAM})`;
+            itemImages[8].style.backgroundImage = `url(${ITEM_SEX_SWING})`;
+
+            document.querySelectorAll('.card').forEach(card => card.classList.remove('selected'));
+            if (selectedCard) selectedCard.classList.add('selected');
+            document.querySelectorAll('.subscription-card').forEach(card => card.classList.remove('selected'));
+            if (selectedPlan) document.querySelectorAll('.subscription-card')[selectedPlan - 1].classList.add('selected');
         }
 
-        document.getElementById('addTokensBtn').addEventListener('click', () => {
-            showSection('currencySection');
-        });
-
         function buyTokens(amount, price) {
-            if (tokens + amount > maxTokens) {
-                showAlert(translations[language].maxTokensMsg(maxTokens));
-                return;
-            }
             userData[currentUser].fires += amount;
             updateUI();
             showAlert(translations[language].buyTokensMsg(amount, price));
+        }
+
+        function buyItem(itemId, fireCost) {
+            const itemName = translations[language][itemId];
+            const confirmModal = document.getElementById('confirmModal');
+            const confirmTitle = document.getElementById('confirmTitle');
+            const confirmText = document.getElementById('confirmText');
+            const confirmBtn = document.getElementById('confirmBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+
+            if (ownedItems.includes(itemId)) {
+                showAlert(translations[language].alreadyOwnedMsg(itemName));
+                return;
+            }
+
+            if (tokens < fireCost) {
+                const missing = fireCost - tokens;
+                confirmTitle.innerText = translations[language].notEnoughFires;
+                confirmText.innerText = translations[language].missingFires(missing);
+                confirmBtn.innerText = translations[language].buyFiresBtn;
+                confirmBtn.onclick = () => {
+                    closeConfirmModal();
+                    showSection('currencySection');
+                };
+                cancelBtn.innerText = translations[language].cancelBtn;
+                cancelBtn.onclick = closeConfirmModal;
+                confirmModal.classList.remove('hidden');
+            } else {
+                confirmTitle.innerText = translations[language].confirmUnlock;
+                confirmText.innerText = language === 'en' ?
+                    `Buy "${itemName}" for ${fireCost} Fires?` :
+                    `Купить "${itemName}" за ${fireCost} огней?`;
+                confirmBtn.innerText = language === 'en' ? 'Confirm' : 'Подтвердить';
+                confirmBtn.onclick = () => {
+                    userData[currentUser].fires -= fireCost;
+                    ownedItems.push(itemId);
+                    updateUI();
+                    closeConfirmModal();
+                    showAlert(translations[language].buyItemMsg(itemName));
+                };
+                cancelBtn.innerText = translations[language].cancelBtn;
+                cancelBtn.onclick = closeConfirmModal;
+                confirmModal.classList.remove('hidden');
+            }
         }
 
         function toggleLanguage() {
@@ -838,10 +1245,10 @@
         }
 
         function updateLanguageButton() {
-            const flag = language === 'en' ? '🇬🇧' : '🇷🇺';
-            const text = language === 'en' ? 'English' : 'Русский';
-            document.getElementById('currentFlag').innerText = flag;
-            document.getElementById('languageText').innerText = text;
+            const currentFlag = document.getElementById('currentFlag');
+            const languageText = document.getElementById('languageText');
+            currentFlag.innerText = language === 'en' ? '🇬🇧' : '🇷🇺';
+            languageText.innerText = language === 'en' ? 'English' : 'Русский';
         }
 
         function setLanguage(lang) {
@@ -853,66 +1260,102 @@
         }
 
         function closeLanguageModal() {
-            document.getElementById('languageModal').classList.add('hidden');
+            const languageModal = document.getElementById('languageModal');
+            languageModal.classList.add('hidden');
         }
 
         function updateLanguage() {
-            document.getElementById('welcomeTitle').innerText = translations[language].welcome;
-            document.getElementById('scenariosTitle').innerText = translations[language].scenarios;
-            document.getElementById('subscriptionsTitle').innerText = translations[language].subscriptions;
-            document.getElementById('detailsHeader').innerText = translations[language].detailsHeader;
+            const elements = {
+                subscriptionsTitle: translations[language].subscriptions,
+                detailsHeader: translations[language].detailsHeader,
+                currencyTitle: translations[language].currency,
+                itemsTitle: translations[language].itemsTitle,
+                scenario1Title: translations[language].scenario1Title,
+                scenario1Desc: translations[language].scenario1Desc,
+                scenario1Btn: translations[language].scenario1Btn,
+                scenario2Title: translations[language].scenario2Title,
+                scenario2Desc: translations[language].scenario2Desc,
+                scenario2Btn: translations[language].scenario2Btn,
+                scenario3Title: translations[language].scenario3Title,
+                scenario3Desc: translations[language].scenario3Desc,
+                scenario3Btn: translations[language].scenario3Btn,
+                scenario4Title: translations[language].scenario4Title,
+                scenario4Desc: translations[language].scenario4Desc,
+                scenario4Btn: translations[language].scenario4Btn,
+                sub1Day: translations[language].sub1Day,
+                sub3Days: translations[language].sub3Days,
+                sub1Week: translations[language].sub1Week,
+                sub1Month: translations[language].sub1Month,
+                sub3Months: translations[language].sub3Months,
+                subForever: translations[language].subForever,
+                subDeluxe: translations[language].subDeluxe,
+                buyBtnText: translations[language].buyBtn,
+                currencyBalanceText: `${translations[language].currencyBalance}${tokens} Fires`,
+                smallPack: translations[language].smallPack,
+                smallPackDesc: translations[language].smallPackDesc,
+                mediumPack: translations[language].mediumPack,
+                mediumPackDesc: translations[language].mediumPackDesc,
+                largePack: translations[language].largePack,
+                largePackDesc: translations[language].largePackDesc,
+                megaPack: translations[language].megaPack,
+                megaPackDesc: translations[language].megaPackDesc,
+                buyBtnSmallPack: translations[language].buyBtnSmallPack,
+                buyBtnMediumPack: translations[language].buyBtnMediumPack,
+                buyBtnLargePack: translations[language].buyBtnLargePack,
+                buyBtnMegaPack: translations[language].buyBtnMegaPack,
+                analPlug: translations[language].analPlug,
+                analPlugDesc: translations[language].analPlugDesc,
+                buyBtnAnalPlug: translations[language].buyBtnAnalPlug,
+                pajamas: translations[language].pajamas,
+                pajamasDesc: translations[language].pajamasDesc,
+                buyBtnPajamas: translations[language].buyBtnPajamas,
+                stockings: translations[language].stockings,
+                stockingsDesc: translations[language].stockingsDesc,
+                buyBtnStockings: translations[language].buyBtnStockings,
+                handcuffs: translations[language].handcuffs,
+                handcuffsDesc: translations[language].handcuffsDesc,
+                buyBtnHandcuffs: translations[language].buyBtnHandcuffs,
+                lubricants: translations[language].lubricants,
+                lubricantsDesc: translations[language].lubricantsDesc,
+                buyBtnLubricants: translations[language].buyBtnLubricants,
+                truthOrDare: translations[language].truthOrDare,
+                truthOrDareDesc: translations[language].truthOrDareDesc,
+                buyBtnTruthOrDare: translations[language].buyBtnTruthOrDare,
+                masksBlindfolds: translations[language].masksBlindfolds,
+                masksBlindfoldsDesc: translations[language].masksBlindfoldsDesc,
+                buyBtnMasksBlindfolds: translations[language].buyBtnMasksBlindfolds,
+                massageFoam: translations[language].massageFoam,
+                massageFoamDesc: translations[language].massageFoamDesc,
+                buyBtnMassageFoam: translations[language].buyBtnMassageFoam,
+                sexSwing: translations[language].sexSwing,
+                sexSwingDesc: translations[language].sexSwingDesc,
+                buyBtnSexSwing: translations[language].buyBtnSexSwing,
+                languageTitle: translations[language].languageTitle,
+                closeBtnText: translations[language].closeBtn
+            };
+
+            for (const [id, text] of Object.entries(elements)) {
+                const element = document.getElementById(id);
+                if (element) element.innerText = text;
+            }
+
             const deluxeSelected = selectedPlan === 7;
-            document.getElementById('subscriptionsDesc').innerHTML = (deluxeSelected ? translations[language].subscriptionsDescDeluxe : translations[language].subscriptionsDesc)
+            const subscriptionsDesc = document.getElementById('subscriptionsDesc');
+            subscriptionsDesc.innerHTML = (deluxeSelected ? translations[language].subscriptionsDescDeluxe : translations[language].subscriptionsDesc)
                 .split('\n')
                 .map(line => `<p>${line}</p>`)
                 .join('');
-            document.getElementById('currencyTitle').innerText = translations[language].currency;
-            document.getElementById('scenariosBtnText').innerText = translations[language].scenarios;
-            document.getElementById('subscriptionsBtnText').innerText = translations[language].subscriptions;
-            document.getElementById('currencyBtnText').innerText = translations[language].currency;
 
-            document.getElementById('scenario1Title').innerText = translations[language].scenario1Title;
-            document.getElementById('scenario1Desc').innerText = translations[language].scenario1Desc;
-            document.getElementById('scenario1Btn').innerText = translations[language].scenario1Btn;
-            document.getElementById('scenario2Title').innerText = translations[language].scenario2Title;
-            document.getElementById('scenario2Desc').innerText = translations[language].scenario2Desc;
-            document.getElementById('scenario2Btn').innerText = translations[language].scenario2Btn;
-            document.getElementById('scenario3Title').innerText = translations[language].scenario3Title;
-            document.getElementById('scenario3Desc').innerText = translations[language].scenario3Desc;
-            document.getElementById('scenario3Btn').innerText = translations[language].scenario3Btn;
-            document.getElementById('scenario4Title').innerText = translations[language].scenario4Title;
-            document.getElementById('scenario4Desc').innerText = translations[language].scenario4Desc;
-            document.getElementById('scenario4Btn').innerText = translations[language].scenario4Btn;
-
-            document.getElementById('sub1Day').innerText = translations[language].sub1Day;
-            document.getElementById('sub3Days').innerText = translations[language].sub3Days;
-            document.getElementById('sub1Week').innerText = translations[language].sub1Week;
-            document.getElementById('sub1Month').innerText = translations[language].sub1Month;
-            document.getElementById('sub3Months').innerText = translations[language].sub3Months;
-            document.getElementById('subForever').innerText = translations[language].subForever;
-            document.getElementById('subDeluxe').innerText = translations[language].subDeluxe;
-            document.getElementById('buyBtnText').innerText = translations[language].buyBtn;
-
-            document.getElementById('currencyBalanceText').innerText = `${translations[language].currencyBalance}${tokens} Fires`;
-            document.getElementById('smallPack').innerText = translations[language].smallPack;
-            document.getElementById('smallPackDesc').innerText = translations[language].smallPackDesc;
-            document.getElementById('mediumPack').innerText = translations[language].mediumPack;
-            document.getElementById('mediumPackDesc').innerText = translations[language].mediumPackDesc;
-            document.getElementById('largePack').innerText = translations[language].largePack;
-            document.getElementById('largePackDesc').innerText = translations[language].largePackDesc;
-            document.getElementById('megaPack').innerText = translations[language].megaPack;
-            document.getElementById('megaPackDesc').innerText = translations[language].megaPackDesc;
-            document.getElementById('buyBtnSmallPack').innerText = translations[language].buyBtnSmallPack;
-            document.getElementById('buyBtnMediumPack').innerText = translations[language].buyBtnMediumPack;
-            document.getElementById('buyBtnLargePack').innerText = translations[language].buyBtnLargePack;
-            document.getElementById('buyBtnMegaPack').innerText = translations[language].buyBtnMegaPack;
-
-            document.getElementById('languageTitle').innerText = translations[language].languageTitle;
-            document.getElementById('closeBtnText').innerText = translations[language].closeBtn;
+            document.getElementById('sectionTitle').innerText = translations[language][{
+                'scenariosSection': 'scenarios',
+                'itemsSection': 'items',
+                'subscriptionsSection': 'subscriptions',
+                'currencySection': 'currency'
+            }[currentSection]];
         }
 
         function showSection(sectionId) {
-            const sections = ['scenariosSection', 'subscriptionsSection', 'currencySection'];
+            const sections = ['scenariosSection', 'subscriptionsSection', 'currencySection', 'itemsSection'];
             sections.forEach(sec => {
                 const section = document.getElementById(sec);
                 section.classList.add('hidden');
@@ -921,109 +1364,192 @@
             const activeSection = document.getElementById(sectionId);
             activeSection.classList.remove('hidden');
             activeSection.style.animation = 'slideSection 0.5s ease-out';
+            currentSection = sectionId;
+            updateUI();
         }
 
         function selectScenario(id) {
-            const requiredTokens = 100;
+            const requiredTokens = PRICES.scenarios[id];
+            const confirmModal = document.getElementById('confirmModal');
+            const confirmTitle = document.getElementById('confirmTitle');
+            const confirmText = document.getElementById('confirmText');
+            const confirmBtn = document.getElementById('confirmBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const card = document.querySelector(`#scenariosSection .card:nth-child(${id})`);
+
+            if (selectedCard) selectedCard.classList.remove('selected');
+            selectedCard = card;
+            card.classList.add('selected');
+
             if (tokens < requiredTokens) {
                 const missing = requiredTokens - tokens;
-                document.getElementById('confirmTitle').innerText = translations[language].notEnoughFires;
-                document.getElementById('confirmText').innerText = translations[language].missingFires(missing);
-                document.getElementById('confirmBtn').innerText = translations[language].buyFiresBtn;
-                document.getElementById('confirmBtn').onclick = () => {
+                confirmTitle.innerText = translations[language].notEnoughFires;
+                confirmText.innerText = translations[language].missingFires(missing);
+                confirmBtn.innerText = translations[language].buyFiresBtn;
+                confirmBtn.onclick = () => {
                     closeConfirmModal();
                     showSection('currencySection');
                 };
-                document.getElementById('cancelBtn').innerText = translations[language].cancelBtn;
-                document.getElementById('cancelBtn').onclick = closeConfirmModal;
-                document.getElementById('confirmModal').classList.remove('hidden');
+                cancelBtn.innerText = translations[language].cancelBtn;
+                cancelBtn.onclick = closeConfirmModal;
+                confirmModal.classList.remove('hidden');
             } else {
-                document.getElementById('confirmTitle').innerText = translations[language].confirmUnlock;
-                document.getElementById('confirmText').innerText = language === 'en' ?
-                    `Unlock "${translations[language]['scenario' + id + 'Title']}" for 100 Fires?` :
-                    `Разблокировать "${translations[language]['scenario' + id + 'Title']}" за 100 огней?`;
-                document.getElementById('confirmBtn').innerText = language === 'en' ? 'Confirm' : 'Подтвердить';
-                document.getElementById('confirmBtn').onclick = () => {
-                    userData[currentUser].fires -= 100;
+                confirmTitle.innerText = translations[language].confirmUnlock;
+                confirmText.innerText = language === 'en' ?
+                    `Unlock "${['Tutor Asleep', 'Teacher After School', 'Policewoman Stop', 'Helping Friend'][id - 1]}" for ${requiredTokens} Fires?` :
+                    `Разблокировать "${['Спящий репетитор', 'Учительница после уроков', 'Остановка полицейской', 'Помощь подруге'][id - 1]}" за ${requiredTokens} огней?`;
+                confirmBtn.innerText = language === 'en' ? 'Confirm' : 'Подтвердить';
+                confirmBtn.onclick = () => {
+                    userData[currentUser].fires -= requiredTokens;
                     scenarios.push(id);
                     updateUI();
                     closeConfirmModal();
                     showAlert(translations[language].scenarioUnlock(id));
                 };
-                document.getElementById('cancelBtn').innerText = translations[language].cancelBtn;
-                document.getElementById('cancelBtn').onclick = closeConfirmModal;
-                document.getElementById('confirmModal').classList.remove('hidden');
+                cancelBtn.innerText = translations[language].cancelBtn;
+                cancelBtn.onclick = closeConfirmModal;
+                confirmModal.classList.remove('hidden');
             }
         }
 
         function selectPlan(planId) {
-            const cards = document.querySelectorAll('#subscriptionsSection .subscription-card');
-            cards.forEach(card => card.classList.remove('selected'));
-            cards[planId - 1].classList.add('selected');
             selectedPlan = planId;
             updateUI();
         }
 
         function buySelectedSubscription() {
             if (!selectedPlan) {
-                showAlert(language === 'en' ? 'Please select a subscription plan!' : 'Пожалуйста, выберите план подписки!');
+                showAlert(translations[language].selectPlanMsg);
                 return;
             }
 
-            const plans = [
-                { days: 1, price: 2, bonusFires: 0 },
-                { days: 3, price: 5, bonusFires: 0 },
-                { days: 7, price: 13, bonusFires: 0 },
-                { days: 30, price: 25, bonusFires: 30 },
-                { days: 90, price: 70, bonusFires: 100 },
-                { days: 0, price: 50, bonusFires: 200 },
-                { days: -1, price: 100, bonusFires: 500 }
-            ];
+            const planDetails = [
+                { duration: '1 день', price: PRICES.subscriptions.oneDay, bonusFires: 0 },
+                { duration: '3 дня', price: PRICES.subscriptions.threeDays, bonusFires: 0 },
+                { duration: '1 неделя', price: PRICES.subscriptions.oneWeek, bonusFires: 0 },
+                { duration: '1 месяц', price: PRICES.subscriptions.oneMonth, bonusFires: 30 },
+                { duration: '3 месяца', price: PRICES.subscriptions.threeMonths, bonusFires: 100 },
+                { duration: 'Навсегда', price: PRICES.subscriptions.forever, bonusFires: 200 },
+                { duration: 'Делюкс (безлимит)', price: PRICES.subscriptions.deluxe, bonusFires: 500 }
+            ][selectedPlan - 1];
 
-            const plan = plans[selectedPlan - 1];
-            buySubscription(plan.days, plan.price, plan.bonusFires, selectedPlan);
-        }
+            const confirmModal = document.getElementById('confirmModal');
+            const confirmTitle = document.getElementById('confirmTitle');
+            const confirmText = document.getElementById('confirmText');
+            const confirmBtn = document.getElementById('confirmBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
 
-        function buySubscription(days, price, bonusFires, planId) {
-            if (days === 0) {
-                userData[currentUser].subscriptionDaysLeft = 9999;
-                userData[currentUser].fires += bonusFires;
-                userData[currentUser].photoLimit = 50;
-            } else if (days === -1) {
-                userData[currentUser].subscriptionDaysLeft = 99999;
-                userData[currentUser].photoLimit = Infinity;
-                userData[currentUser].fires += bonusFires;
-            } else {
-                userData[currentUser].subscriptionDaysLeft = days;
-                userData[currentUser].photoLimit = 50;
-                userData[currentUser].fires += bonusFires;
-            }
-            updateUI();
-            showAlert(translations[language].buySubMsg(price, bonusFires));
-        }
-
-        function closeConfirmModal() {
-            document.getElementById('confirmModal').classList.add('hidden');
+            confirmTitle.innerText = translations[language].confirmUnlock;
+            confirmText.innerText = language === 'en' ?
+                `Activate "${planDetails.duration}" subscription for $${planDetails.price}?` :
+                `Активировать подписку "${planDetails.duration}" за $${planDetails.price}?`;
+            confirmBtn.innerText = language === 'en' ? 'Confirm' : 'Подтвердить';
+            confirmBtn.onclick = () => {
+                userData[currentUser].fires += planDetails.bonusFires;
+                userData[currentUser].subscriptionDaysLeft = planDetails.duration === 'Навсегда' ? Infinity : parseInt(planDetails.duration) || 0;
+                userData[currentUser].photoLimit = planDetails.duration === 'Делюкс (безлимит)' ? Infinity : 50;
+                updateUI();
+                closeConfirmModal();
+                showAlert(translations[language].buySubMsg(planDetails.price, planDetails.bonusFires));
+            };
+            cancelBtn.innerText = translations[language].cancelBtn;
+            cancelBtn.onclick = closeConfirmModal;
+            confirmModal.classList.remove('hidden');
         }
 
         function showAlert(message) {
-            tg.showAlert(message);
+            const confirmModal = document.getElementById('confirmModal');
+            const confirmTitle = document.getElementById('confirmTitle');
+            const confirmText = document.getElementById('confirmText');
+            const confirmBtn = document.getElementById('confirmBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+
+            confirmTitle.innerText = language === 'en' ? 'Success' : 'Успех';
+            confirmText.innerText = message;
+            confirmBtn.innerText = language === 'en' ? 'OK' : 'ОК';
+            confirmBtn.onclick = closeConfirmModal;
+            cancelBtn.style.display = 'none';
+            confirmModal.classList.remove('hidden');
         }
 
-        // Image URLs (updated with Imgur links)
-        // Note: 'helpingFriend' URL was 'undefined' and replaced with a placeholder. Replace with the correct Imgur URL when available.
-        const tutorAsleep = 'https://i.imgur.com/PLFfgE3.png';
-        const teacherAfterSchool = 'https://i.imgur.com/x5qpjFu.png';
-        const policewomanStop = 'https://i.imgur.com/Y0kIyVQ.png';
-        const helpingFriend = 'https://i.imgur.com/TpN3LRD.webp'; // Placeholder; replace with correct Imgur URL
-        const smallPack = 'https://i.imgur.com/2MtgJl7.png';
-        const mediumPack = 'https://i.imgur.com/2HWxUMb.png';
-        const largePack = 'https://i.imgur.com/xSJRMNo.png';
-        const megaPack = 'https://i.imgur.com/rg8546H.png';
+        function closeConfirmModal() {
+            const confirmModal = document.getElementById('confirmModal');
+            confirmModal.classList.add('hidden');
+            document.getElementById('cancelBtn').style.display = 'block';
+        }
 
-        updateUI();
-        updateLanguage();
-        showSection('scenariosSection');
+        document.addEventListener('DOMContentLoaded', () => {
+            updateLanguage();
+            updateLanguageButton();
+            updateUI();
+            showSection('scenariosSection');
+        });
+
+        // Константы для URL изображений продуктов
+        const SCENARIO_TUTOR_ASLEEP = 'https://example.com/images/scenarios/tutor_asleep.jpg';
+        const SCENARIO_TEACHER_AFTER_SCHOOL = 'https://example.com/images/scenarios/teacher_after_school.jpg';
+        const SCENARIO_POLICEWOMAN_STOP = 'https://example.com/images/scenarios/policewoman_stop.jpg';
+        const SCENARIO_HELPING_FRIEND = 'https://example.com/images/scenarios/helping_friend.jpg';
+        const CURRENCY_SMALL_PACK = 'https://example.com/images/currency/small_pack.jpg';
+        const CURRENCY_MEDIUM_PACK = 'https://example.com/images/currency/medium_pack.jpg';
+        const CURRENCY_LARGE_PACK = 'https://example.com/images/currency/large_pack.jpg';
+        const CURRENCY_MEGA_PACK = 'https://example.com/images/currency/mega_pack.jpg';
+        const ITEM_ANAL_PLUG = 'https://example.com/images/items/anal_plug.jpg';
+        const ITEM_PAJAMAS = 'https://example.com/images/items/pajamas.jpg';
+        const ITEM_STOCKINGS = 'https://example.com/images/items/stockings.jpg';
+        const ITEM_HANDCUFFS = 'https://example.com/images/items/handcuffs.jpg';
+        const ITEM_LUBRICANTS = 'https://example.com/images/items/lubricants.jpg';
+        const ITEM_TRUTH_OR_DARE = 'https://example.com/images/items/truth_or_dare.jpg';
+        const ITEM_MASKS_BLINDFOLDS = 'https://example.com/images/items/masks_blindfolds.jpg';
+        const ITEM_MASSAGE_FOAM = 'https://example.com/images/items/massage_foam.jpg';
+        const ITEM_SEX_SWING = 'https://example.com/images/items/sex_swing.jpg';
+
+        // Цены для всех элементов
+        const PRICES = {
+            scenarios: {
+                1: 100, // Спящий репетитор
+                2: 100, // Учительница после уроков
+                3: 100, // Остановка полицейской
+                4: 100  // Помощь подруге
+            },
+            subscriptions: {
+                oneDay: 2.00,      // 1 день
+                threeDays: 5.00,   // 3 дня
+                oneWeek: 13.00,    // 1 неделя
+                oneMonth: 25.00,   // 1 месяц
+                threeMonths: 70.00,// 3 месяца
+                forever: 50.00,    // Навсегда
+                deluxe: 100.00     // Делюкс
+            },
+            currency: {
+                smallPack: 6.00,   // 100 огней
+                mediumPack: 12.00, // 200 огней
+                largePack: 25.00,  // 500 огней
+                megaPack: 45.00    // 1000 огней
+            },
+            items: {
+                analPlug: { fires: 50 },
+                pajamas: { fires: 80 },
+                stockings: { fires: 60 },
+                handcuffs: { fires: 70 },
+                lubricants: { fires: 40 },
+                truthOrDare: { fires: 90 },
+                masksBlindfolds: { fires: 50 },
+                massageFoam: { fires: 60 },
+                sexSwing: { fires: 150 }
+            }
+        };
+
+        // Рекомендации по размерам изображений
+        // Для карточек (scenarios, items, currency):
+        // - Оптимальный размер: 600x400 пикселей (соотношение 3:2)
+        // - Формат: JPG или PNG с компрессией для быстрой загрузки
+        // - Максимальный размер файла: 500 КБ
+        // - Минимальное разрешение: 300x200 пикселей для четкости на мобильных устройствах
+        // Пример подготовки изображения:
+        // 1. Используйте редактор (Photoshop, GIMP) для обрезки до 600x400
+        // 2. Сохраните с качеством 80-90% для JPG
+        // 3. Проверьте, чтобы изображение четко отображалось на экранах Retina
     </script>
 </body>
 </html>
