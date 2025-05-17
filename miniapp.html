@@ -8,6 +8,7 @@
     <style>
         * {
             -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
         }
 
         body {
@@ -19,11 +20,13 @@
             color: #d4af37;
             min-height: 100vh;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
 
         .card {
             background: linear-gradient(145deg, rgba(35, 30, 55, 0.9), rgba(50, 40, 80, 0.9));
-            border-radius: 20px;
+            border-radius: 16px;
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             border: 2px solid #a33bff;
@@ -34,8 +37,8 @@
         }
 
         .card:hover {
-            transform: translateY(-4px) rotate(0.3deg);
-            box-shadow: 0 6px 20px rgba(163, 59, 255, 0.4), 0 0 10px rgba(163, 59, 255, 0.25) inset;
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(163, 59, 255, 0.4);
         }
 
         .card.selected {
@@ -44,14 +47,14 @@
         }
 
         .product-image {
-            height: 200px;
+            height: 140px;
             width: 100%;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             border-bottom: 3px solid #a33bff;
             transition: transform 0.5s ease;
-            border-radius: 18px 18px 0 0;
+            border-radius: 14px 14px 0 0;
             position: relative;
             overflow: hidden;
         }
@@ -71,82 +74,28 @@
             transform: scale(1.05);
         }
 
-        .custom-button {
-            background: linear-gradient(90deg, #ff69b4, #c71585);
-            border-radius: 12px;
+        .glow-btn {
+            background: linear-gradient(90deg, #ff69b4, #a33bff);
+            border-radius: 10px;
             padding: 8px 12px;
             font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
             font-weight: 500;
-            font-size: 14px;
+            font-size: 13px;
             border: none;
             color: #ffffff;
             text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
-            box-shadow: 0 0 8px rgba(255, 105, 180, 0.3), 0 1px 5px rgba(255, 105, 180, 0.2);
-            opacity: 0.9;
-        }
-
-        .custom-button:hover {
-            background: linear-gradient(90deg, #c71585, #ff69b4);
-            transform: scale(1.03);
-            box-shadow: 0 0 12px rgba(255, 105, 180, 0.4), 0 2px 8px rgba(255, 105, 180, 0.25);
-            animation: buttonPulse 2s infinite;
-        }
-
-        .buy-button {
-            background: linear-gradient(90deg, #ff69b4, #c71585);
-            border-radius: 12px;
-            padding: 10px 14px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
-            font-weight: 500;
-            font-size: 14px;
-            border: none;
-            color: #ffffff;
-            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            box-shadow: 0 0 8px rgba(255, 105, 180, 0.3), 0 1px 5px rgba(255, 105, 180, 0.2);
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
             width: 100%;
-            opacity: 0.9;
         }
 
-        .buy-button:hover {
-            background: linear-gradient(90deg, #c71585, #ff69b4);
+        .glow-btn:hover {
             transform: scale(1.03);
-            box-shadow: 0 0 12px rgba(255, 105, 180, 0.4), 0 2px 8px rgba(255, 105, 180, 0.25);
-        }
-
-        #buySubscriptionBtn {
-            background: linear-gradient(90deg, #ff69b4, #c71585);
-            border-radius: 12px;
-            padding: 10px 14px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
-            font-weight: 500;
-            font-size: 14px;
-            border: none;
-            color: #ffffff;
-            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            box-shadow: 0 0 8px rgba(255, 105, 180, 0.3), 0 1px 5px rgba(255, 105, 180, 0.2);
-            width: 100%;
-            opacity: 0.9;
-        }
-
-        #buySubscriptionBtn:hover {
-            background: linear-gradient(90deg, #c71585, #ff69b4);
-            transform: scale(1.03);
-            box-shadow: 0 0 12px rgba(255, 105, 180, 0.4), 0 2px 8px rgba(255, 105, 180, 0.25);
+            box-shadow: 0 0 14px rgba(255, 105, 180, 0.7);
         }
 
         .modal {
@@ -159,75 +108,72 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
             color: #e6e6e6;
             font-weight: 400;
-            text-shadow: 0 0 5px rgba(163, 59, 255, 0.5), 0 0 10px rgba(163, 59, 255, 0.3);
-            font-size: 1.5rem;
+            text-shadow: 0 0 5px rgba(163, 59, 255, 0.5);
+            font-size: 1.2rem;
         }
 
         p {
             font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
-            line-height: 1.6;
+            line-height: 1.5;
             color: #c8b8e0;
             opacity: 0.85;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
 
         .neon-text {
             font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
             color: #d9ccff;
             font-weight: 500;
-            text-shadow: 0 0 5px rgba(163, 59, 255, 0.5), 0 0 10px rgba(163, 59, 255, 0.3);
+            text-shadow: 0 0 5px rgba(163, 59, 255, 0.5);
             animation: neonFlicker 2.5s infinite;
         }
 
         .category-buttons {
             position: fixed;
-            bottom: 20px;
+            bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
             z-index: 10;
             background: linear-gradient(135deg, rgba(50, 40, 80, 0.8), rgba(80, 60, 110, 0.8));
-            border-radius: 20px;
+            border-radius: 25px;
             padding: 8px 12px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 10px rgba(163, 59, 255, 0.3), inset 0 0 5px rgba(163, 59, 255, 0.15);
-            opacity: 0.9;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 0 12px rgba(163, 59, 255, 0.4);
+            width: auto;
+            max-width: 90%;
         }
 
         .category-button {
-            background: linear-gradient(90deg, #ff69b4, #c71585);
-            border-radius: 10px;
-            padding: 5px;
+            background: linear-gradient(90deg, #ff69b4, #a33bff);
+            border-radius: 50%;
+            padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
-            font-size: 16px;
+            font-size: 18px;
             border: none;
             color: #ffffff;
             text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 32px;
-            height: 32px;
-            box-shadow: 0 0 8px rgba(255, 105, 180, 0.3);
-            opacity: 0.9;
+            width: 42px;
+            height: 42px;
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
         }
 
         .category-button:hover {
-            background: linear-gradient(90deg, #c71585, #ff69b4);
-            transform: scale(1.05);
-            box-shadow: 0 0 12px rgba(255, 105, 180, 0.4);
-            animation: buttonPulse 2s infinite;
+            transform: scale(1.1);
+            box-shadow: 0 0 14px rgba(255, 105, 180, 0.7);
         }
 
         .content-section {
-            padding-top: 80px;
-            padding-bottom: 80px;
+            padding: 60px 10px 70px;
             animation: slideSection 0.5s ease-out;
             width: 100%;
-            max-width: 95%;
+            max-width: 100%;
             margin: 0 auto;
         }
 
@@ -243,8 +189,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 15px;
-            background: linear-gradient(145deg, rgba(35, 30, 55, 0.85), rgba(50, 40, 80, 0.85));
+            padding: 8px 10px;
+            background: url('https://i.imgur.com/1PUcNC8.jpg') no-repeat center center;
+            background-size: cover;
+            background-color: rgba(35, 30, 55, 0.85);
             backdrop-filter: blur(8px);
             border-bottom: 1px solid #a33bff;
             box-shadow: 0 0 10px rgba(163, 59, 255, 0.3);
@@ -253,12 +201,12 @@
 
         .section-title {
             font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
-            font-size: 2rem;
+            font-size: 1.6rem;
             font-weight: 700;
-            background: linear-gradient(90deg, #ff69b4, #c71585);
+            background: linear-gradient(90deg, #ff69b4, #a33bff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 10px rgba(255, 105, 180, 0.7), 0 0 20px rgba(199, 21, 133, 0.5);
+            text-shadow: 0 0 8px rgba(255, 105, 180, 0.7);
             animation: neonFlicker 2.5s infinite;
             margin: 0;
         }
@@ -266,19 +214,21 @@
         .section-title::before,
         .section-title::after {
             content: '🔥';
-            font-size: 20px;
-            margin: 0 5px;
+            font-size: 16px;
+            margin: 0 4px;
         }
 
-        .balance-display {
+        .balance-flask {
+            background: url('https://i.imgur.com/1PUcNC8.jpg') no-repeat center center;
+            background-size: cover;
+            background-color: rgba(50, 40, 80, 0.9);
+            border-radius: 12px;
+            padding: 8px 12px;
+            box-shadow: 0 0 12px rgba(255, 105, 180, 0.5);
             display: flex;
             align-items: center;
             gap: 8px;
-            background: linear-gradient(90deg, #ff69b4, #c71585);
-            padding: 6px 10px;
-            border-radius: 12px;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 0 8px rgba(255, 105, 180, 0.3);
+            backdrop-filter: blur(8px);
         }
 
         .balance-item {
@@ -288,15 +238,11 @@
             font-weight: 500;
             color: #ffffff;
             gap: 3px;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
         }
 
-        .balance-item .fire-icon, .balance-item .photo-icon {
-            font-size: 14px;
-            animation: flicker 2s infinite;
-        }
-
-        .add-fires-btn {
-            background: linear-gradient(90deg, #00ffcc, #00b894);
+        .plus-btn {
+            background: linear-gradient(90deg, #ff85c0, #c77bff);
             border-radius: 50%;
             width: 20px;
             height: 20px;
@@ -304,61 +250,57 @@
             border: none;
             color: #ffffff;
             text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 6px rgba(0, 255, 204, 0.3);
-            opacity: 0.9;
+            box-shadow: 0 0 8px rgba(255, 133, 192, 0.5);
         }
 
-        .add-fires-btn:hover {
-            background: linear-gradient(90deg, #00b894, #00ffcc);
+        .plus-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 10px rgba(0, 255, 204, 0.4);
+            box-shadow: 0 0 12px rgba(255, 133, 192, 0.7);
         }
 
         .language-button {
             position: fixed;
-            bottom: 20px;
-            right: 15px;
-            background: linear-gradient(90deg, #ff69b4, #c71585);
-            border-radius: 12px;
+            bottom: 10px;
+            right: 10px;
+            background: linear-gradient(90deg, #ff69b4, #a33bff);
+            border-radius: 8px;
             padding: 6px 10px;
             font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+            font-size: 12px;
             font-weight: 500;
-            font-size: 14px;
             border: none;
             color: #ffffff;
             text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease;
             display: flex;
             align-items: center;
             gap: 3px;
-            box-shadow: 0 0 6px rgba(255, 105, 180, 0.2);
-            opacity: 0.9;
-            z-index: 10;
+            box-shadow: 0 0 8px rgba(255, 105, 180, 0.5);
+            z-index: 30;
         }
 
         .language-button:hover {
-            background: linear-gradient(90deg, #c71585, #ff69b4);
             transform: scale(1.05);
-            box-shadow: 0 0 10px rgba(255, 105, 180, 0.3);
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.7);
         }
 
         .checkmark {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 20px;
-            height: 20px;
+            top: 8px;
+            right: 8px;
+            width: 18px;
+            height: 18px;
             background: #6b3d8d;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #d9ccff;
-            font-size: 12px;
+            font-size: 10px;
             transition: all 0.3s ease;
             opacity: 0;
         }
@@ -371,8 +313,8 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 12px;
-            margin: 6px 0;
+            padding: 6px 10px;
+            margin: 5px 0;
             cursor: pointer;
         }
 
@@ -382,7 +324,7 @@
 
         .subscription-card.selected {
             border-color: #00ffcc;
-            box-shadow: 0 0 15px #00ffcc, 0 0 8px #00ffcc inset;
+            box-shadow: 0 0 12px #00ffcc;
         }
 
         .subscription-info {
@@ -391,51 +333,42 @@
         }
 
         .price-text {
-            font-size: 12px;
+            font-size: 11px;
             color: #e0b68a;
         }
 
         .subscription-details {
-            margin-top: 15px;
-            padding: 15px;
+            margin-top: 12px;
+            padding: 12px;
             background: linear-gradient(145deg, rgba(50, 40, 80, 0.85), rgba(35, 30, 55, 0.85));
-            border-radius: 12px;
+            border-radius: 10px;
             border: 1px solid #a33bff;
-            box-shadow: 0 0 15px rgba(163, 59, 255, 0.4), 0 0 8px rgba(163, 59, 255, 0.2) inset;
+            box-shadow: 0 0 12px rgba(163, 59, 255, 0.4);
             backdrop-filter: blur(10px);
         }
 
         .details-header {
             font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
             color: #e6e6e6;
-            font-size: 20px;
-            text-shadow: 0 0 5px rgba(163, 59, 255, 0.5), 0 0 10px rgba(163, 59, 255, 0.3);
-            margin-bottom: 8px;
+            font-size: 18px;
+            text-shadow: 0 0 5px rgba(163, 59, 255, 0.5);
+            margin-bottom: 6px;
         }
 
         .details-content p {
-            margin-bottom: 8px;
-        }
-
-        .details-content p:last-child {
-            margin-bottom: 0;
-        }
-
-        .details-content .highlight {
-            color: #e06666;
-            font-weight: 500;
+            margin-bottom: 6px;
         }
 
         .confirm-modal-content {
             background: linear-gradient(145deg, rgba(50, 40, 80, 0.85), rgba(35, 30, 55, 0.85));
-            border-radius: 16px;
-            padding: 15px;
-            box-shadow: 0 0 15px rgba(163, 59, 255, 0.4), inset 0 0 8px rgba(163, 59, 255, 0.2);
+            border-radius: 14px;
+            padding: 12px;
+            box-shadow: 0 0 12px rgba(163, 59, 255, 0.4);
             backdrop-filter: blur(12px);
             border: 1px solid #a33bff;
             animation: slideUp 0.4s ease-out;
             width: 90%;
-            max-width: 360px;
+            max-width: 320px;
             position: relative;
             overflow: hidden;
         }
@@ -464,124 +397,119 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
-            margin-top: 15px;
+            margin-top: 12px;
             animation: slideUp 0.5s ease-out 0.2s;
             animation-fill-mode: both;
         }
 
-        @media (max-width: 640px) {
-            .card {
-                border-radius: 16px;
-                margin: 0 5px;
-            }
-            .product-image {
-                height: 160px;
-            }
+        @media (max-width: 768px) {
             .grid-cols-2 {
                 grid-template-columns: 1fr;
                 gap: 8px;
             }
+            .grid-cols-1 {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            .card {
+                margin: 0 8px;
+            }
+            .product-image {
+                height: 120px;
+            }
             h2, h3 {
-                font-size: 1.2rem;
+                font-size: 1.1rem;
             }
             p {
-                font-size: 0.8rem;
+                font-size: 0.75rem;
             }
-            .custom-button {
-                padding: 6px 10px;
-                font-size: 12px;
-            }
-            .buy-button, #buySubscriptionBtn {
-                padding: 8px 12px;
+            .glow-btn {
+                padding: 7px 10px;
                 font-size: 12px;
             }
             .category-buttons {
-                gap: 6px;
+                gap: 8px;
                 padding: 6px 10px;
-                width: auto;
             }
             .category-button {
-                width: 30px;
-                height: 30px;
-                font-size: 14px;
-            }
-            .content-section {
-                padding-top: 60px;
-                padding-bottom: 70px;
-            }
-            .header-container {
-                padding: 8px 10px;
+                width: 38px;
+                height: 38px;
+                font-size: 16px;
             }
             .section-title {
-                font-size: 1.8rem;
+                font-size: 1.4rem;
             }
             .section-title::before,
             .section-title::after {
-                font-size: 18px;
+                font-size: 14px;
             }
-            .balance-display {
+            .balance-flask {
                 gap: 6px;
                 padding: 5px 8px;
             }
             .balance-item {
                 font-size: 12px;
             }
-            .balance-item .fire-icon, .balance-item .photo-icon {
-                font-size: 12px;
-            }
-            .add-fires-btn {
+            .plus-btn {
                 width: 18px;
                 height: 18px;
                 font-size: 10px;
             }
             .language-button {
-                bottom: 70px;
-                right: 10px;
                 padding: 5px 8px;
-                font-size: 12px;
+                font-size: 11px;
             }
             .subscription-card {
-                padding: 6px 10px;
-                margin: 5px 0;
+                padding: 5px 8px;
+                margin: 4px 0;
             }
             .subscription-details {
-                padding: 12px;
+                padding: 10px;
             }
             .details-header {
-                font-size: 18px;
+                font-size: 16px;
             }
             .confirm-modal-content {
-                padding: 12px;
-                max-width: 320px;
+                padding: 10px;
+                max-width: 300px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .grid-cols-2 {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .grid-cols-1 {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .content-section {
+                max-width: 800px;
+            }
+            .product-image {
+                height: 160px;
+            }
+            .section-title {
+                font-size: 1.8rem;
             }
         }
 
         @media (max-width: 360px) {
-            .section-title {
-                font-size: 1.5rem;
-            }
-            .balance-display {
+            .balance-flask {
                 flex-direction: column;
                 align-items: flex-end;
                 gap: 4px;
             }
-            .category-buttons {
-                padding: 5px 8px;
-            }
-            .category-button {
-                width: 28px;
-                height: 28px;
-                font-size: 12px;
-            }
         }
 
         @keyframes slideIn {
-            from { transform: translateX(-30px); opacity: 0; }
+            from { transform: translateX(-20px); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
 
         @keyframes slideSection {
-            from { transform: translateY(15px); opacity: 0; }
+            from { transform: translateY(10px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
 
@@ -591,56 +519,44 @@
         }
 
         @keyframes slideUp {
-            from { transform: translateY(40px); opacity: 0; }
+            from { transform: translateY(30px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
 
         @keyframes slideLeft {
-            from { transform: translateX(-20px); opacity: 0; }
+            from { transform: translateX(-15px); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
 
         @keyframes slideRight {
-            from { transform: translateX(20px); opacity: 0; }
+            from { transform: translateX(15px); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
 
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 10px rgba(163, 59, 255, 0.3), inset 0 0 5px rgba(163, 59, 255, 0.15); }
-            50% { box-shadow: 0 0 15px rgba(163, 59, 255, 0.4), inset 0 0 8px rgba(163, 59, 255, 0.2); }
-            100% { box-shadow: 0 0 10px rgba(163, 59, 255, 0.3), inset 0 0 5px rgba(163, 59, 255, 0.15); }
-        }
-
-        @keyframes flicker {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.85; }
-        }
-
         @keyframes neonFlicker {
-            0%, 100% { text-shadow: 0 0 5px rgba(255, 105, 180, 0.5), 0 0 10px rgba(255, 105, 180, 0.3); }
-            50% { text-shadow: 0 0 8px rgba(255, 105, 180, 0.6), 0 0 15px rgba(255, 105, 180, 0.4); }
+            0%, 100% { text-shadow: 0 0 5px rgba(255, 105, 180, 0.5); }
+            50% { text-shadow: 0 0 8px rgba(255, 105, 180, 0.6); }
         }
 
-        @keyframes buttonPulse {
-            0% { box-shadow: 0 0 8px rgba(255, 105, 180, 0.3), 0 1px 5px rgba(255, 105, 180, 0.2); }
-            50% { box-shadow: 0 0 12px rgba(255, 105, 180, 0.4), 0 2px 8px rgba(255, 105, 180, 0.25); }
-            100% { box-shadow: 0 0 8px rgba(255, 105, 180, 0.3), 0 1px 5px rgba(255, 105, 180, 0.2); }
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
     </style>
 </head>
-<body class="flex flex-col items-center p-4">
+<body class="flex flex-col items-center p-2">
     <div class="header-container">
         <div id="sectionTitle" class="section-title"></div>
-        <div class="balance-display">
+        <div class="balance-flask">
             <div class="balance-item">
                 <span class="photo-icon">📷</span>
-                <span id="photoLimitDisplay"></span>
+                <span id="photoLimitDisplay">5 / 10</span>
             </div>
             <div class="balance-item">
-                <span id="tokenCount" class="font-bold"></span>
+                <span id="tokenCount"></span>
                 <span class="fire-icon">🔥</span>
-                <button class="add-fires-btn" onclick="showSection('currencySection')">+</button>
             </div>
+            <button class="plus-btn" onclick="showSection('currencySection')">+</button>
         </div>
     </div>
 
@@ -658,43 +574,43 @@
 
     <div id="mainContent" class="content-section">
         <div id="scenariosSection">
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-2 gap-3">
                 <div class="card">
                     <div class="product-image"></div>
-                    <div class="p-4">
-                        <h3 id="scenario1Title" class="text-lg font-semibold"></h3>
-                        <p id="scenario1Desc" class="mt-2"></p>
-                        <button class="custom-button mt-4" onclick="selectScenario(1)">
+                    <div class="p-3">
+                        <h3 id="scenario1Title" class="text-md font-semibold"></h3>
+                        <p id="scenario1Desc" class="mt-1"></p>
+                        <button class="glow-btn mt-3" onclick="selectScenario(1)">
                             <span>🔥</span> <span id="scenario1Btn"></span>
                         </button>
                     </div>
                 </div>
                 <div class="card">
                     <div class="product-image"></div>
-                    <div class="p-4">
-                        <h3 id="scenario2Title" class="text-lg font-semibold"></h3>
-                        <p id="scenario2Desc" class="mt-2"></p>
-                        <button class="custom-button mt-4" onclick="selectScenario(2)">
+                    <div class="p-3">
+                        <h3 id="scenario2Title" class="text-md font-semibold"></h3>
+                        <p id="scenario2Desc" class="mt-1"></p>
+                        <button class="glow-btn mt-3" onclick="selectScenario(2)">
                             <span>🔥</span> <span id="scenario2Btn"></span>
                         </button>
                     </div>
                 </div>
                 <div class="card">
                     <div class="product-image"></div>
-                    <div class="p-4">
-                        <h3 id="scenario3Title" class="text-lg font-semibold"></h3>
-                        <p id="scenario3Desc" class="mt-2"></p>
-                        <button class="custom-button mt-4" onclick="selectScenario(3)">
+                    <div class="p-3">
+                        <h3 id="scenario3Title" class="text-md font-semibold"></h3>
+                        <p id="scenario3Desc" class="mt-1"></p>
+                        <button class="glow-btn mt-3" onclick="selectScenario(3)">
                             <span>🔥</span> <span id="scenario3Btn"></span>
                         </button>
                     </div>
                 </div>
                 <div class="card">
                     <div class="product-image"></div>
-                    <div class="p-4">
-                        <h3 id="scenario4Title" class="text-lg font-semibold"></h3>
-                        <p id="scenario4Desc" class="mt-2"></p>
-                        <button class="custom-button mt-4" onclick="selectScenario(4)">
+                    <div class="p-3">
+                        <h3 id="scenario4Title" class="text-md font-semibold"></h3>
+                        <p id="scenario4Desc" class="mt-1"></p>
+                        <button class="glow-btn mt-3" onclick="selectScenario(4)">
                             <span>🔥</span> <span id="scenario4Btn"></span>
                         </button>
                     </div>
@@ -705,110 +621,102 @@
         <div id="subscriptionsSection" class="hidden">
             <div id="subscriptionDetails" class="subscription-details">
                 <h3 id="detailsHeader" class="details-header"></h3>
-                <div id="subscriptionsDesc" class="details-content">
-                    <p>Преимущества премиума 🔥✨</p>
-                    <p id="photoLimitText">Новый лимит: 50 фото/день + Безлимитный чат! 💬💃</p>
-                    <p>Одевайся лучше 🌟</p>
-                    <p>Отвечай быстрее ⚡</p>
-                    <p>Улучшенное качество изображений 🎨</p>
-                    <p>Приоритетный доступ к сценариям 🚀</p>
-                </div>
+                <div id="subscriptionsDesc" class="details-content"></div>
             </div>
-            <div class="mt-4">
+            <div class="mt-3">
                 <div class="card subscription-card" onclick="selectPlan(1)">
                     <div class="subscription-info">
-                        <p id="sub1Day" class="neon-text text-md font-medium">1 день</p>
+                        <p id="sub1Day" class="neon-text text-sm font-medium"></p>
                         <p class="price-text">$2.00</p>
                     </div>
                     <div class="checkmark">✔</div>
                 </div>
                 <div class="card subscription-card" onclick="selectPlan(2)">
                     <div class="subscription-info">
-                        <p id="sub3Days" class="neon-text text-md font-medium">3 дня</p>
+                        <p id="sub3Days" class="neon-text text-sm font-medium"></p>
                         <p class="price-text">$5.00</p>
                     </div>
                     <div class="checkmark">✔</div>
                 </div>
                 <div class="card subscription-card" onclick="selectPlan(3)">
                     <div class="subscription-info">
-                        <p id="sub1Week" class="neon-text text-md font-medium">1 неделя</p>
+                        <p id="sub1Week" class="neon-text text-sm font-medium"></p>
                         <p class="price-text">$13.00</p>
                     </div>
                     <div class="checkmark">✔</div>
                 </div>
                 <div class="card subscription-card" onclick="selectPlan(4)">
                     <div class="subscription-info">
-                        <p id="sub1Month" class="neon-text text-md font-medium">1 месяц +30🔥 огней</p>
+                        <p id="sub1Month" class="neon-text text-sm font-medium"></p>
                         <p class="price-text">$25.00</p>
                     </div>
                     <div class="checkmark">✔</div>
                 </div>
                 <div class="card subscription-card" onclick="selectPlan(5)">
                     <div class="subscription-info">
-                        <p id="sub3Months" class="neon-text text-md font-medium">3 месяца +100🔥 огней</p>
+                        <p id="sub3Months" class="neon-text text-sm font-medium"></p>
                         <p class="price-text">$70.00</p>
                     </div>
                     <div class="checkmark">✔</div>
                 </div>
                 <div class="card subscription-card" onclick="selectPlan(6)">
                     <div class="subscription-info">
-                        <p id="subForever" class="neon-text text-md font-medium">Навсегда +200🔥 огней</p>
+                        <p id="subForever" class="neon-text text-sm font-medium"></p>
                         <p class="price-text">$50.00</p>
                     </div>
                     <div class="checkmark">✔</div>
                 </div>
                 <div class="card subscription-card" onclick="selectPlan(7)">
                     <div class="subscription-info">
-                        <p id="subDeluxe" class="neon-text text-md font-medium">Делюкс (безлимит) +500🔥 огней</p>
+                        <p id="subDeluxe" class="neon-text text-sm font-medium"></p>
                         <p class="price-text">$100.00</p>
                     </div>
                     <div class="checkmark">✔</div>
                 </div>
             </div>
-            <button id="buySubscriptionBtn" class="mt-4" onclick="buySelectedSubscription()">
+            <button id="buySubscriptionBtn" class="glow-btn mt-3" onclick="buySelectedSubscription()">
                 <span id="buyBtnText"></span>
             </button>
         </div>
 
         <div id="currencySection" class="hidden">
-            <p id="currencyBalanceText" class="text-center mt-4"></p>
-            <div class="grid grid-cols-2 gap-4 mt-6">
+            <div class="grid grid-cols-2 gap-3 mt-4">
                 <div class="card">
                     <div class="product-image"></div>
-                    <div class="p-4 text-center">
-                        <p id="smallPack" class="neon-text text-md"></p>
-                        <p id="smallPackDesc" class="text-sm mt-1"></p>
-                        <button class="buy-button mt-4" onclick="buyTokens(100, PRICES.currency.smallPack)">
+                    <div class="p-3 text-center">
+                        <p id="smallPack" class="neon-text text-sm"></p>
+                        <p id="smallPackDesc" class="text-xs mt-1"></p>
+                        <button class="glow-btn mt-3" onclick="buyTokens(100, PRICES.currency.smallPack)">
                             <span id="buyBtnSmallPack"></span>
                         </button>
                     </div>
                 </div>
                 <div class="card">
                     <div class="product-image"></div>
-                    <div class="p-4 text-center">
-                        <p id="mediumPack" class="neon-text text-md"></p>
-                        <p id="mediumPackDesc" class="text-sm mt-1"></p>
-                        <button class="buy-button mt-4" onclick="buyTokens(200, PRICES.currency.mediumPack)">
+                    <div class="p-3 text-center">
+                        <p id="mediumPack" class="neon-text text-sm"></p>
+                        <p id="mediumPackDesc" class="text-xs mt-1"></p>
+                        <button class="glow-btn mt-3" onclick="buyTokens(200, PRICES.currency.mediumPack)">
                             <span id="buyBtnMediumPack"></span>
                         </button>
                     </div>
                 </div>
                 <div class="card">
                     <div class="product-image"></div>
-                    <div class="p-4 text-center">
-                        <p id="largePack" class="neon-text text-md"></p>
-                        <p id="largePackDesc" class="text-sm mt-1"></p>
-                        <button class="buy-button mt-4" onclick="buyTokens(500, PRICES.currency.largePack)">
+                    <div class="p-3 text-center">
+                        <p id="largePack" class="neon-text text-sm"></p>
+                        <p id="largePackDesc" class="text-xs mt-1"></p>
+                        <button class="glow-btn mt-3" onclick="buyTokens(500, PRICES.currency.largePack)">
                             <span id="buyBtnLargePack"></span>
                         </button>
                     </div>
                 </div>
                 <div class="card">
                     <div class="product-image"></div>
-                    <div class="p-4 text-center">
-                        <p id="megaPack" class="neon-text text-md"></p>
-                        <p id="megaPackDesc" class="text-sm mt-1"></p>
-                        <button class="buy-button mt-4" onclick="buyTokens(1000, PRICES.currency.megaPack)">
+                    <div class="p-3 text-center">
+                        <p id="megaPack" class="neon-text text-sm"></p>
+                        <p id="megaPackDesc" class="text-xs mt-1"></p>
+                        <button class="glow-btn mt-3" onclick="buyTokens(1000, PRICES.currency.megaPack)">
                             <span id="buyBtnMegaPack"></span>
                         </button>
                     </div>
@@ -817,93 +725,93 @@
         </div>
 
         <div id="itemsSection" class="hidden">
-            <div class="grid grid-cols-2 gap-4 mt-6">
+            <div class="grid grid-cols-1 gap-3 mt-4">
                 <div class="card">
                     <div class="product-image"></div>
-                    <div class="p-4 text-center">
-                        <p id="analPlug" class="neon-text text-md"></p>
-                        <p id="analPlugDesc" class="text-sm mt-1"></p>
-                        <button class="buy-button mt-4" onclick="buyItem('analPlug', PRICES.items.analPlug.fires)">
+                    <div class="p-3 text-center">
+                        <p id="analPlug" class="neon-text text-sm"></p>
+                        <p id="analPlugDesc" class="text-xs mt-1"></p>
+                        <button class="glow-btn mt-3" onclick="buyItem('analPlug', PRICES.items.analPlug.fires)">
                             <span id="buyBtnAnalPlug"></span>
                         </button>
                     </div>
                 </div>
                 <div class="card">
                     <div class="product-image"></div>
-                    <div class="p-4 text-center">
-                        <p id="pajamas" class="neon-text text-md"></p>
-                        <p id="pajamasDesc" class="text-sm mt-1"></p>
-                        <button class="buy-button mt-4" onclick="buyItem('pajamas', PRICES.items.pajamas.fires)">
+                    <div class="p-3 text-center">
+                        <p id="pajamas" class="neon-text text-sm"></p>
+                        <p id="pajamasDesc" class="text-xs mt-1"></p>
+                        <button class="glow-btn mt-3" onclick="buyItem('pajamas', PRICES.items.pajamas.fires)">
                             <span id="buyBtnPajamas"></span>
                         </button>
                     </div>
                 </div>
                 <div class="card">
                     <div class="product-image"></div>
-                    <div class="p-4 text-center">
-                        <p id="stockings" class="neon-text text-md"></p>
-                        <p id="stockingsDesc" class="text-sm mt-1"></p>
-                        <button class="buy-button mt-4" onclick="buyItem('stockings', PRICES.items.stockings.fires)">
+                    <div class="p-3 text-center">
+                        <p id="stockings" class="neon-text text-sm"></p>
+                        <p id="stockingsDesc" class="text-xs mt-1"></p>
+                        <button class="glow-btn mt-3" onclick="buyItem('stockings', PRICES.items.stockings.fires)">
                             <span id="buyBtnStockings"></span>
                         </button>
                     </div>
                 </div>
                 <div class="card">
                     <div class="product-image"></div>
-                    <div class="p-4 text-center">
-                        <p id="handcuffs" class="neon-text text-md"></p>
-                        <p id="handcuffsDesc" class="text-sm mt-1"></p>
-                        <button class="buy-button mt-4" onclick="buyItem('handcuffs', PRICES.items.handcuffs.fires)">
+                    <div class="p-3 text-center">
+                        <p id="handcuffs" class="neon-text text-sm"></p>
+                        <p id="handcuffsDesc" class="text-xs mt-1"></p>
+                        <button class="glow-btn mt-3" onclick="buyItem('handcuffs', PRICES.items.handcuffs.fires)">
                             <span id="buyBtnHandcuffs"></span>
                         </button>
                     </div>
                 </div>
                 <div class="card">
                     <div class="product-image"></div>
-                    <div class="p-4 text-center">
-                        <p id="lubricants" class="neon-text text-md"></p>
-                        <p id="lubricantsDesc" class="text-sm mt-1"></p>
-                        <button class="buy-button mt-4" onclick="buyItem('lubricants', PRICES.items.lubricants.fires)">
-                            <span id="buyBtnLubricants"></span>
+                    <div class="p-3 text-center">
+                        <p id="lube" class="neon-text text-sm"></p>
+                        <p id="lubeDesc" class="text-xs mt-1"></p>
+                        <button class="glow-btn mt-3" onclick="buyItem('lube', PRICES.items.lube.fires)">
+                            <span id="buyBtnLube"></span>
                         </button>
                     </div>
                 </div>
                 <div class="card">
                     <div class="product-image"></div>
-                    <div class="p-4 text-center">
-                        <p id="truthOrDare" class="neon-text text-md"></p>
-                        <p id="truthOrDareDesc" class="text-sm mt-1"></p>
-                        <button class="buy-button mt-4" onclick="buyItem('truthOrDare', PRICES.items.truthOrDare.fires)">
+                    <div class="p-3 text-center">
+                        <p id="truthOrDare" class="neon-text text-sm"></p>
+                        <p id="truthOrDareDesc" class="text-xs mt-1"></p>
+                        <button class="glow-btn mt-3" onclick="buyItem('truthOrDare', PRICES.items.truthOrDare.fires)">
                             <span id="buyBtnTruthOrDare"></span>
                         </button>
                     </div>
                 </div>
                 <div class="card">
                     <div class="product-image"></div>
-                    <div class="p-4 text-center">
-                        <p id="masksBlindfolds" class="neon-text text-md"></p>
-                        <p id="masksBlindfoldsDesc" class="text-sm mt-1"></p>
-                        <button class="buy-button mt-4" onclick="buyItem('masksBlindfolds', PRICES.items.masksBlindfolds.fires)">
-                            <span id="buyBtnMasksBlindfolds"></span>
+                    <div class="p-3 text-center">
+                        <p id="masks" class="neon-text text-sm"></p>
+                        <p id="masksDesc" class="text-xs mt-1"></p>
+                        <button class="glow-btn mt-3" onclick="buyItem('masks', PRICES.items.masks.fires)">
+                            <span id="buyBtnMasks"></span>
                         </button>
                     </div>
                 </div>
                 <div class="card">
                     <div class="product-image"></div>
-                    <div class="p-4 text-center">
-                        <p id="massageFoam" class="neon-text text-md"></p>
-                        <p id="massageFoamDesc" class="text-sm mt-1"></p>
-                        <button class="buy-button mt-4" onclick="buyItem('massageFoam', PRICES.items.massageFoam.fires)">
+                    <div class="p-3 text-center">
+                        <p id="massageFoam" class="neon-text text-sm"></p>
+                        <p id="massageFoamDesc" class="text-xs mt-1"></p>
+                        <button class="glow-btn mt-3" onclick="buyItem('massageFoam', PRICES.items.massageFoam.fires)">
                             <span id="buyBtnMassageFoam"></span>
                         </button>
                     </div>
                 </div>
                 <div class="card">
                     <div class="product-image"></div>
-                    <div class="p-4 text-center">
-                        <p id="sexSwing" class="neon-text text-md"></p>
-                        <p id="sexSwingDesc" class="text-sm mt-1"></p>
-                        <button class="buy-button mt-4" onclick="buyItem('sexSwing', PRICES.items.sexSwing.fires)">
+                    <div class="p-3 text-center">
+                        <p id="sexSwing" class="neon-text text-sm"></p>
+                        <p id="sexSwingDesc" class="text-xs mt-1"></p>
+                        <button class="glow-btn mt-3" onclick="buyItem('sexSwing', PRICES.items.sexSwing.fires)">
                             <span id="buyBtnSexSwing"></span>
                         </button>
                     </div>
@@ -912,184 +820,139 @@
         </div>
     </div>
 
-    <div id="languageModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div id="confirmModal" class="modal fixed inset-0 flex items-center justify-center hidden">
         <div class="confirm-modal-content">
-            <h3 id="languageTitle" class="text-2xl font-bold mb-4"></h3>
-            <button class="custom-button mb-2 w-full" onclick="setLanguage('en')">
-                <span>🇬🇧</span> English
-            </button>
-            <button class="custom-button mb-2 w-full" onclick="setLanguage('ru')">
-                <span>🇷🇺</span> Русский
-            </button>
-            <button class="custom-button bg-red-600 hover:bg-red-700 w-full" onclick="closeLanguageModal()">
-                <span>✖</span> <span id="closeBtnText"></span>
-            </button>
-        </div>
-    </div>
-
-    <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-        <div class="confirm-modal-content">
-            <h3 id="confirmTitle" class="confirm-title text-2xl font-bold mb-4"></h3>
-            <p id="confirmText" class="confirm-text mb-4"></p>
+            <h3 id="confirmTitle" class="confirm-title text-md font-semibold"></h3>
+            <p id="confirmText" class="confirm-text mt-2"></p>
             <div class="confirm-buttons">
-                <button id="confirmBtn" class="custom-button bg-green-600 hover:bg-green-700 w-full"></button>
-                <button id="cancelBtn" class="custom-button bg-red-600 hover:bg-red-700 w-full"></button>
+                <button id="confirmBtn" class="glow-btn">Confirm</button>
+                <button id="cancelBtn" class="glow-btn">Cancel</button>
             </div>
         </div>
     </div>
 
     <script>
-        const tg = window.Telegram ? window.Telegram.WebApp : { ready: () => {}, expand: () => {} };
-        tg.ready();
-        tg.expand();
-
-        const userData = {
-            user1: { fires: 0, subscriptionDaysLeft: 0, photoLimit: 100, dailyPhotoCount: 18 },
-            user2: { fires: 0, subscriptionDaysLeft: 0, photoLimit: 0, dailyPhotoCount: 0 },
+        const LANGUAGES = {
+            en: { flag: '🇺🇸', name: 'English' },
+            ru: { flag: '🇷🇺', name: 'Русский' }
         };
-
-        let currentUser = 'user1';
-        let tokens = userData[currentUser].fires;
-        let maxTokens = Infinity;
-        const scenarios = [];
-        let language = 'ru';
-        let subscriptionDaysLeft = userData[currentUser].subscriptionDaysLeft;
-        let photoLimit = userData[currentUser].photoLimit;
-        let dailyPhotoCount = userData[currentUser].dailyPhotoCount;
-        let selectedPlan = null;
-        let selectedCard = null;
-        const ownedItems = [];
-        let currentSection = 'scenariosSection';
 
         const translations = {
             en: {
-                scenarios: 'Scenarios',
-                subscriptions: 'Subscriptions',
-                currency: 'Currency',
-                items: 'Shop',
-                languages: 'Languages',
+                sectionTitleScenarios: 'Scenarios',
+                sectionTitleItems: 'Items',
+                sectionTitleSubscriptions: 'Subscriptions',
+                sectionTitleCurrency: 'Currency',
+                tokenCount: '100',
+                languageText: 'Language',
                 scenario1Title: 'Tutor Asleep',
                 scenario1Desc: 'You enter her home, door ajar, finding her naked and dreaming of you. Wake her with a sinful touch! 😈',
-                scenario1Btn: 'Unlock (100 Fires)',
+                scenario1Btn: 'Buy for 100🔥',
                 scenario2Title: 'Teacher After School',
                 scenario2Desc: 'Alone with her to fix grades, her tight skirt teases as she bends over. 🔥',
-                scenario2Btn: 'Unlock (100 Fires)',
+                scenario2Btn: 'Buy for 100🔥',
                 scenario3Title: 'Policewoman Stop',
                 scenario3Desc: 'She pulls you over in the wild, no license—her smirk promises a naughty punishment! 💋',
-                scenario3Btn: 'Unlock (100 Fires)',
+                scenario3Btn: 'Buy for 100🔥',
                 scenario4Title: 'Helping Friend',
                 scenario4Desc: 'Her computer’s stuck, and her shy glances turn into wild invites as you lean in. 😏',
-                scenario4Btn: 'Unlock (100 Fires)',
+                scenario4Btn: 'Buy for 100🔥',
                 detailsHeader: 'Premium Benefits',
-                subscriptionsDesc: 'Premium Benefits 🔥✨\nNew Limit: 50 Photos/Day + Unlimited Chat! 💬💃\nDress Better 🌟\nReply Faster ⚡\nEnhanced Image Quality 🎨\nPriority Scenarios Access 🚀',
-                subscriptionsDescDeluxe: 'Premium Benefits 🔥✨\nNew Limit: Unlimited Photos/Day + Unlimited Chat! 💬💃\nDress Better 🌟\nReply Faster ⚡\nEnhanced Image Quality 🎨\nPriority Scenarios Access 🚀',
-                sub1Day: '1 Day',
-                sub3Days: '3 Days',
-                sub1Week: '1 Week',
-                sub1Month: '1 Month +30🔥 Fires',
-                sub3Months: '3 Months +100🔥 Fires',
-                subForever: 'Forever +200🔥 Fires',
-                subDeluxe: 'Deluxe (Unlimited) +500🔥 Fires',
-                buyBtn: 'Buy Subscription',
-                buyBtnSmallPack: 'Buy for $6',
-                buyBtnMediumPack: 'Buy for $12',
-                buyBtnLargePack: 'Buy for $25',
-                buyBtnMegaPack: 'Buy for $45',
-                currencyBalance: 'Your current balance: ',
+                subscriptionsDescStandard: '<p><strong>Premium Benefits 🔥✨</strong></p><p>New Limit: 50 photos/day + Unlimited Chat! 💬💃</p><p>Better Outfits 🌟</p><p>Faster Responses ⚡</p><p>Enhanced Image Quality 🎨</p><p>Priority Scenario Access 🚀</p>',
+                subscriptionsDescDeluxe: '<p><strong>Premium Benefits 🔥✨</strong></p><p>New Limit: Unlimited photos + Unlimited Chat! 💬💃</p><p>Better Outfits 🌟</p><p>Faster Responses ⚡</p><p>Enhanced Image Quality 🎨</p><p>Priority Scenario Access 🚀</p>',
+                sub1Day: '1 Day Pass',
+                sub3Days: '3 Days Pass',
+                sub1Week: '1 Week Pass',
+                sub1Month: '1 Month Pass',
+                sub3Months: '3 Months Pass',
+                subForever: 'Forever Pass',
+                subDeluxe: 'Deluxe Pass',
+                buyBtnText: 'Buy Subscription',
                 smallPack: 'Small Pack',
-                smallPackDesc: 'A quick boost with 100🔥 Fires! 🚀',
+                smallPackDesc: '100 🔥',
+                buyBtnSmallPack: 'Buy for $1.00',
                 mediumPack: 'Medium Pack',
-                mediumPackDesc: 'Fuel your fantasies with 200🔥 Fires! 💥',
+                mediumPackDesc: '200 🔥',
+                buyBtnMediumPack: 'Buy for $1.50',
                 largePack: 'Large Pack',
-                largePackDesc: 'Unleash the heat with 500🔥 Fires! 🔥',
+                largePackDesc: '500 🔥',
+                buyBtnLargePack: 'Buy for $3.00',
                 megaPack: 'Mega Pack',
-                megaPackDesc: 'Go all out with 1000🔥 Fires! 🌟',
-                itemsTitle: 'Explore Naughty Items',
+                megaPackDesc: '1000 🔥',
+                buyBtnMegaPack: 'Buy for $5.00',
                 analPlug: 'Anal Plug',
                 analPlugDesc: 'Smooth silicone plug for beginners. 💜',
                 buyBtnAnalPlug: 'Buy for 50🔥',
-                pajamas: 'Naughty Pajamas',
-                pajamasDesc: 'Silky set to set the mood. 🌙',
+                pajamas: 'Seductive Pajamas',
+                pajamasDesc: 'Silky set for the mood. 🌙',
                 buyBtnPajamas: 'Buy for 80🔥',
                 stockings: 'Seductive Stockings',
-                stockingsDesc: 'Lace stockings to tease. 🖤',
+                stockingsDesc: 'Lacy stockings for a teasing effect. 🖤',
                 buyBtnStockings: 'Buy for 60🔥',
                 handcuffs: 'Furry Handcuffs',
-                handcuffsDesc: 'Soft cuffs for playful restraint. 🖐️',
+                handcuffsDesc: 'Soft handcuffs for playful restraints. 🖐️',
                 buyBtnHandcuffs: 'Buy for 70🔥',
-                lubricants: 'Water-Based Lubricants',
-                lubricantsDesc: 'Smooth glide for extra fun. 💦',
-                buyBtnLubricants: 'Buy for 40🔥',
+                lube: 'Water-Based Lube',
+                lubeDesc: 'Smooth glide for more pleasure. 💦',
+                buyBtnLube: 'Buy for 40🔥',
                 truthOrDare: 'Truth or Dare Game',
-                truthOrDareDesc: 'Spicy game for daring couples. 🎲',
+                truthOrDareDesc: 'Spicy game for bold couples. 🎲',
                 buyBtnTruthOrDare: 'Buy for 90🔥',
-                masksBlindfolds: 'Masks & Blindfolds',
-                masksBlindfoldsDesc: 'Satin set to heighten senses. 😷',
-                buyBtnMasksBlindfolds: 'Buy for 50🔥',
+                masks: 'Masks & Blindfolds',
+                masksDesc: 'Satin set to heighten sensations. 😷',
+                buyBtnMasks: 'Buy for 50🔥',
                 massageFoam: 'Massage Foam',
                 massageFoamDesc: 'Aromatic foam for sensual touch. 🫧',
                 buyBtnMassageFoam: 'Buy for 60🔥',
                 sexSwing: 'Sex Swing',
                 sexSwingDesc: 'Unlock new positions with ease. 🏋️',
                 buyBtnSexSwing: 'Buy for 150🔥',
-                languageTitle: 'Select Language',
-                closeBtn: 'Close',
-                confirmUnlock: 'Confirm Unlock',
-                notEnoughFires: 'Not Enough Fires!',
-                missingFires: amount => `You need ${amount} more Fires!`,
-                buyFiresBtn: 'Buy Fires',
-                cancelBtn: 'Cancel',
-                scenarioUnlock: scenarioId => `Scenario "${['Tutor Asleep', 'Teacher After School', 'Policewoman Stop', 'Helping Friend'][scenarioId - 1]}" unlocked! Enjoy! 😏`,
-                buyTokensMsg: (amount, price) => `You bought ${amount} Fires for $${price}! Dive in! 😈`,
-                buySubMsg: (price, bonus) => `Subscription activated for $${price}! ${bonus > 0 ? `+${bonus} Fires bonus! ` : ''}Enjoy! 💋`,
-                buyItemMsg: (item) => `You bought ${item}! Enjoy the naughty fun! 😈`,
-                alreadyOwnedMsg: (item) => `You already own ${item}!`,
-                languageSetMsg: 'Language set to English!',
-                selectPlanMsg: 'Please select a subscription plan!'
+                confirmTitle: 'Confirm Purchase',
+                confirmText: 'Are you sure you want to proceed?',
+                cancelText: 'Cancel'
             },
             ru: {
-                scenarios: 'Сценарии',
-                subscriptions: 'Подписки',
-                currency: 'Валюта',
-                items: 'Магазин',
-                languages: 'Языки',
-                scenario1Title: 'Спящий репетитор',
-                scenario1Desc: 'Ты заходишь к ней домой, дверь приоткрыта, она спит голая и видит тебя во сне. Разбуди её греховным прикосновением! 😈',
-                scenario1Btn: 'Разблокировать (100 огней)',
+                sectionTitleScenarios: 'Сценарии',
+                sectionTitleItems: 'Предметы',
+                sectionTitleSubscriptions: 'Подписки',
+                sectionTitleCurrency: 'Валюта',
+                tokenCount: '100',
+                languageText: 'Язык',
+                scenario1Title: 'Репетитор спит',
+                scenario1Desc: 'Ты заходишь в её дом, дверь приоткрыта, она голая и мечтает о тебе. Разбуди её грешным касанием! 😈',
+                scenario1Btn: 'Купить за 100🔥',
                 scenario2Title: 'Учительница после уроков',
-                scenario2Desc: 'Наедине с ней ради исправления оценок, её обтягивающая юбка дразнит, когда она наклоняется. 🔥',
-                scenario2Btn: 'Разблокировать (100 огней)',
+                scenario2Desc: 'Наедине с ней, чтобы исправить оценки, её обтягивающая юбка дразнит, когда она наклоняется. 🔥',
+                scenario2Btn: 'Купить за 100🔥',
                 scenario3Title: 'Остановка полицейской',
-                scenario3Desc: 'Она останавливает тебя в глуши, прав нет — её ухмылка обещает развратное наказание! 💋',
-                scenario3Btn: 'Разблокировать (100 огней)',
+                scenario3Desc: 'Она останавливает тебя в глуши, без прав — её ухмылка обещает пикантное наказание! 💋',
+                scenario3Btn: 'Купить за 100🔥',
                 scenario4Title: 'Помощь подруге',
-                scenario4Desc: 'Её компьютер завис, а робкие взгляды превращаются в жаркие намёки, когда ты наклоняешься ближе. 😏',
-                scenario4Btn: 'Разблокировать (100 огней)',
+                scenario4Desc: 'Её компьютер завис, а робкие взгляды превращаются в дерзкие приглашения, когда ты наклоняешься. 😏',
+                scenario4Btn: 'Купить за 100🔥',
                 detailsHeader: 'Преимущества премиума',
-                subscriptionsDesc: 'Преимущества премиума 🔥✨\nНовый лимит: 50 фото/день + Безлимитный чат! 💬💃\nОдевайся лучше 🌟\nОтвечай быстрее ⚡\nУлучшенное качество изображений 🎨\nПриоритетный доступ к сценариям 🚀',
-                subscriptionsDescDeluxe: 'Преимущества премиума 🔥✨\nНовый лимит: Безлимит фото/день + Безлимитный чат! 💬💃\nОдевайся лучше 🌟\nОтвечай быстрее ⚡\nУлучшенное качество изображений 🎨\nПриоритетный доступ к сценариям 🚀',
-                sub1Day: '1 день',
-                sub3Days: '3 дня',
-                sub1Week: '1 неделя',
-                sub1Month: '1 месяц +30🔥 огней',
-                sub3Months: '3 месяца +100🔥 огней',
-                subForever: 'Навсегда +200🔥 огней',
-                subDeluxe: 'Делюкс (безлимит) +500🔥 огней',
-                buyBtn: 'Купить подписку',
-                buyBtnSmallPack: 'Купить за $6',
-                buyBtnMediumPack: 'Купить за $12',
-                buyBtnLargePack: 'Купить за $25',
-                buyBtnMegaPack: 'Купить за $45',
-                currencyBalance: 'Ваш текущий баланс: ',
+                subscriptionsDescStandard: '<p><strong>Преимущества премиума 🔥✨</strong></p><p>Новый лимит: 50 фото/день + Безлимитный чат! 💬💃</p><p>Лучшая одежда 🌟</p><p>Быстрые ответы ⚡</p><p>Улучшенное качество изображений 🎨</p><p>Приоритетный доступ к сценариям 🚀</p>',
+                subscriptionsDescDeluxe: '<p><strong>Преимущества премиума 🔥✨</strong></p><p>Новый лимит: Безлимит фото + Безлимитный чат! 💬💃</p><p>Лучшая одежда 🌟</p><p>Быстрые ответы ⚡</p><p>Улучшенное качество изображений 🎨</p><p>Приоритетный доступ к сценариям 🚀</p>',
+                sub1Day: 'Пропуск на 1 день',
+                sub3Days: 'Пропуск на 3 дня',
+                sub1Week: 'Пропуск на 1 неделю',
+                sub1Month: 'Пропуск на 1 месяц',
+                sub3Months: 'Пропуск на 3 месяца',
+                subForever: 'Вечный пропуск',
+                subDeluxe: 'Делюкс пропуск',
+                buyBtnText: 'Купить подписку',
                 smallPack: 'Малый набор',
-                smallPackDesc: 'Быстрый буст с 100🔥 огней! 🚀',
+                smallPackDesc: '100 🔥',
+                buyBtnSmallPack: 'Купить за $1.00',
                 mediumPack: 'Средний набор',
-                mediumPackDesc: 'Разожги фантазии с 200🔥 огней! 💥',
+                mediumPackDesc: '200 🔥',
+                buyBtnMediumPack: 'Купить за $1.50',
                 largePack: 'Большой набор',
-                largePackDesc: 'Раскрой жар с 500🔥 огней! 🔥',
+                largePackDesc: '500 🔥',
+                buyBtnLargePack: 'Купить за $3.00',
                 megaPack: 'Мега набор',
-                megaPackDesc: 'Выложись на полную с 1000🔥 огней! 🌟',
-                itemsTitle: 'Исследуй пикантные предметы',
+                megaPackDesc: '1000 🔥',
+                buyBtnMegaPack: 'Купить за $5.00',
                 analPlug: 'Анусная пробка',
                 analPlugDesc: 'Гладкая силиконовая пробка для новичков. 💜',
                 buyBtnAnalPlug: 'Купить за 50🔥',
@@ -1102,454 +965,258 @@
                 handcuffs: 'Наручники с мехом',
                 handcuffsDesc: 'Мягкие наручники для игривых ограничений. 🖐️',
                 buyBtnHandcuffs: 'Купить за 70🔥',
-                lubricants: 'Смазки на водной основе',
-                lubricantsDesc: 'Плавное скольжение для большего удовольствия. 💦',
-                buyBtnLubricants: 'Купить за 40🔥',
+                lube: 'Смазки на водной основе',
+                lubeDesc: 'Плавное скольжение для большего удовольствия. 💦',
+                buyBtnLube: 'Купить за 40🔥',
                 truthOrDare: 'Игра "Правда или действие"',
                 truthOrDareDesc: 'Пикантная игра для смелых пар. 🎲',
                 buyBtnTruthOrDare: 'Купить за 90🔥',
-                masksBlindfolds: 'Маски и повязки на глаза',
-                masksBlindfoldsDesc: 'Атласный набор для усиления ощущений. 😷',
-                buyBtnMasksBlindfolds: 'Купить за 50🔥',
+                masks: 'Маски и повязки на глаза',
+                masksDesc: 'Атласный набор для усиления ощущений. 😷',
+                buyBtnMasks: 'Купить за 50🔥',
                 massageFoam: 'Пена для массажа',
                 massageFoamDesc: 'Ароматная пена для чувственного прикосновения. 🫧',
                 buyBtnMassageFoam: 'Купить за 60🔥',
                 sexSwing: 'Секс-качели',
                 sexSwingDesc: 'Открой новые позы с легкостью. 🏋️',
                 buyBtnSexSwing: 'Купить за 150🔥',
-                languageTitle: 'Выберите язык',
-                closeBtn: 'Закрыть',
-                confirmUnlock: 'Подтвердить разблокировку',
-                notEnoughFires: 'Недостаточно огней!',
-                missingFires: amount => `Недостаточно ${amount} огней!`,
-                buyFiresBtn: 'Докупить',
-                cancelBtn: 'Отмена',
-                scenarioUnlock: scenarioId => `Сценарий "${['Спящий репетитор', 'Учительница после уроков', 'Остановка полицейской', 'Помощь подруге'][scenarioId - 1]}" разблокирован! Наслаждайся! 😏`,
-                buyTokensMsg: (amount, price) => `Вы купили ${amount} огней за $${price}! Погружайся! 😈`,
-                buySubMsg: (price, bonus) => `Подписка активирована за $${price}! ${bonus > 0 ? `+${bonus} огней бонусом! ` : ''}Наслаждайся! 💋`,
-                buyItemMsg: (item) => `Вы купили ${item}! Наслаждайтесь пикантным удовольствием! 😈`,
-                alreadyOwnedMsg: (item) => `У вас уже есть ${item}!`,
-                languageSetMsg: 'Язык установлен на Русский!',
-                selectPlanMsg: 'Пожалуйста, выберите план подписки!'
+                confirmTitle: 'Подтверждение покупки',
+                confirmText: 'Вы уверены, что хотите продолжить?',
+                cancelText: 'Отмена'
             }
         };
 
-        function updateUI() {
-            tokens = userData[currentUser].fires;
-            subscriptionDaysLeft = userData[currentUser].subscriptionDaysLeft;
-            photoLimit = userData[currentUser].photoLimit;
-            dailyPhotoCount = userData[currentUser].dailyPhotoCount;
-
-            document.getElementById('tokenCount').innerText = tokens;
-            document.getElementById('photoLimitDisplay').innerText = `${dailyPhotoCount} / ${photoLimit}`;
-            document.getElementById('currencyBalanceText').innerText = `${translations[language].currencyBalance}${tokens} Fires`;
-
-            document.getElementById('sectionTitle').innerText = translations[language][{
-                'scenariosSection': 'scenarios',
-                'itemsSection': 'items',
-                'subscriptionsSection': 'subscriptions',
-                'currencySection': 'currency'
-            }[currentSection]];
-
-            const deluxeSelected = selectedPlan === 7;
-            const subscriptionsDesc = document.getElementById('subscriptionsDesc');
-            subscriptionsDesc.innerHTML = (deluxeSelected ? translations[language].subscriptionsDescDeluxe : translations[language].subscriptionsDesc)
-                .split('\n')
-                .map(line => `<p>${line}</p>`)
-                .join('');
-
-            const scenarioImages = document.querySelectorAll('#scenariosSection .product-image');
-            scenarioImages[0].style.backgroundImage = `url(${SCENARIO_TUTOR_ASLEEP})`;
-            scenarioImages[1].style.backgroundImage = `url(${SCENARIO_TEACHER_AFTER_SCHOOL})`;
-            scenarioImages[2].style.backgroundImage = `url(${SCENARIO_POLICEWOMAN_STOP})`;
-            scenarioImages[3].style.backgroundImage = `url(${SCENARIO_HELPING_FRIEND})`;
-
-            const currencyImages = document.querySelectorAll('#currencySection .product-image');
-            currencyImages[0].style.backgroundImage = `url(${CURRENCY_SMALL_PACK})`;
-            currencyImages[1].style.backgroundImage = `url(${CURRENCY_MEDIUM_PACK})`;
-            currencyImages[2].style.backgroundImage = `url(${CURRENCY_LARGE_PACK})`;
-            currencyImages[3].style.backgroundImage = `url(${CURRENCY_MEGA_PACK})`;
-
-            const itemImages = document.querySelectorAll('#itemsSection .product-image');
-            itemImages[0].style.backgroundImage = `url(${ITEM_ANAL_PLUG})`;
-            itemImages[1].style.backgroundImage = `url(${ITEM_PAJAMAS})`;
-            itemImages[2].style.backgroundImage = `url(${ITEM_STOCKINGS})`;
-            itemImages[3].style.backgroundImage = `url(${ITEM_HANDCUFFS})`;
-            itemImages[4].style.backgroundImage = `url(${ITEM_LUBRICANTS})`;
-            itemImages[5].style.backgroundImage = `url(${ITEM_TRUTH_OR_DARE})`;
-            itemImages[6].style.backgroundImage = `url(${ITEM_MASKS_BLINDFOLDS})`;
-            itemImages[7].style.backgroundImage = `url(${ITEM_MASSAGE_FOAM})`;
-            itemImages[8].style.backgroundImage = `url(${ITEM_SEX_SWING})`;
-
-            document.querySelectorAll('.card').forEach(card => card.classList.remove('selected'));
-            if (selectedCard) selectedCard.classList.add('selected');
-            document.querySelectorAll('.subscription-card').forEach(card => card.classList.remove('selected'));
-            if (selectedPlan) document.querySelectorAll('.subscription-card')[selectedPlan - 1].classList.add('selected');
-        }
-
-        function buyTokens(amount, price) {
-            userData[currentUser].fires += amount;
-            updateUI();
-            showAlert(translations[language].buyTokensMsg(amount, price));
-        }
-
-        function buyItem(itemId, fireCost) {
-            const itemName = translations[language][itemId];
-            const confirmModal = document.getElementById('confirmModal');
-            const confirmTitle = document.getElementById('confirmTitle');
-            const confirmText = document.getElementById('confirmText');
-            const confirmBtn = document.getElementById('confirmBtn');
-            const cancelBtn = document.getElementById('cancelBtn');
-
-            if (ownedItems.includes(itemId)) {
-                showAlert(translations[language].alreadyOwnedMsg(itemName));
-                return;
-            }
-
-            if (tokens < fireCost) {
-                const missing = fireCost - tokens;
-                confirmTitle.innerText = translations[language].notEnoughFires;
-                confirmText.innerText = translations[language].missingFires(missing);
-                confirmBtn.innerText = translations[language].buyFiresBtn;
-                confirmBtn.onclick = () => {
-                    closeConfirmModal();
-                    showSection('currencySection');
-                };
-                cancelBtn.innerText = translations[language].cancelBtn;
-                cancelBtn.onclick = closeConfirmModal;
-                confirmModal.classList.remove('hidden');
-            } else {
-                confirmTitle.innerText = translations[language].confirmUnlock;
-                confirmText.innerText = language === 'en' ?
-                    `Buy "${itemName}" for ${fireCost} Fires?` :
-                    `Купить "${itemName}" за ${fireCost} огней?`;
-                confirmBtn.innerText = language === 'en' ? 'Confirm' : 'Подтвердить';
-                confirmBtn.onclick = () => {
-                    userData[currentUser].fires -= fireCost;
-                    ownedItems.push(itemId);
-                    updateUI();
-                    closeConfirmModal();
-                    showAlert(translations[language].buyItemMsg(itemName));
-                };
-                cancelBtn.innerText = translations[language].cancelBtn;
-                cancelBtn.onclick = closeConfirmModal;
-                confirmModal.classList.remove('hidden');
-            }
-        }
-
-        function toggleLanguage() {
-            language = language === 'en' ? 'ru' : 'en';
-            updateLanguage();
-            updateLanguageButton();
-            showAlert(translations[language].languageSetMsg);
-        }
-
-        function updateLanguageButton() {
-            const currentFlag = document.getElementById('currentFlag');
-            const languageText = document.getElementById('languageText');
-            currentFlag.innerText = language === 'en' ? '🇬🇧' : '🇷🇺';
-            languageText.innerText = language === 'en' ? 'English' : 'Русский';
-        }
-
-        function setLanguage(lang) {
-            language = lang;
-            updateLanguage();
-            updateLanguageButton();
-            closeLanguageModal();
-            showAlert(translations[language].languageSetMsg);
-        }
-
-        function closeLanguageModal() {
-            const languageModal = document.getElementById('languageModal');
-            languageModal.classList.add('hidden');
-        }
-
-        function updateLanguage() {
-            const elements = {
-                subscriptionsTitle: translations[language].subscriptions,
-                detailsHeader: translations[language].detailsHeader,
-                currencyTitle: translations[language].currency,
-                itemsTitle: translations[language].itemsTitle,
-                scenario1Title: translations[language].scenario1Title,
-                scenario1Desc: translations[language].scenario1Desc,
-                scenario1Btn: translations[language].scenario1Btn,
-                scenario2Title: translations[language].scenario2Title,
-                scenario2Desc: translations[language].scenario2Desc,
-                scenario2Btn: translations[language].scenario2Btn,
-                scenario3Title: translations[language].scenario3Title,
-                scenario3Desc: translations[language].scenario3Desc,
-                scenario3Btn: translations[language].scenario3Btn,
-                scenario4Title: translations[language].scenario4Title,
-                scenario4Desc: translations[language].scenario4Desc,
-                scenario4Btn: translations[language].scenario4Btn,
-                sub1Day: translations[language].sub1Day,
-                sub3Days: translations[language].sub3Days,
-                sub1Week: translations[language].sub1Week,
-                sub1Month: translations[language].sub1Month,
-                sub3Months: translations[language].sub3Months,
-                subForever: translations[language].subForever,
-                subDeluxe: translations[language].subDeluxe,
-                buyBtnText: translations[language].buyBtn,
-                currencyBalanceText: `${translations[language].currencyBalance}${tokens} Fires`,
-                smallPack: translations[language].smallPack,
-                smallPackDesc: translations[language].smallPackDesc,
-                mediumPack: translations[language].mediumPack,
-                mediumPackDesc: translations[language].mediumPackDesc,
-                largePack: translations[language].largePack,
-                largePackDesc: translations[language].largePackDesc,
-                megaPack: translations[language].megaPack,
-                megaPackDesc: translations[language].megaPackDesc,
-                buyBtnSmallPack: translations[language].buyBtnSmallPack,
-                buyBtnMediumPack: translations[language].buyBtnMediumPack,
-                buyBtnLargePack: translations[language].buyBtnLargePack,
-                buyBtnMegaPack: translations[language].buyBtnMegaPack,
-                analPlug: translations[language].analPlug,
-                analPlugDesc: translations[language].analPlugDesc,
-                buyBtnAnalPlug: translations[language].buyBtnAnalPlug,
-                pajamas: translations[language].pajamas,
-                pajamasDesc: translations[language].pajamasDesc,
-                buyBtnPajamas: translations[language].buyBtnPajamas,
-                stockings: translations[language].stockings,
-                stockingsDesc: translations[language].stockingsDesc,
-                buyBtnStockings: translations[language].buyBtnStockings,
-                handcuffs: translations[language].handcuffs,
-                handcuffsDesc: translations[language].handcuffsDesc,
-                buyBtnHandcuffs: translations[language].buyBtnHandcuffs,
-                lubricants: translations[language].lubricants,
-                lubricantsDesc: translations[language].lubricantsDesc,
-                buyBtnLubricants: translations[language].buyBtnLubricants,
-                truthOrDare: translations[language].truthOrDare,
-                truthOrDareDesc: translations[language].truthOrDareDesc,
-                buyBtnTruthOrDare: translations[language].buyBtnTruthOrDare,
-                masksBlindfolds: translations[language].masksBlindfolds,
-                masksBlindfoldsDesc: translations[language].masksBlindfoldsDesc,
-                buyBtnMasksBlindfolds: translations[language].buyBtnMasksBlindfolds,
-                massageFoam: translations[language].massageFoam,
-                massageFoamDesc: translations[language].massageFoamDesc,
-                buyBtnMassageFoam: translations[language].buyBtnMassageFoam,
-                sexSwing: translations[language].sexSwing,
-                sexSwingDesc: translations[language].sexSwingDesc,
-                buyBtnSexSwing: translations[language].buyBtnSexSwing,
-                languageTitle: translations[language].languageTitle,
-                closeBtnText: translations[language].closeBtn
-            };
-
-            for (const [id, text] of Object.entries(elements)) {
-                const element = document.getElementById(id);
-                if (element) element.innerText = text;
-            }
-
-            const deluxeSelected = selectedPlan === 7;
-            const subscriptionsDesc = document.getElementById('subscriptionsDesc');
-            subscriptionsDesc.innerHTML = (deluxeSelected ? translations[language].subscriptionsDescDeluxe : translations[language].subscriptionsDesc)
-                .split('\n')
-                .map(line => `<p>${line}</p>`)
-                .join('');
-
-            document.getElementById('sectionTitle').innerText = translations[language][{
-                'scenariosSection': 'scenarios',
-                'itemsSection': 'items',
-                'subscriptionsSection': 'subscriptions',
-                'currencySection': 'currency'
-            }[currentSection]];
-        }
-
-        function showSection(sectionId) {
-            const sections = ['scenariosSection', 'subscriptionsSection', 'currencySection', 'itemsSection'];
-            sections.forEach(sec => {
-                const section = document.getElementById(sec);
-                section.classList.add('hidden');
-                section.style.animation = '';
-            });
-            const activeSection = document.getElementById(sectionId);
-            activeSection.classList.remove('hidden');
-            activeSection.style.animation = 'slideSection 0.5s ease-out';
-            currentSection = sectionId;
-            updateUI();
-        }
-
-        function selectScenario(id) {
-            const requiredTokens = PRICES.scenarios[id];
-            const confirmModal = document.getElementById('confirmModal');
-            const confirmTitle = document.getElementById('confirmTitle');
-            const confirmText = document.getElementById('confirmText');
-            const confirmBtn = document.getElementById('confirmBtn');
-            const cancelBtn = document.getElementById('cancelBtn');
-            const card = document.querySelector(`#scenariosSection .card:nth-child(${id})`);
-
-            if (selectedCard) selectedCard.classList.remove('selected');
-            selectedCard = card;
-            card.classList.add('selected');
-
-            if (tokens < requiredTokens) {
-                const missing = requiredTokens - tokens;
-                confirmTitle.innerText = translations[language].notEnoughFires;
-                confirmText.innerText = translations[language].missingFires(missing);
-                confirmBtn.innerText = translations[language].buyFiresBtn;
-                confirmBtn.onclick = () => {
-                    closeConfirmModal();
-                    showSection('currencySection');
-                };
-                cancelBtn.innerText = translations[language].cancelBtn;
-                cancelBtn.onclick = closeConfirmModal;
-                confirmModal.classList.remove('hidden');
-            } else {
-                confirmTitle.innerText = translations[language].confirmUnlock;
-                confirmText.innerText = language === 'en' ?
-                    `Unlock "${['Tutor Asleep', 'Teacher After School', 'Policewoman Stop', 'Helping Friend'][id - 1]}" for ${requiredTokens} Fires?` :
-                    `Разблокировать "${['Спящий репетитор', 'Учительница после уроков', 'Остановка полицейской', 'Помощь подруге'][id - 1]}" за ${requiredTokens} огней?`;
-                confirmBtn.innerText = language === 'en' ? 'Confirm' : 'Подтвердить';
-                confirmBtn.onclick = () => {
-                    userData[currentUser].fires -= requiredTokens;
-                    scenarios.push(id);
-                    updateUI();
-                    closeConfirmModal();
-                    showAlert(translations[language].scenarioUnlock(id));
-                };
-                cancelBtn.innerText = translations[language].cancelBtn;
-                cancelBtn.onclick = closeConfirmModal;
-                confirmModal.classList.remove('hidden');
-            }
-        }
-
-        function selectPlan(planId) {
-            selectedPlan = planId;
-            updateUI();
-        }
-
-        function buySelectedSubscription() {
-            if (!selectedPlan) {
-                showAlert(translations[language].selectPlanMsg);
-                return;
-            }
-
-            const planDetails = [
-                { duration: '1 день', price: PRICES.subscriptions.oneDay, bonusFires: 0 },
-                { duration: '3 дня', price: PRICES.subscriptions.threeDays, bonusFires: 0 },
-                { duration: '1 неделя', price: PRICES.subscriptions.oneWeek, bonusFires: 0 },
-                { duration: '1 месяц', price: PRICES.subscriptions.oneMonth, bonusFires: 30 },
-                { duration: '3 месяца', price: PRICES.subscriptions.threeMonths, bonusFires: 100 },
-                { duration: 'Навсегда', price: PRICES.subscriptions.forever, bonusFires: 200 },
-                { duration: 'Делюкс (безлимит)', price: PRICES.subscriptions.deluxe, bonusFires: 500 }
-            ][selectedPlan - 1];
-
-            const confirmModal = document.getElementById('confirmModal');
-            const confirmTitle = document.getElementById('confirmTitle');
-            const confirmText = document.getElementById('confirmText');
-            const confirmBtn = document.getElementById('confirmBtn');
-            const cancelBtn = document.getElementById('cancelBtn');
-
-            confirmTitle.innerText = translations[language].confirmUnlock;
-            confirmText.innerText = language === 'en' ?
-                `Activate "${planDetails.duration}" subscription for $${planDetails.price}?` :
-                `Активировать подписку "${planDetails.duration}" за $${planDetails.price}?`;
-            confirmBtn.innerText = language === 'en' ? 'Confirm' : 'Подтвердить';
-            confirmBtn.onclick = () => {
-                userData[currentUser].fires += planDetails.bonusFires;
-                userData[currentUser].subscriptionDaysLeft = planDetails.duration === 'Навсегда' ? Infinity : parseInt(planDetails.duration) || 0;
-                userData[currentUser].photoLimit = planDetails.duration === 'Делюкс (безлимит)' ? Infinity : 50;
-                updateUI();
-                closeConfirmModal();
-                showAlert(translations[language].buySubMsg(planDetails.price, planDetails.bonusFires));
-            };
-            cancelBtn.innerText = translations[language].cancelBtn;
-            cancelBtn.onclick = closeConfirmModal;
-            confirmModal.classList.remove('hidden');
-        }
-
-        function showAlert(message) {
-            const confirmModal = document.getElementById('confirmModal');
-            const confirmTitle = document.getElementById('confirmTitle');
-            const confirmText = document.getElementById('confirmText');
-            const confirmBtn = document.getElementById('confirmBtn');
-            const cancelBtn = document.getElementById('cancelBtn');
-
-            confirmTitle.innerText = language === 'en' ? 'Success' : 'Успех';
-            confirmText.innerText = message;
-            confirmBtn.innerText = language === 'en' ? 'OK' : 'ОК';
-            confirmBtn.onclick = closeConfirmModal;
-            cancelBtn.style.display = 'none';
-            confirmModal.classList.remove('hidden');
-        }
-
-        function closeConfirmModal() {
-            const confirmModal = document.getElementById('confirmModal');
-            confirmModal.classList.add('hidden');
-            document.getElementById('cancelBtn').style.display = 'block';
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            updateLanguage();
-            updateLanguageButton();
-            updateUI();
-            showSection('scenariosSection');
-        });
-
-        // Константы для URL изображений продуктов
-        const SCENARIO_TUTOR_ASLEEP = 'https://example.com/images/scenarios/tutor_asleep.jpg';
-        const SCENARIO_TEACHER_AFTER_SCHOOL = 'https://example.com/images/scenarios/teacher_after_school.jpg';
-        const SCENARIO_POLICEWOMAN_STOP = 'https://example.com/images/scenarios/policewoman_stop.jpg';
-        const SCENARIO_HELPING_FRIEND = 'https://example.com/images/scenarios/helping_friend.jpg';
-        const CURRENCY_SMALL_PACK = 'https://example.com/images/currency/small_pack.jpg';
-        const CURRENCY_MEDIUM_PACK = 'https://example.com/images/currency/medium_pack.jpg';
-        const CURRENCY_LARGE_PACK = 'https://example.com/images/currency/large_pack.jpg';
-        const CURRENCY_MEGA_PACK = 'https://example.com/images/currency/mega_pack.jpg';
-        const ITEM_ANAL_PLUG = 'https://example.com/images/items/anal_plug.jpg';
-        const ITEM_PAJAMAS = 'https://example.com/images/items/pajamas.jpg';
-        const ITEM_STOCKINGS = 'https://example.com/images/items/stockings.jpg';
-        const ITEM_HANDCUFFS = 'https://example.com/images/items/handcuffs.jpg';
-        const ITEM_LUBRICANTS = 'https://example.com/images/items/lubricants.jpg';
-        const ITEM_TRUTH_OR_DARE = 'https://example.com/images/items/truth_or_dare.jpg';
-        const ITEM_MASKS_BLINDFOLDS = 'https://example.com/images/items/masks_blindfolds.jpg';
-        const ITEM_MASSAGE_FOAM = 'https://example.com/images/items/massage_foam.jpg';
-        const ITEM_SEX_SWING = 'https://example.com/images/items/sex_swing.jpg';
-
-        // Цены для всех элементов
         const PRICES = {
             scenarios: {
-                1: 100, // Спящий репетитор
-                2: 100, // Учительница после уроков
-                3: 100, // Остановка полицейской
-                4: 100  // Помощь подруге
+                scenario1: { fires: 100 },
+                scenario2: { fires: 100 },
+                scenario3: { fires: 100 },
+                scenario4: { fires: 100 }
             },
             subscriptions: {
-                oneDay: 2.00,      // 1 день
-                threeDays: 5.00,   // 3 дня
-                oneWeek: 13.00,    // 1 неделя
-                oneMonth: 25.00,   // 1 месяц
-                threeMonths: 70.00,// 3 месяца
-                forever: 50.00,    // Навсегда
-                deluxe: 100.00     // Делюкс
+                sub1Day: { price: 2.00 },
+                sub3Days: { price: 5.00 },
+                sub1Week: { price: 13.00 },
+                sub1Month: { price: 25.00 },
+                sub3Months: { price: 70.00 },
+                subForever: { price: 50.00 },
+                subDeluxe: { price: 100.00 }
             },
             currency: {
-                smallPack: 6.00,   // 100 огней
-                mediumPack: 12.00, // 200 огней
-                largePack: 25.00,  // 500 огней
-                megaPack: 45.00    // 1000 огней
+                smallPack: { fires: 100, price: 1.00 },
+                mediumPack: { fires: 200, price: 1.50 },
+                largePack: { fires: 500, price: 3.00 },
+                megaPack: { fires: 1000, price: 5.00 }
             },
             items: {
                 analPlug: { fires: 50 },
                 pajamas: { fires: 80 },
                 stockings: { fires: 60 },
                 handcuffs: { fires: 70 },
-                lubricants: { fires: 40 },
+                lube: { fires: 40 },
                 truthOrDare: { fires: 90 },
-                masksBlindfolds: { fires: 50 },
+                masks: { fires: 50 },
                 massageFoam: { fires: 60 },
                 sexSwing: { fires: 150 }
             }
         };
 
-        // Рекомендации по размерам изображений
-        // Для карточек (scenarios, items, currency):
-        // - Оптимальный размер: 600x400 пикселей (соотношение 3:2)
-        // - Формат: JPG или PNG с компрессией для быстрой загрузки
-        // - Максимальный размер файла: 500 КБ
-        // - Минимальное разрешение: 300x200 пикселей для четкости на мобильных устройствах
-        // Пример подготовки изображения:
-        // 1. Используйте редактор (Photoshop, GIMP) для обрезки до 600x400
-        // 2. Сохраните с качеством 80-90% для JPG
-        // 3. Проверьте, чтобы изображение четко отображалось на экранах Retina
+        let currentLanguage = 'en';
+        let currentSection = 'scenariosSection';
+        let selectedPlan = null;
+        let userTokens = 100;
+        let photoLimit = { current: 5, max: 10 };
+
+        function toggleLanguage() {
+            const langKeys = Object.keys(LANGUAGES);
+            const currentIndex = langKeys.indexOf(currentLanguage);
+            currentLanguage = langKeys[(currentIndex + 1) % langKeys.length];
+            updateLanguage();
+            updateUI();
+        }
+
+        function updateLanguage() {
+            const lang = LANGUAGES[currentLanguage];
+            const trans = translations[currentLanguage] || translations.en;
+            document.getElementById('currentFlag').textContent = lang.flag;
+            document.getElementById('languageText').textContent = trans.languageText || 'Language';
+            document.getElementById('tokenCount').textContent = userTokens;
+            updateSectionContent(trans);
+        }
+
+        function updateSectionContent(trans) {
+            const sectionTitles = {
+                scenariosSection: trans.sectionTitleScenarios,
+                itemsSection: trans.sectionTitleItems,
+                subscriptionsSection: trans.sectionTitleSubscriptions,
+                currencySection: trans.sectionTitleCurrency
+            };
+            document.getElementById('sectionTitle').textContent = sectionTitles[currentSection] || 'Section';
+
+            if (currentSection === 'scenariosSection') {
+                for (let i = 1; i <= 4; i++) {
+                    document.getElementById(`scenario${i}Title`).textContent = trans[`scenario${i}Title`] || `Scenario ${i}`;
+                    document.getElementById(`scenario${i}Desc`).textContent = trans[`scenario${i}Desc`] || 'Description';
+                    document.getElementById(`scenario${i}Btn`).textContent = trans[`scenario${i}Btn`] || 'Buy';
+                }
+            } else if (currentSection === 'subscriptionsSection') {
+                document.getElementById('detailsHeader').textContent = trans.detailsHeader || 'Subscription Benefits';
+                document.getElementById('subscriptionsDesc').innerHTML = selectedPlan === 7 ? trans.subscriptionsDescDeluxe : trans.subscriptionsDescStandard;
+                document.getElementById('sub1Day').textContent = trans.sub1Day || '1 Day Pass';
+                document.getElementById('sub3Days').textContent = trans.sub3Days || '3 Days Pass';
+                document.getElementById('sub1Week').textContent = trans.sub1Week || '1 Week Pass';
+                document.getElementById('sub1Month').textContent = trans.sub1Month || '1 Month Pass';
+                document.getElementById('sub3Months').textContent = trans.sub3Months || '3 Months Pass';
+                document.getElementById('subForever').textContent = trans.subForever || 'Forever Pass';
+                document.getElementById('subDeluxe').textContent = trans.subDeluxe || 'Deluxe Pass';
+                document.getElementById('buyBtnText').textContent = trans.buyBtnText || 'Buy Subscription';
+            } else if (currentSection === 'currencySection') {
+                document.getElementById('smallPack').textContent = trans.smallPack || 'Small Pack';
+                document.getElementById('smallPackDesc').textContent = trans.smallPackDesc || '100 🔥';
+                document.getElementById('buyBtnSmallPack').textContent = trans.buyBtnSmallPack || 'Buy';
+                document.getElementById('mediumPack').textContent = trans.mediumPack || 'Medium Pack';
+                document.getElementById('mediumPackDesc').textContent = trans.mediumPackDesc || '200 🔥';
+                document.getElementById('buyBtnMediumPack').textContent = trans.buyBtnMediumPack || 'Buy';
+                document.getElementById('largePack').textContent = trans.largePack || 'Large Pack';
+                document.getElementById('largePackDesc').textContent = trans.largePackDesc || '500 🔥';
+                document.getElementById('buyBtnLargePack').textContent = trans.buyBtnLargePack || 'Buy';
+                document.getElementById('megaPack').textContent = trans.megaPack || 'Mega Pack';
+                document.getElementById('megaPackDesc').textContent = trans.megaPackDesc || '1000 🔥';
+                document.getElementById('buyBtnMegaPack').textContent = trans.buyBtnMegaPack || 'Buy';
+            } else if (currentSection === 'itemsSection') {
+                document.getElementById('analPlug').textContent = trans.analPlug || 'Anal Plug';
+                document.getElementById('analPlugDesc').textContent = trans.analPlugDesc || 'Description';
+                document.getElementById('buyBtnAnalPlug').textContent = trans.buyBtnAnalPlug || 'Buy';
+                document.getElementById('pajamas').textContent = trans.pajamas || 'Pajamas';
+                document.getElementById('pajamasDesc').textContent = trans.pajamasDesc || 'Description';
+                document.getElementById('buyBtnPajamas').textContent = trans.buyBtnPajamas || 'Buy';
+                document.getElementById('stockings').textContent = trans.stockings || 'Stockings';
+                document.getElementById('stockingsDesc').textContent = trans.stockingsDesc || 'Description';
+                document.getElementById('buyBtnStockings').textContent = trans.buyBtnStockings || 'Buy';
+                document.getElementById('handcuffs').textContent = trans.handcuffs || 'Handcuffs';
+                document.getElementById('handcuffsDesc').textContent = trans.handcuffsDesc || 'Description';
+                document.getElementById('buyBtnHandcuffs').textContent = trans.buyBtnHandcuffs || 'Buy';
+                document.getElementById('lube').textContent = trans.lube || 'Lube';
+                document.getElementById('lubeDesc').textContent = trans.lubeDesc || 'Description';
+                document.getElementById('buyBtnLube').textContent = trans.buyBtnLube || 'Buy';
+                document.getElementById('truthOrDare').textContent = trans.truthOrDare || 'Truth or Dare';
+                document.getElementById('truthOrDareDesc').textContent = trans.truthOrDareDesc || 'Description';
+                document.getElementById('buyBtnTruthOrDare').textContent = trans.buyBtnTruthOrDare || 'Buy';
+                document.getElementById('masks').textContent = trans.masks || 'Masks';
+                document.getElementById('masksDesc').textContent = trans.masksDesc || 'Description';
+                document.getElementById('buyBtnMasks').textContent = trans.buyBtnMasks || 'Buy';
+                document.getElementById('massageFoam').textContent = trans.massageFoam || 'Massage Foam';
+                document.getElementById('massageFoamDesc').textContent = trans.massageFoamDesc || 'Description';
+                document.getElementById('buyBtnMassageFoam').textContent = trans.buyBtnMassageFoam || 'Buy';
+                document.getElementById('sexSwing').textContent = trans.sexSwing || 'Sex Swing';
+                document.getElementById('sexSwingDesc').textContent = trans.sexSwingDesc || 'Description';
+                document.getElementById('buyBtnSexSwing').textContent = trans.buyBtnSexSwing || 'Buy';
+            }
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll('#mainContent > div').forEach(div => {
+                div.classList.add('hidden');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+            currentSection = sectionId;
+            updateLanguage();
+        }
+
+        function selectScenario(id) {
+            const cards = document.querySelectorAll('#scenariosSection .card');
+            cards.forEach(card => card.classList.remove('selected'));
+            cards[id - 1].classList.add('selected');
+            showConfirmModal(`Purchase ${translations[currentLanguage][`scenario${id}Title`]} for ${PRICES.scenarios[`scenario${id}`].fires}🔥?`, () => {
+                if (userTokens >= PRICES.scenarios[`scenario${id}`].fires) {
+                    userTokens -= PRICES.scenarios[`scenario${id}`].fires;
+                    updateUI();
+                    alert(`${translations[currentLanguage][`scenario${id}Title`]} purchased!`);
+                } else {
+                    alert('Not enough tokens!');
+                }
+            });
+        }
+
+        function selectPlan(id) {
+            const cards = document.querySelectorAll('#subscriptionsSection .subscription-card');
+            cards.forEach(card => card.classList.remove('selected'));
+            cards[id - 1].classList.add('selected');
+            selectedPlan = id;
+            const trans = translations[currentLanguage] || translations.en;
+            document.getElementById('subscriptionsDesc').innerHTML = id === 7 ? trans
+
+.subscriptionsDescDeluxe : trans.subscriptionsDescStandard;
+        }
+
+        function buySelectedSubscription() {
+            if (!selectedPlan) {
+                alert('Please select a subscription plan!');
+                return;
+            }
+            const planKeys = ['sub1Day', 'sub3Days', 'sub1Week', 'sub1Month', 'sub3Months', 'subForever', 'subDeluxe'];
+            const plan = planKeys[selectedPlan - 1];
+            showConfirmModal(`Purchase ${translations[currentLanguage][plan]} for $${PRICES.subscriptions[plan].price}?`, () => {
+                alert(`${translations[currentLanguage][plan]} purchased!`);
+                photoLimit = plan === 'subDeluxe' ? { current: 0, max: Infinity } : { current: 0, max: 50 };
+                updateUI();
+            });
+        }
+
+        function buyTokens(amount, price) {
+            showConfirmModal(`Purchase ${amount}🔥 for $${price.price}?`, () => {
+                userTokens += amount;
+                updateUI();
+                alert(`${amount}🔥 purchased!`);
+            });
+        }
+
+        function buyItem(item, fires) {
+            showConfirmModal(`Purchase ${translations[currentLanguage][item]} for ${fires}🔥?`, () => {
+                if (userTokens >= fires) {
+                    userTokens -= fires;
+                    updateUI();
+                    alert(`${translations[currentLanguage][item]} purchased!`);
+                } else {
+                    alert('Not enough tokens!');
+                }
+            });
+        }
+
+        function showConfirmModal(message, onConfirm) {
+            const modal = document.getElementById('confirmModal');
+            document.getElementById('confirmTitle').textContent = translations[currentLanguage].confirmTitle || 'Confirm Purchase';
+            document.getElementById('confirmText').textContent = message;
+            modal.classList.remove('hidden');
+
+            const confirmBtn = document.getElementById('confirmBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const newConfirm = () => {
+                onConfirm();
+                modal.classList.add('hidden');
+                confirmBtn.removeEventListener('click', newConfirm);
+            };
+            const newCancel = () => {
+                modal.classList.add('hidden');
+                cancelBtn.removeEventListener('click', newCancel);
+            };
+
+            confirmBtn.textContent = translations[currentLanguage].confirmTitle || 'Confirm';
+            cancelBtn.textContent = translations[currentLanguage].cancelText || 'Cancel';
+            confirmBtn.addEventListener('click', newConfirm);
+            cancelBtn.addEventListener('click', newCancel);
+        }
+
+        function updateUI() {
+            document.getElementById('tokenCount').textContent = userTokens;
+            document.getElementById('photoLimitDisplay').textContent = `${photoLimit.current} / ${photoLimit.max === Infinity ? '∞' : photoLimit.max}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateLanguage();
+            showSection('scenariosSection');
+            updateUI();
+        });
     </script>
 </body>
 </html>
