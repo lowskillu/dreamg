@@ -34,6 +34,7 @@
             box-shadow: 0 4px 15px rgba(163, 59, 255, 0.3), 0 0 8px rgba(163, 59, 255, 0.2) inset;
             position: relative;
             animation: slideIn 0.5s ease-out;
+            cursor: pointer;
         }
 
         .card:hover {
@@ -169,6 +170,11 @@
             box-shadow: 0 0 14px rgba(255, 105, 180, 0.7);
         }
 
+        .category-button.selected {
+            background: linear-gradient(90deg, #00ffcc, #a33bff);
+            box-shadow: 0 0 14px rgba(0, 255, 204, 0.7);
+        }
+
         .content-section {
             padding: 60px 10px 70px;
             animation: slideSection 0.5s ease-out;
@@ -242,7 +248,7 @@
         }
 
         .plus-btn {
-            background: linear-gradient(90deg, #ff85c0, #c77bff);
+            background: linear-gradient(90deg, #ff69b4, #a33bff);
             border-radius: 50%;
             width: 20px;
             height: 20px;
@@ -260,32 +266,6 @@
         .plus-btn:hover {
             transform: scale(1.05);
             box-shadow: 0 0 12px rgba(255, 133, 192, 0.7);
-        }
-
-        .language-button {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            background: linear-gradient(90deg, #ff69b4, #a33bff);
-            border-radius: 8px;
-            padding: 6px 10px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
-            font-size: 12px;
-            font-weight: 500;
-            border: none;
-            color: #ffffff;
-            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            box-shadow: 0 0 8px rgba(255, 105, 180, 0.5);
-            z-index: 30;
-        }
-
-        .language-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 10px rgba(255, 105, 180, 0.7);
         }
 
         .checkmark {
@@ -314,7 +294,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 6px 10px;
-            margin: 5px 0;
+            margin: 15px 0;
             cursor: pointer;
         }
 
@@ -402,14 +382,71 @@
             animation-fill-mode: both;
         }
 
+        .tab-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .tab-button {
+            background: linear-gradient(90deg, #ff69b4, #a33bff);
+            border-radius: 20px;
+            padding: 6px 15px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            border: none;
+            color: #ffffff;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+        }
+
+        .tab-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 14px rgba(255, 105, 180, 0.7);
+        }
+
+        .tab-button.active {
+            background: linear-gradient(90deg, #00ffcc, #a33bff);
+            box-shadow: 0 0 14px rgba(0, 255, 204, 0.7);
+        }
+
+        .subscription-info-card {
+            min-height: 120px;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .language-card {
+            height: 60px;
+            width: 100%;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
         @media (max-width: 768px) {
+            .grid-cols-4 {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
             .grid-cols-2 {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
                 gap: 8px;
             }
             .grid-cols-1 {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(1, 1fr);
                 gap: 8px;
+            }
+            .col-span-2 {
+                grid-column: span 2;
             }
             .card {
                 margin: 0 8px;
@@ -455,43 +492,52 @@
                 height: 18px;
                 font-size: 10px;
             }
-            .language-button {
-                padding: 5px 8px;
-                font-size: 11px;
+            .subscription-info-card {
+                min-height: 100px;
+                padding: 10px;
+            }
+            .language-card {
+                height: 50px;
+                padding: 8px 10px;
             }
             .subscription-card {
+                margin: 10px 0;
                 padding: 5px 8px;
-                margin: 4px 0;
-            }
-            .subscription-details {
-                padding: 10px;
-            }
-            .details-header {
-                font-size: 16px;
-            }
-            .confirm-modal-content {
-                padding: 10px;
-                max-width: 300px;
             }
         }
 
         @media (min-width: 769px) {
+            .grid-cols-4 {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 10px;
+            }
             .grid-cols-2 {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 10px;
             }
             .grid-cols-1 {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(1, 1fr);
                 gap: 10px;
             }
+            .col-span-2 {
+                grid-column: span 2;
+            }
             .content-section {
-                max-width: 800px;
+                max-width: 1200px;
             }
             .product-image {
                 height: 160px;
             }
             .section-title {
                 font-size: 1.8rem;
+            }
+            .subscription-info-card {
+                min-height: 140px;
+                padding: 20px;
+            }
+            .language-card {
+                height: 70px;
+                padding: 12px 20px;
             }
         }
 
@@ -500,6 +546,18 @@
                 flex-direction: column;
                 align-items: flex-end;
                 gap: 4px;
+            }
+            .subscription-info-card {
+                min-height: 90px;
+                padding: 8px;
+            }
+            .language-card {
+                height: 45px;
+                padding: 6px 8px;
+            }
+            .subscription-card {
+                margin: 8px 0;
+                padding: 4px 6px;
             }
         }
 
@@ -556,63 +614,157 @@
                 <span id="tokenCount"></span>
                 <span class="fire-icon">🔥</span>
             </div>
-            <button class="plus-btn" onclick="showSection('currencySection')">+</button>
+            <button class="plus-btn" onclick="showCurrencySection()">+</button>
         </div>
     </div>
 
-    <button id="languageBtn" class="language-button" onclick="toggleLanguage()">
-        <span id="currentFlag"></span>
-        <span id="languageText"></span>
-    </button>
-
     <div class="category-buttons">
-        <button id="scenariosBtn" class="category-button" onclick="showSection('scenariosSection')">📖</button>
-        <button id="itemsBtn" class="category-button" onclick="showSection('itemsSection')">🛍️</button>
+        <button id="storeBtn" class="category-button selected" onclick="showSection('storeSection')">🛒</button>
         <button id="subscriptionsBtn" class="category-button" onclick="showSection('subscriptionsSection')">⭐</button>
-        <button id="currencyBtn" class="category-button" onclick="showSection('currencySection')">💰</button>
+        <button id="settingsBtn" class="category-button" onclick="showSection('settingsSection')">⚙️</button>
     </div>
 
     <div id="mainContent" class="content-section">
-        <div id="scenariosSection">
-            <div class="grid grid-cols-2 gap-3">
-                <div class="card">
-                    <div class="product-image"></div>
-                    <div class="p-3">
-                        <h3 id="scenario1Title" class="text-md font-semibold"></h3>
-                        <p id="scenario1Desc" class="mt-1"></p>
-                        <button class="glow-btn mt-3" onclick="selectScenario(1)">
-                            <span>🔥</span> <span id="scenario1Btn"></span>
-                        </button>
+        <div id="storeSection">
+            <div class="tab-container">
+                <button id="scenariosTab" class="tab-button active" onclick="showStoreTab('scenarios')">📖 Scenarios</button>
+                <button id="itemsTab" class="tab-button" onclick="showStoreTab('items')">🛍️ Items</button>
+            </div>
+            <div id="scenariosContent" class="store-content">
+                <div class="grid grid-cols-4 gap-3">
+                    <div class="card">
+                        <div class="product-image" style="background-image: url('');"></div>
+                        <div class="p-3">
+                            <h3 id="scenario1Title" class="text-md font-semibold"></h3>
+                            <p id="scenario1Desc" class="mt-1"></p>
+                            <button class="glow-btn mt-3" onclick="selectScenario(1)">
+                                <span>🔥</span> <span id="scenario1Btn"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="product-image" style="background-image: url('');"></div>
+                        <div class="p-3">
+                            <h3 id="scenario2Title" class="text-md font-semibold"></h3>
+                            <p id="scenario2Desc" class="mt-1"></p>
+                            <button class="glow-btn mt-3" onclick="selectScenario(2)">
+                                <span>🔥</span> <span id="scenario2Btn"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="product-image" style="background-image: url('');"></div>
+                        <div class="p-3">
+                            <h3 id="scenario3Title" class="text-md font-semibold"></h3>
+                            <p id="scenario3Desc" class="mt-1"></p>
+                            <button class="glow-btn mt-3" onclick="selectScenario(3)">
+                                <span>🔥</span> <span id="scenario3Btn"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="product-image" style="background-image: url('');"></div>
+                        <div class="p-3">
+                            <h3 id="scenario4Title" class="text-md font-semibold"></h3>
+                            <p id="scenario4Desc" class="mt-1"></p>
+                            <button class="glow-btn mt-3" onclick="selectScenario(4)">
+                                <span>🔥</span> <span id="scenario4Btn"></span>
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="product-image"></div>
-                    <div class="p-3">
-                        <h3 id="scenario2Title" class="text-md font-semibold"></h3>
-                        <p id="scenario2Desc" class="mt-1"></p>
-                        <button class="glow-btn mt-3" onclick="selectScenario(2)">
-                            <span>🔥</span> <span id="scenario2Btn"></span>
-                        </button>
+            </div>
+            <div id="itemsContent" class="store-content hidden">
+                <div class="grid grid-cols-4 gap-3 mt-4">
+                    <div class="card">
+                        <div class="product-image" style="background-image: url('');"></div>
+                        <div class="p-3 text-center">
+                            <p id="analPlug" class="neon-text text-sm"></p>
+                            <p id="analPlugDesc" class="text-xs mt-1"></p>
+                            <button class="glow-btn mt-3" onclick="buyItem('analPlug', PRICES.items.analPlug.fires)">
+                                <span id="buyBtnAnalPlug"></span>
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div class="card">
-                    <div class="product-image"></div>
-                    <div class="p-3">
-                        <h3 id="scenario3Title" class="text-md font-semibold"></h3>
-                        <p id="scenario3Desc" class="mt-1"></p>
-                        <button class="glow-btn mt-3" onclick="selectScenario(3)">
-                            <span>🔥</span> <span id="scenario3Btn"></span>
-                        </button>
+                    <div class="card">
+                        <div class="product-image" style="background-image: url('');"></div>
+                        <div class="p-3 text-center">
+                            <p id="pajamas" class="neon-text text-sm"></p>
+                            <p id="pajamasDesc" class="text-xs mt-1"></p>
+                            <button class="glow-btn mt-3" onclick="buyItem('pajamas', PRICES.items.pajamas.fires)">
+                                <span id="buyBtnPajamas"></span>
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div class="card">
-                    <div class="product-image"></div>
-                    <div class="p-3">
-                        <h3 id="scenario4Title" class="text-md font-semibold"></h3>
-                        <p id="scenario4Desc" class="mt-1"></p>
-                        <button class="glow-btn mt-3" onclick="selectScenario(4)">
-                            <span>🔥</span> <span id="scenario4Btn"></span>
-                        </button>
+                    <div class="card">
+                        <div class="product-image" style="background-image: url('');"></div>
+                        <div class="p-3 text-center">
+                            <p id="stockings" class="neon-text text-sm"></p>
+                            <p id="stockingsDesc" class="text-xs mt-1"></p>
+                            <button class="glow-btn mt-3" onclick="buyItem('stockings', PRICES.items.stockings.fires)">
+                                <span id="buyBtnStockings"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="product-image" style="background-image: url('');"></div>
+                        <div class="p-3 text-center">
+                            <p id="handcuffs" class="neon-text text-sm"></p>
+                            <p id="handcuffsDesc" class="text-xs mt-1"></p>
+                            <button class="glow-btn mt-3" onclick="buyItem('handcuffs', PRICES.items.handcuffs.fires)">
+                                <span id="buyBtnHandcuffs"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="product-image" style="background-image: url('');"></div>
+                        <div class="p-3 text-center">
+                            <p id="lube" class="neon-text text-sm"></p>
+                            <p id="lubeDesc" class="text-xs mt-1"></p>
+                            <button class="glow-btn mt-3" onclick="buyItem('lube', PRICES.items.lube.fires)">
+                                <span id="buyBtnLube"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="product-image" style="background-image: url('');"></div>
+                        <div class="p-3 text-center">
+                            <p id="truthOrDare" class="neon-text text-sm"></p>
+                            <p id="truthOrDareDesc" class="text-xs mt-1"></p>
+                            <button class="glow-btn mt-3" onclick="buyItem('truthOrDare', PRICES.items.truthOrDare.fires)">
+                                <span id="buyBtnTruthOrDare"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="product-image" style="background-image: url('');"></div>
+                        <div class="p-3 text-center">
+                            <p id="masks" class="neon-text text-sm"></p>
+                            <p id="masksDesc" class="text-xs mt-1"></p>
+                            <button class="glow-btn mt-3" onclick="buyItem('masks', PRICES.items.masks.fires)">
+                                <span id="buyBtnMasks"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="product-image" style="background-image: url('');"></div>
+                        <div class="p-3 text-center">
+                            <p id="massageFoam" class="neon-text text-sm"></p>
+                            <p id="massageFoamDesc" class="text-xs mt-1"></p>
+                            <button class="glow-btn mt-3" onclick="buyItem('massageFoam', PRICES.items.massageFoam.fires)">
+                                <span id="buyBtnMassageFoam"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="product-image" style="background-image: url('');"></div>
+                        <div class="p-3 text-center">
+                            <p id="sexSwing" class="neon-text text-sm"></p>
+                            <p id="sexSwingDesc" class="text-xs mt-1"></p>
+                            <button class="glow-btn mt-3" onclick="buyItem('sexSwing', PRICES.items.sexSwing.fires)">
+                                <span id="buyBtnSexSwing"></span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -681,8 +833,18 @@
 
         <div id="currencySection" class="hidden">
             <div class="grid grid-cols-2 gap-3 mt-4">
+                <div class="card col-span-2">
+                    <div class="product-image" style="background-image: url('');"></div>
+                    <div class="p-3 text-center">
+                        <p id="morePhotos" class="neon-text text-sm"></p>
+                        <p id="morePhotosDesc" class="text-xs mt-1"></p>
+                        <button class="glow-btn mt-3" onclick="showSection('subscriptionsSection')">
+                            <span id="buyBtnMorePhotos"></span>
+                        </button>
+                    </div>
+                </div>
                 <div class="card">
-                    <div class="product-image"></div>
+                    <div class="product-image" style="background-image: url('');"></div>
                     <div class="p-3 text-center">
                         <p id="smallPack" class="neon-text text-sm"></p>
                         <p id="smallPackDesc" class="text-xs mt-1"></p>
@@ -692,7 +854,7 @@
                     </div>
                 </div>
                 <div class="card">
-                    <div class="product-image"></div>
+                    <div class="product-image" style="background-image: url('');"></div>
                     <div class="p-3 text-center">
                         <p id="mediumPack" class="neon-text text-sm"></p>
                         <p id="mediumPackDesc" class="text-xs mt-1"></p>
@@ -702,7 +864,7 @@
                     </div>
                 </div>
                 <div class="card">
-                    <div class="product-image"></div>
+                    <div class="product-image" style="background-image: url('');"></div>
                     <div class="p-3 text-center">
                         <p id="largePack" class="neon-text text-sm"></p>
                         <p id="largePackDesc" class="text-xs mt-1"></p>
@@ -712,7 +874,7 @@
                     </div>
                 </div>
                 <div class="card">
-                    <div class="product-image"></div>
+                    <div class="product-image" style="background-image: url('');"></div>
                     <div class="p-3 text-center">
                         <p id="megaPack" class="neon-text text-sm"></p>
                         <p id="megaPackDesc" class="text-xs mt-1"></p>
@@ -724,97 +886,18 @@
             </div>
         </div>
 
-        <div id="itemsSection" class="hidden">
-            <div class="grid grid-cols-1 gap-3 mt-4">
-                <div class="card">
-                    <div class="product-image"></div>
-                    <div class="p-3 text-center">
-                        <p id="analPlug" class="neon-text text-sm"></p>
-                        <p id="analPlugDesc" class="text-xs mt-1"></p>
-                        <button class="glow-btn mt-3" onclick="buyItem('analPlug', PRICES.items.analPlug.fires)">
-                            <span id="buyBtnAnalPlug"></span>
-                        </button>
-                    </div>
+        <div id="settingsSection" class="hidden">
+            <div class="card subscription-info-card" onclick="showSubscriptionSection()">
+                <div class="p-3">
+                    <h3 id="settingsTitle" class="text-md font-semibold"></h3>
+                    <p id="subscriptionInfo" class="mt-1"></p>
+                    <button id="renewBtn" class="glow-btn mt-3 hidden" onclick="showSection('subscriptionsSection')"></button>
                 </div>
-                <div class="card">
-                    <div class="product-image"></div>
-                    <div class="p-3 text-center">
-                        <p id="pajamas" class="neon-text text-sm"></p>
-                        <p id="pajamasDesc" class="text-xs mt-1"></p>
-                        <button class="glow-btn mt-3" onclick="buyItem('pajamas', PRICES.items.pajamas.fires)">
-                            <span id="buyBtnPajamas"></span>
-                        </button>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="product-image"></div>
-                    <div class="p-3 text-center">
-                        <p id="stockings" class="neon-text text-sm"></p>
-                        <p id="stockingsDesc" class="text-xs mt-1"></p>
-                        <button class="glow-btn mt-3" onclick="buyItem('stockings', PRICES.items.stockings.fires)">
-                            <span id="buyBtnStockings"></span>
-                        </button>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="product-image"></div>
-                    <div class="p-3 text-center">
-                        <p id="handcuffs" class="neon-text text-sm"></p>
-                        <p id="handcuffsDesc" class="text-xs mt-1"></p>
-                        <button class="glow-btn mt-3" onclick="buyItem('handcuffs', PRICES.items.handcuffs.fires)">
-                            <span id="buyBtnHandcuffs"></span>
-                        </button>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="product-image"></div>
-                    <div class="p-3 text-center">
-                        <p id="lube" class="neon-text text-sm"></p>
-                        <p id="lubeDesc" class="text-xs mt-1"></p>
-                        <button class="glow-btn mt-3" onclick="buyItem('lube', PRICES.items.lube.fires)">
-                            <span id="buyBtnLube"></span>
-                        </button>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="product-image"></div>
-                    <div class="p-3 text-center">
-                        <p id="truthOrDare" class="neon-text text-sm"></p>
-                        <p id="truthOrDareDesc" class="text-xs mt-1"></p>
-                        <button class="glow-btn mt-3" onclick="buyItem('truthOrDare', PRICES.items.truthOrDare.fires)">
-                            <span id="buyBtnTruthOrDare"></span>
-                        </button>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="product-image"></div>
-                    <div class="p-3 text-center">
-                        <p id="masks" class="neon-text text-sm"></p>
-                        <p id="masksDesc" class="text-xs mt-1"></p>
-                        <button class="glow-btn mt-3" onclick="buyItem('masks', PRICES.items.masks.fires)">
-                            <span id="buyBtnMasks"></span>
-                        </button>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="product-image"></div>
-                    <div class="p-3 text-center">
-                        <p id="massageFoam" class="neon-text text-sm"></p>
-                        <p id="massageFoamDesc" class="text-xs mt-1"></p>
-                        <button class="glow-btn mt-3" onclick="buyItem('massageFoam', PRICES.items.massageFoam.fires)">
-                            <span id="buyBtnMassageFoam"></span>
-                        </button>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="product-image"></div>
-                    <div class="p-3 text-center">
-                        <p id="sexSwing" class="neon-text text-sm"></p>
-                        <p id="sexSwingDesc" class="text-xs mt-1"></p>
-                        <button class="glow-btn mt-3" onclick="buyItem('sexSwing', PRICES.items.sexSwing.fires)">
-                            <span id="buyBtnSexSwing"></span>
-                        </button>
-                    </div>
+            </div>
+            <div class="card language-card" onclick="toggleLanguage()">
+                <div class="p-2 flex items-center justify-between w-full">
+                    <span id="languageLabel" class="neon-text text-sm font-medium"></span>
+                    <span id="currentLanguage" class="neon-text text-sm font-medium"></span>
                 </div>
             </div>
         </div>
@@ -839,12 +922,17 @@
 
         const translations = {
             en: {
-                sectionTitleScenarios: 'Scenarios',
-                sectionTitleItems: 'Items',
+                sectionTitleStore: 'Store',
                 sectionTitleSubscriptions: 'Subscriptions',
                 sectionTitleCurrency: 'Currency',
+                sectionTitleSettings: 'Settings',
+                scenariosTab: 'Scenarios',
+                itemsTab: 'Items',
                 tokenCount: '100',
-                languageText: 'Language',
+                languageLabel: 'Language',
+                settingsTitle: 'Your Plan',
+                subscriptionInfo: 'Deluxe until May 18, 2025',
+                renewBtnText: 'Renew',
                 scenario1Title: 'Tutor Asleep',
                 scenario1Desc: 'You enter her home, door ajar, finding her naked and dreaming of you. Wake her with a sinful touch! 😈',
                 scenario1Btn: 'Buy for 100🔥',
@@ -868,6 +956,9 @@
                 subForever: 'Forever Pass',
                 subDeluxe: 'Deluxe Pass',
                 buyBtnText: 'Buy Subscription',
+                morePhotos: 'Want More Photos?',
+                morePhotosDesc: 'Unlock more photo limits!',
+                buyBtnMorePhotos: 'Check Subscriptions',
                 smallPack: 'Small Pack',
                 smallPackDesc: '100 🔥',
                 buyBtnSmallPack: 'Buy for $1.00',
@@ -912,12 +1003,17 @@
                 cancelText: 'Cancel'
             },
             ru: {
-                sectionTitleScenarios: 'Сценарии',
-                sectionTitleItems: 'Предметы',
+                sectionTitleStore: 'Магазин',
                 sectionTitleSubscriptions: 'Подписки',
                 sectionTitleCurrency: 'Валюта',
+                sectionTitleSettings: 'Настройки',
+                scenariosTab: 'Сценарии',
+                itemsTab: 'Предметы',
                 tokenCount: '100',
-                languageText: 'Язык',
+                languageLabel: 'Язык',
+                settingsTitle: 'Ваш план',
+                subscriptionInfo: 'Делюкс до 18 мая 2025 г.',
+                renewBtnText: 'Продлить',
                 scenario1Title: 'Репетитор спит',
                 scenario1Desc: 'Ты заходишь в её дом, дверь приоткрыта, она голая и мечтает о тебе. Разбуди её грешным касанием! 😈',
                 scenario1Btn: 'Купить за 100🔥',
@@ -941,6 +1037,9 @@
                 subForever: 'Вечный пропуск',
                 subDeluxe: 'Делюкс пропуск',
                 buyBtnText: 'Купить подписку',
+                morePhotos: 'Хотите больше фото?',
+                morePhotosDesc: 'Разблокируйте больше лимитов на фото!',
+                buyBtnMorePhotos: 'Посмотреть подписки',
                 smallPack: 'Малый набор',
                 smallPackDesc: '100 🔥',
                 buyBtnSmallPack: 'Купить за $1.00',
@@ -986,46 +1085,17 @@
             }
         };
 
-        const PRICES = {
-            scenarios: {
-                scenario1: { fires: 100 },
-                scenario2: { fires: 100 },
-                scenario3: { fires: 100 },
-                scenario4: { fires: 100 }
-            },
-            subscriptions: {
-                sub1Day: { price: 2.00 },
-                sub3Days: { price: 5.00 },
-                sub1Week: { price: 13.00 },
-                sub1Month: { price: 25.00 },
-                sub3Months: { price: 70.00 },
-                subForever: { price: 50.00 },
-                subDeluxe: { price: 100.00 }
-            },
-            currency: {
-                smallPack: { fires: 100, price: 1.00 },
-                mediumPack: { fires: 200, price: 1.50 },
-                largePack: { fires: 500, price: 3.00 },
-                megaPack: { fires: 1000, price: 5.00 }
-            },
-            items: {
-                analPlug: { fires: 50 },
-                pajamas: { fires: 80 },
-                stockings: { fires: 60 },
-                handcuffs: { fires: 70 },
-                lube: { fires: 40 },
-                truthOrDare: { fires: 90 },
-                masks: { fires: 50 },
-                massageFoam: { fires: 60 },
-                sexSwing: { fires: 150 }
-            }
-        };
-
-        let currentLanguage = 'en';
-        let currentSection = 'scenariosSection';
+        let currentLanguage = 'ru';
+        let currentSection = 'storeSection';
+        let currentStoreTab = 'scenarios';
         let selectedPlan = null;
         let userTokens = 100;
         let photoLimit = { current: 5, max: 10 };
+        const subscription = {
+            plan: 'Deluxe',
+            expirationDate: new Date('2025-05-18T15:17:00+05:00')
+        };
+        const currentDate = new Date('2025-05-18T15:28:00+05:00');
 
         function toggleLanguage() {
             const langKeys = Object.keys(LANGUAGES);
@@ -1035,29 +1105,79 @@
             updateUI();
         }
 
+        function showSubscriptionSection() {
+            showSection('subscriptionsSection');
+        }
+
         function updateLanguage() {
             const lang = LANGUAGES[currentLanguage];
             const trans = translations[currentLanguage] || translations.en;
-            document.getElementById('currentFlag').textContent = lang.flag;
-            document.getElementById('languageText').textContent = trans.languageText || 'Language';
+            document.getElementById('currentLanguage').textContent = lang.name;
+            document.getElementById('languageLabel').textContent = trans.languageLabel || 'Language';
             document.getElementById('tokenCount').textContent = userTokens;
+            document.getElementById('settingsTitle').textContent = trans.settingsTitle || 'Your Plan';
+            const planName = currentLanguage === 'ru' ? 'Делюкс' : 'Deluxe';
+            document.getElementById('subscriptionInfo').textContent = `${planName} ${trans.subscriptionInfo.split(' ').slice(1).join(' ')}`;
+            document.getElementById('renewBtn').textContent = trans.renewBtnText || 'Renew';
+
+            const timeDiff = subscription.expirationDate - currentDate;
+            const daysLeft = timeDiff / (1000 * 60 * 60 * 24);
+            if (daysLeft <= 3) {
+                document.getElementById('renewBtn').classList.remove('hidden');
+            } else {
+                document.getElementById('renewBtn').classList.add('hidden');
+            }
+
             updateSectionContent(trans);
         }
 
         function updateSectionContent(trans) {
             const sectionTitles = {
-                scenariosSection: trans.sectionTitleScenarios,
-                itemsSection: trans.sectionTitleItems,
+                storeSection: trans.sectionTitleStore,
                 subscriptionsSection: trans.sectionTitleSubscriptions,
-                currencySection: trans.sectionTitleCurrency
+                currencySection: trans.sectionTitleCurrency,
+                settingsSection: trans.sectionTitleSettings
             };
             document.getElementById('sectionTitle').textContent = sectionTitles[currentSection] || 'Section';
 
-            if (currentSection === 'scenariosSection') {
-                for (let i = 1; i <= 4; i++) {
-                    document.getElementById(`scenario${i}Title`).textContent = trans[`scenario${i}Title`] || `Scenario ${i}`;
-                    document.getElementById(`scenario${i}Desc`).textContent = trans[`scenario${i}Desc`] || 'Description';
-                    document.getElementById(`scenario${i}Btn`).textContent = trans[`scenario${i}Btn`] || 'Buy';
+            document.getElementById('scenariosTab').textContent = `📖 ${trans.scenariosTab}`;
+            document.getElementById('itemsTab').textContent = `🛍️ ${trans.itemsTab}`;
+
+            if (currentSection === 'storeSection') {
+                if (currentStoreTab === 'scenarios') {
+                    for (let i = 1; i <= 4; i++) {
+                        document.getElementById(`scenario${i}Title`).textContent = trans[`scenario${i}Title`] || `Scenario ${i}`;
+                        document.getElementById(`scenario${i}Desc`).textContent = trans[`scenario${i}Desc`] || 'Description';
+                        document.getElementById(`scenario${i}Btn`).textContent = trans[`scenario${i}Btn`] || 'Buy';
+                    }
+                } else if (currentStoreTab === 'items') {
+                    document.getElementById('analPlug').textContent = trans.analPlug || 'Anal Plug';
+                    document.getElementById('analPlugDesc').textContent = trans.analPlugDesc || 'Description';
+                    document.getElementById('buyBtnAnalPlug').textContent = trans.buyBtnAnalPlug || 'Buy';
+                    document.getElementById('pajamas').textContent = trans.pajamas || 'Pajamas';
+                    document.getElementById('pajamasDesc').textContent = trans.pajamasDesc || 'Description';
+                    document.getElementById('buyBtnPajamas').textContent = trans.buyBtnPajamas || 'Buy';
+                    document.getElementById('stockings').textContent = trans.stockings || 'Stockings';
+                    document.getElementById('stockingsDesc').textContent = trans.stockingsDesc || 'Description';
+                    document.getElementById('buyBtnStockings').textContent = trans.buyBtnStockings || 'Buy';
+                    document.getElementById('handcuffs').textContent = trans.handcuffs || 'Handcuffs';
+                    document.getElementById('handcuffsDesc').textContent = trans.handcuffsDesc || 'Description';
+                    document.getElementById('buyBtnHandcuffs').textContent = trans.buyBtnHandcuffs || 'Buy';
+                    document.getElementById('lube').textContent = trans.lube || 'Lube';
+                    document.getElementById('lubeDesc').textContent = trans.lubeDesc || 'Description';
+                    document.getElementById('buyBtnLube').textContent = trans.buyBtnLube || 'Buy';
+                    document.getElementById('truthOrDare').textContent = trans.truthOrDare || 'Truth or Dare';
+                    document.getElementById('truthOrDareDesc').textContent = trans.truthOrDareDesc || 'Description';
+                    document.getElementById('buyBtnTruthOrDare').textContent = trans.buyBtnTruthOrDare || 'Buy';
+                    document.getElementById('masks').textContent = trans.masks || 'Masks';
+                    document.getElementById('masksDesc').textContent = trans.masksDesc || 'Description';
+                    document.getElementById('buyBtnMasks').textContent = trans.buyBtnMasks || 'Buy';
+                    document.getElementById('massageFoam').textContent = trans.massageFoam || 'Massage Foam';
+                    document.getElementById('massageFoamDesc').textContent = trans.massageFoamDesc || 'Description';
+                    document.getElementById('buyBtnMassageFoam').textContent = trans.buyBtnMassageFoam || 'Buy';
+                    document.getElementById('sexSwing').textContent = trans.sexSwing || 'Sex Swing';
+                    document.getElementById('sexSwingDesc').textContent = trans.sexSwingDesc || 'Description';
+                    document.getElementById('buyBtnSexSwing').textContent = trans.buyBtnSexSwing || 'Buy';
                 }
             } else if (currentSection === 'subscriptionsSection') {
                 document.getElementById('detailsHeader').textContent = trans.detailsHeader || 'Subscription Benefits';
@@ -1071,6 +1191,9 @@
                 document.getElementById('subDeluxe').textContent = trans.subDeluxe || 'Deluxe Pass';
                 document.getElementById('buyBtnText').textContent = trans.buyBtnText || 'Buy Subscription';
             } else if (currentSection === 'currencySection') {
+                document.getElementById('morePhotos').textContent = trans.morePhotos || 'Want More Photos?';
+                document.getElementById('morePhotosDesc').textContent = trans.morePhotosDesc || 'Unlock more photo limits!';
+                document.getElementById('buyBtnMorePhotos').textContent = trans.buyBtnMorePhotos || 'Check Subscriptions';
                 document.getElementById('smallPack').textContent = trans.smallPack || 'Small Pack';
                 document.getElementById('smallPackDesc').textContent = trans.smallPackDesc || '100 🔥';
                 document.getElementById('buyBtnSmallPack').textContent = trans.buyBtnSmallPack || 'Buy';
@@ -1083,34 +1206,6 @@
                 document.getElementById('megaPack').textContent = trans.megaPack || 'Mega Pack';
                 document.getElementById('megaPackDesc').textContent = trans.megaPackDesc || '1000 🔥';
                 document.getElementById('buyBtnMegaPack').textContent = trans.buyBtnMegaPack || 'Buy';
-            } else if (currentSection === 'itemsSection') {
-                document.getElementById('analPlug').textContent = trans.analPlug || 'Anal Plug';
-                document.getElementById('analPlugDesc').textContent = trans.analPlugDesc || 'Description';
-                document.getElementById('buyBtnAnalPlug').textContent = trans.buyBtnAnalPlug || 'Buy';
-                document.getElementById('pajamas').textContent = trans.pajamas || 'Pajamas';
-                document.getElementById('pajamasDesc').textContent = trans.pajamasDesc || 'Description';
-                document.getElementById('buyBtnPajamas').textContent = trans.buyBtnPajamas || 'Buy';
-                document.getElementById('stockings').textContent = trans.stockings || 'Stockings';
-                document.getElementById('stockingsDesc').textContent = trans.stockingsDesc || 'Description';
-                document.getElementById('buyBtnStockings').textContent = trans.buyBtnStockings || 'Buy';
-                document.getElementById('handcuffs').textContent = trans.handcuffs || 'Handcuffs';
-                document.getElementById('handcuffsDesc').textContent = trans.handcuffsDesc || 'Description';
-                document.getElementById('buyBtnHandcuffs').textContent = trans.buyBtnHandcuffs || 'Buy';
-                document.getElementById('lube').textContent = trans.lube || 'Lube';
-                document.getElementById('lubeDesc').textContent = trans.lubeDesc || 'Description';
-                document.getElementById('buyBtnLube').textContent = trans.buyBtnLube || 'Buy';
-                document.getElementById('truthOrDare').textContent = trans.truthOrDare || 'Truth or Dare';
-                document.getElementById('truthOrDareDesc').textContent = trans.truthOrDareDesc || 'Description';
-                document.getElementById('buyBtnTruthOrDare').textContent = trans.buyBtnTruthOrDare || 'Buy';
-                document.getElementById('masks').textContent = trans.masks || 'Masks';
-                document.getElementById('masksDesc').textContent = trans.masksDesc || 'Description';
-                document.getElementById('buyBtnMasks').textContent = trans.buyBtnMasks || 'Buy';
-                document.getElementById('massageFoam').textContent = trans.massageFoam || 'Massage Foam';
-                document.getElementById('massageFoamDesc').textContent = trans.massageFoamDesc || 'Description';
-                document.getElementById('buyBtnMassageFoam').textContent = trans.buyBtnMassageFoam || 'Buy';
-                document.getElementById('sexSwing').textContent = trans.sexSwing || 'Sex Swing';
-                document.getElementById('sexSwingDesc').textContent = trans.sexSwingDesc || 'Description';
-                document.getElementById('buyBtnSexSwing').textContent = trans.buyBtnSexSwing || 'Buy';
             }
         }
 
@@ -1120,11 +1215,43 @@
             });
             document.getElementById(sectionId).classList.remove('hidden');
             currentSection = sectionId;
+
+            document.querySelectorAll('.category-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            const buttonMap = {
+                'storeSection': 'storeBtn',
+                'subscriptionsSection': 'subscriptionsBtn',
+                'settingsSection': 'settingsBtn',
+                'currencySection': 'storeBtn'
+            };
+            const buttonId = buttonMap[sectionId] || 'storeBtn';
+            document.getElementById(buttonId).classList.add('selected');
+
+            updateLanguage();
+        }
+
+        function showCurrencySection() {
+            showSection('currencySection');
+        }
+
+        function showStoreTab(tab) {
+            currentStoreTab = tab;
+            document.querySelectorAll('.store-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.getElementById(`${tab}Content`).classList.remove('hidden');
+
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`${tab}Tab`).classList.add('active');
+
             updateLanguage();
         }
 
         function selectScenario(id) {
-            const cards = document.querySelectorAll('#scenariosSection .card');
+            const cards = document.querySelectorAll('#scenariosContent .card');
             cards.forEach(card => card.classList.remove('selected'));
             cards[id - 1].classList.add('selected');
             showConfirmModal(`Purchase ${translations[currentLanguage][`scenario${id}Title`]} for ${PRICES.scenarios[`scenario${id}`].fires}🔥?`, () => {
@@ -1144,9 +1271,7 @@
             cards[id - 1].classList.add('selected');
             selectedPlan = id;
             const trans = translations[currentLanguage] || translations.en;
-            document.getElementById('subscriptionsDesc').innerHTML = id === 7 ? trans
-
-.subscriptionsDescDeluxe : trans.subscriptionsDescStandard;
+            document.getElementById('subscriptionsDesc').innerHTML = id === 7 ? trans.subscriptionsDescDeluxe : trans.subscriptionsDescStandard;
         }
 
         function buySelectedSubscription() {
@@ -1159,7 +1284,10 @@
             showConfirmModal(`Purchase ${translations[currentLanguage][plan]} for $${PRICES.subscriptions[plan].price}?`, () => {
                 alert(`${translations[currentLanguage][plan]} purchased!`);
                 photoLimit = plan === 'subDeluxe' ? { current: 0, max: Infinity } : { current: 0, max: 50 };
+                subscription.plan = plan === 'subDeluxe' ? 'Deluxe' : 'Standard';
+                subscription.expirationDate = new Date(currentDate.getTime() + (plan === 'sub1Day' ? 1 : plan === 'sub3Days' ? 3 : plan === 'sub1Week' ? 7 : plan === 'sub1Month' ? 30 : plan === 'sub3Months' ? 90 : 365) * 24 * 60 * 60 * 1000);
                 updateUI();
+                updateLanguage();
             });
         }
 
@@ -1214,9 +1342,85 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             updateLanguage();
-            showSection('scenariosSection');
+            showSection('storeSection');
+            showStoreTab('scenarios');
             updateUI();
+
+            document.querySelectorAll('#scenariosContent .product-image').forEach((el, index) => {
+                el.style.backgroundImage = `url('${IMAGES.scenarios[`scenario${index + 1}`]}')`;
+            });
+            document.querySelectorAll('#itemsContent .product-image').forEach((el, index) => {
+                const itemKeys = Object.keys(IMAGES.items);
+                el.style.backgroundImage = `url('${IMAGES.items[itemKeys[index]]}')`;
+            });
+            document.querySelectorAll('#currencySection .product-image').forEach((el, index) => {
+                const currencyKeys = Object.keys(IMAGES.currency);
+                el.style.backgroundImage = `url('${IMAGES.currency[currencyKeys[index]]}')`;
+            });
         });
+
+        // Constants for images and prices moved to the end of the script
+        const IMAGES = {
+            scenarios: {
+                scenario1: 'URL_SCENARIO_1',
+                scenario2: 'URL_SCENARIO_2',
+                scenario3: 'URL_SCENARIO_3',
+                scenario4: 'URL_SCENARIO_4'
+            },
+            items: {
+                analPlug: 'https://i.ibb.co/HLWWnCKj/019a6cef-3bbb-4368-bad4-300c47559d84-019a6cef-3bbb-4368-bad4-300c47559d84.png',
+                pajamas: 'https://i.ibb.co/zHTXpGGC/89f1722b-75a6-4aa9-ba96-f4483e119517-89f1722b-75a6-4aa9-ba96-f4483e119517.png',
+                stockings: 'URL_STOCKINGS',
+                handcuffs: 'URL_HANDCUFFS',
+                lube: 'URL_LUBE',
+                truthOrDare: 'URL_TRUTH_OR_DARE',
+                masks: 'URL_MASKS',
+                massageFoam: 'URL_MASSAGE_FOAM',
+                sexSwing: 'URL_SEX_SWING'
+            },
+            currency: {
+                morePhotos: 'URL_MORE_PHOTOS',
+                smallPack: 'URL_SMALL_PACK',
+                mediumPack: 'URL_MEDIUM_PACK',
+                largePack: 'URL_LARGE_PACK',
+                megaPack: 'URL_MEGA_PACK'
+            }
+        };
+
+        const PRICES = {
+            scenarios: {
+                scenario1: { fires: 100 },
+                scenario2: { fires: 100 },
+                scenario3: { fires: 100 },
+                scenario4: { fires: 100 }
+            },
+            subscriptions: {
+                sub1Day: { price: 2.00 },
+                sub3Days: { price: 5.00 },
+                sub1Week: { price: 13.00 },
+                sub1Month: { price: 25.00 },
+                sub3Months: { price: 70.00 },
+                subForever: { price: 50.00 },
+                subDeluxe: { price: 100.00 }
+            },
+            currency: {
+                smallPack: { fires: 100, price: 1.00 },
+                mediumPack: { fires: 200, price: 1.50 },
+                largePack: { fires: 500, price: 3.00 },
+                megaPack: { fires: 1000, price: 5.00 }
+            },
+            items: {
+                analPlug: { fires: 50 },
+                pajamas: { fires: 80 },
+                stockings: { fires: 60 },
+                handcuffs: { fires: 70 },
+                lube: { fires: 40 },
+                truthOrDare: { fires: 90 },
+                masks: { fires: 50 },
+                massageFoam: { fires: 60 },
+                sexSwing: { fires: 150 }
+            }
+        };
     </script>
 </body>
 </html>
