@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NSFW Adventure App</title>
+    <title>Adventure App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <style>
         * {
             -webkit-tap-highlight-color: transparent;
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
-            background: url('https://i.imgur.com/1PUcNC8.jpg') no-repeat center center fixed;
+            font-family: 'Inter', sans-serif;
+            background: url('https://cdn.discordapp.com/attachments/1349800672035475533/1377962570501066863/91ae8a950b924696.jpg?ex=683adf26&is=68398da6&hm=8eeede46db8fe6b6eb7923dc947b5dada91c3b2f11bd822067ab244a04099346') no-repeat center center fixed;
             background-size: cover;
-            color: #d4af37;
+            color: #f0f0f0;
             min-height: 100vh;
             overflow-y: auto;
             display: flex;
@@ -25,353 +26,263 @@
         }
 
         .card {
-            background: linear-gradient(145deg, rgba(35, 30, 55, 0.9), rgba(50, 40, 80, 0.9));
-            border-radius: 16px;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 2px solid #a33bff;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 4px 15px rgba(163, 59, 255, 0.3), 0 0 8px rgba(163, 59, 255, 0.2) inset;
-            position: relative;
-            animation: slideIn 0.5s ease-out;
-            cursor: pointer;
             width: 100%;
-            max-width: 500px; /* Увеличил максимальную ширину карточек */
+            max-width: 260px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+            position: relative;
+            margin: 0 auto;
         }
 
         .card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 6px 20px rgba(163, 59, 255, 0.4);
         }
 
-        .card.selected {
-            border-color: #00ffcc;
-            box-shadow: 0 0 20px #00ffcc, 0 0 12px #00ffcc inset;
-        }
-
-        .product-image {
-            height: 300px; /* Увеличил высоту изображения */
+        .card img {
             width: 100%;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            border-bottom: 3px solid #a33bff;
-            transition: transform 0.5s ease;
-            border-radius: 14px 14px 0 0;
-            position: relative;
-            overflow: hidden;
+            height: auto;
+            display: block;
         }
 
-        .product-image::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
+        .card-body {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .card-desc {
+            font-size: 14px;
+            color: #cccccc;
+            line-height: 1.4;
+        }
+
+        .card-price {
+            font-size: 14px;
+            color: #cccccc;
+            line-height: 1.4;
+        }
+
+        .card-actions {
+            margin-top: 16px;
+        }
+
+        .btn {
             width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, rgba(163, 59, 255, 0.1), rgba(50, 40, 80, 0.3));
-            pointer-events: none;
-        }
-
-        .card:hover .product-image {
-            transform: scale(1.05);
-        }
-
-        .glow-btn {
-            background: linear-gradient(90deg, #ff69b4, #a33bff);
-            border-radius: 10px;
-            padding: 10px 14px; /* Увеличил отступы кнопки */
-            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
-            font-weight: 500;
-            font-size: 14px; /* Увеличил размер шрифта кнопки */
+            padding: 10px 0;
+            background-color: #6C5DD3;
             border: none;
+            border-radius: 12px;
             color: #ffffff;
-            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: background-color 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 12px rgba(108, 93, 211, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
-            box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
-            width: 100%;
         }
 
-        .glow-btn:hover {
-            transform: scale(1.03);
-            box-shadow: 0 0 14px rgba(255, 105, 180, 0.7);
-        }
-
-        .modal {
-            background: rgba(20, 15, 30, 0.95);
-            backdrop-filter: blur(10px);
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        h2, h3 {
-            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
-            color: #e6e6e6;
-            font-weight: 400;
-            text-shadow: 0 0 5px rgba(163, 59, 255, 0.5);
-            font-size: 1.4rem; /* Увеличил размер заголовков */
-        }
-
-        p {
-            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
-            line-height: 1.5;
-            color: #c8b8e0;
-            opacity: 0.85;
-            font-size: 0.9rem; /* Увеличил размер текста описания */
-        }
-
-        .neon-text {
-            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
-            color: #d9ccff;
-            font-weight: 500;
-            text-shadow: 0 0 5px rgba(163, 59, 255, 0.5);
-            animation: neonFlicker 2.5s infinite;
-            font-size: 1.2rem; /* Увеличил размер текста для neon-text */
-        }
-
-        .category-buttons {
-            position: fixed;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            z-index: 10;
-            background: linear-gradient(135deg, rgba(50, 40, 80, 0.8), rgba(80, 60, 110, 0.8));
-            border-radius: 25px;
-            padding: 8px 12px;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 0 12px rgba(163, 59, 255, 0.4);
-            width: auto;
-            max-width: 90%;
-        }
-
-        .category-button {
-            background: linear-gradient(90deg, #ff69b4, #a33bff);
-            border-radius: 50%;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
-            font-size: 18px;
-            border: none;
-            color: #ffffff;
-            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 42px;
-            height: 42px;
-            box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
-        }
-
-        .category-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 14px rgba(255, 105, 180, 0.7);
-        }
-
-        .category-button.selected {
-            background: linear-gradient(90deg, #00ffcc, #a33bff);
-            box-shadow: 0 0 14px rgba(0, 255, 204, 0.7);
-        }
-
-        .content-section {
-            padding: 60px 10px 70px;
-            animation: slideSection 0.5s ease-out;
-            width: 100%;
-            max-width: 1200px; /* Увеличил максимальную ширину секции */
-            margin: 0 auto;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .header-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 10px;
-            background: url('https://i.imgur.com/1PUcNC8.jpg') no-repeat center center;
-            background-size: cover;
-            background-color: rgba(35, 30, 55, 0.85);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid #a33bff;
-            box-shadow: 0 0 10px rgba(163, 59, 255, 0.3);
-            z-index: 20;
-        }
-
-        .section-title {
-            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
-            font-size: 1.8rem; /* Увеличил размер заголовка секции */
-            font-weight: 700;
-            background: linear-gradient(90deg, #ff69b4, #a33bff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 8px rgba(255, 105, 180, 0.7);
-            animation: neonFlicker 2.5s infinite;
-            margin: 0;
-        }
-
-        .section-title::before,
-        .section-title::after {
-            content: '🔥';
-            font-size: 16px;
-            margin: 0 4px;
-        }
-
-        .balance-flask {
-            background: url('https://i.imgur.com/1PUcNC8.jpg') no-repeat center center;
-            background-size: cover;
-            background-color: rgba(50, 40, 80, 0.9);
-            border-radius: 12px;
-            padding: 8px 12px;
-            box-shadow: 0 0 12px rgba(255, 105, 180, 0.5);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            backdrop-filter: blur(8px);
-        }
-
-        .balance-item {
-            display: flex;
-            align-items: center;
-            font-size: 14px;
-            font-weight: 500;
-            color: #ffffff;
-            gap: 3px;
-            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-        }
-
-        .plus-btn {
-            background: linear-gradient(90deg, #ff69b4, #a33bff);
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: 12px;
-            border: none;
-            color: #ffffff;
-            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 8px rgba(255, 133, 192, 0.5);
-        }
-
-        .plus-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 12px rgba(255, 133, 192, 0.7);
-        }
-
-        .checkmark {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            width: 18px;
-            height: 18px;
-            background: #6b3d8d;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #d9ccff;
-            font-size: 10px;
-            transition: all 0.3s ease;
-            opacity: 0;
-        }
-
-        .card.selected .checkmark {
-            opacity: 1;
+        .btn:hover {
+            background-color: #5A4DC6;
+            box-shadow: 0 0 18px rgba(108, 93, 211, 0.9);
         }
 
         .subscription-card {
+            width: 100%;
+            max-width: 400px;
+            background: rgba(16, 16, 16, 0.85);
+            border: 1px solid rgba(108, 93, 211, 0.3);
+            border-radius: 12px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
+                       0 0 0 1px rgba(108, 93, 211, 0.2),
+                       0 0 20px rgba(108, 93, 211, 0.2);
+            overflow: hidden;
+            color: #f0f0f0;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 6px 10px;
-            margin: 15px 0;
+            flex-direction: column;
+            transition: all 0.2s ease;
+            padding: 12px 20px;
             cursor: pointer;
+            margin: 8px auto;
+            position: relative;
         }
 
         .subscription-card:hover {
             transform: translateY(-2px);
+            border-color: rgba(108, 93, 211, 0.4);
+            box-shadow: 0 6px 24px rgba(108, 93, 211, 0.25),
+                       0 0 0 1px rgba(108, 93, 211, 0.3),
+                       0 0 25px rgba(108, 93, 211, 0.3);
         }
 
         .subscription-card.selected {
-            border-color: #00ffcc;
-            box-shadow: 0 0 12px #00ffcc;
+            border-color: #6C5DD3;
+            background: rgba(108, 93, 211, 0.12);
+            box-shadow: 0 6px 24px rgba(108, 93, 211, 0.3),
+                       0 0 0 1px rgba(108, 93, 211, 0.4),
+                       0 0 30px rgba(108, 93, 211, 0.4);
         }
 
-        .subscription-info {
+        .subscription-card .card-body {
+            padding: 0;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .subscription-card .card-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .subscription-card .card-price {
+            font-size: 14px;
+            color: #6C5DD3;
+            font-weight: 500;
+        }
+
+        .subscription-card .checkmark {
+            position: absolute;
+            top: 50%;
+            right: 12px;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            background: #6C5DD3;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 10px;
+            transition: all 0.2s ease;
+            opacity: 0;
+        }
+
+        .subscription-card.selected .checkmark {
+            opacity: 1;
+        }
+
+        .subscription-info-card {
+            min-height: 120px;
+            width: 100%;
+            max-width: 400px;
+            padding: 16px 20px;
+            margin: 0 auto 15px;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
+            background: rgba(16, 16, 16, 0.85);
+            border: 1px solid rgba(108, 93, 211, 0.3);
+            border-radius: 16px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
+                       0 0 0 1px rgba(108, 93, 211, 0.2),
+                       0 0 20px rgba(108, 93, 211, 0.2);
         }
 
-        .price-text {
-            font-size: 11px;
-            color: #e0b68a;
+        .language-card {
+            height: 60px;
+            width: 100%;
+            max-width: 400px;
+            padding: 10px 20px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(16, 16, 16, 0.85);
+            border: 1px solid rgba(108, 93, 211, 0.3);
+            border-radius: 16px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
+                       0 0 0 1px rgba(108, 93, 211, 0.2),
+                       0 0 20px rgba(108, 93, 211, 0.2);
+        }
+
+        .language-card .card-body {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .language-card .card-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .language-card .card-desc {
+            font-size: 16px;
+            color: #6C5DD3;
+            font-weight: 500;
         }
 
         .subscription-details {
-            margin-top: 12px;
-            padding: 12px;
-            background: linear-gradient(145deg, rgba(50, 40, 80, 0.85), rgba(35, 30, 55, 0.85));
-            border-radius: 10px;
-            border: 1px solid #a33bff;
-            box-shadow: 0 0 12px rgba(163, 59, 255, 0.4);
-            backdrop-filter: blur(10px);
-        }
-
-        .details-header {
-            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
-            color: #e6e6e6;
-            font-size: 18px;
-            text-shadow: 0 0 5px rgba(163, 59, 255, 0.5);
-            margin-bottom: 6px;
-        }
-
-        .details-content p {
-            margin-bottom: 6px;
+            margin: 12px auto;
+            padding: 16px 20px;
+            width: 100%;
+            max-width: 400px;
+            background: rgba(16, 16, 16, 0.85);
+            border: 1px solid rgba(108, 93, 211, 0.3);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
+                       0 0 0 1px rgba(108, 93, 211, 0.2),
+                       0 0 20px rgba(108, 93, 211, 0.2);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
 
         .confirm-modal-content {
-            background: linear-gradient(145deg, rgba(50, 40, 80, 0.85), rgba(35, 30, 55, 0.85));
-            border-radius: 14px;
-            padding: 12px;
-            box-shadow: 0 0 12px rgba(163, 59, 255, 0.4);
+            background: rgba(16, 16, 16, 0.85);
+            border: 1px solid rgba(108, 93, 211, 0.3);
+            border-radius: 16px;
+            padding: 16px 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
+                       0 0 0 1px rgba(108, 93, 211, 0.2),
+                       0 0 20px rgba(108, 93, 211, 0.2);
             backdrop-filter: blur(12px);
-            border: 1px solid #a33bff;
-            animation: slideUp 0.4s ease-out;
+            -webkit-backdrop-filter: blur(12px);
             width: 90%;
-            max-width: 320px;
+            max-width: 400px;
             position: relative;
             overflow: hidden;
         }
 
-        .confirm-modal-content::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 50% 0%, rgba(163, 59, 255, 0.15), transparent 70%);
-            pointer-events: none;
-        }
-
         .confirm-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f0f0f0;
             animation: slideLeft 0.5s ease-out;
         }
 
         .confirm-text {
+            font-size: 14px;
+            color: #cccccc;
+            line-height: 1.4;
             animation: slideRight 0.5s ease-out 0.1s;
             animation-fill-mode: both;
         }
@@ -380,7 +291,7 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
-            margin-top: 12px;
+            margin-top: 16px;
             animation: slideUp 0.5s ease-out 0.2s;
             animation-fill-mode: both;
         }
@@ -393,91 +304,134 @@
         }
 
         .tab-button {
-            background: linear-gradient(90deg, #ff69b4, #a33bff);
+            background-color: #6C5DD3;
             border-radius: 20px;
             padding: 6px 15px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-size: 14px;
             font-weight: 500;
             border: none;
             color: #ffffff;
-            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+            box-shadow: 0 0 12px rgba(108, 93, 211, 0.5);
         }
 
         .tab-button:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 14px rgba(255, 105, 180, 0.7);
+            box-shadow: 0 0 18px rgba(108, 93, 211, 0.9);
         }
 
         .tab-button.active {
-            background: linear-gradient(90deg, #00ffcc, #a33bff);
-            box-shadow: 0 0 14px rgba(0, 255, 204, 0.7);
+            background-color: #5A4DC6;
+            box-shadow: 0 0 18px rgba(108, 93, 211, 0.9);
         }
 
-        .subscription-info-card {
-            min-height: 120px;
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 15px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .language-card {
-            height: 60px;
-            width: 100%;
-            padding: 10px 15px;
+        .balance-flask {
+            background: rgba(16, 16, 16, 0.8);
+            border-radius: 16px;
+            padding: 8px 16px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 12px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .balance-item {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 500;
+            color: #f0f0f0;
+            gap: 3px;
+        }
+
+        .plus-btn {
+            background-color: #6C5DD3;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            border: none;
+            color: #ffffff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 12px rgba(108, 93, 211, 0.5);
+        }
+
+        .plus-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 18px rgba(108, 93, 211, 0.9);
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .modal {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .neon-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: #f0f0f0;
+            animation: neonFlicker 2.5s infinite;
+        }
+
+        h2, h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: #f0f0f0;
+        }
+
+        p {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #cccccc;
+            line-height: 1.4;
         }
 
         @media (max-width: 768px) {
             .grid-cols-4 {
-                grid-template-columns: repeat(1, 1fr); /* 1 карточка на маленьких экранах */
+                grid-template-columns: repeat(1, 1fr);
                 gap: 12px;
+                padding: 0 10px;
             }
             .grid-cols-2 {
-                grid-template-columns: repeat(1, 1fr); /* 1 карточка для валюты */
+                grid-template-columns: repeat(1, 1fr);
                 gap: 12px;
+                padding: 0 10px;
             }
             .grid-cols-1 {
                 grid-template-columns: repeat(1, 1fr);
                 gap: 12px;
+                padding: 0 10px;
             }
             .col-span-2 {
                 grid-column: span 1;
             }
-            .card {
-                margin: 0 8px;
-            }
-            .product-image {
-                height: 200px; /* Меньшая высота для маленьких экранов */
-            }
-            h2, h3 {
-                font-size: 1.2rem;
-            }
-            p {
-                font-size: 0.8rem;
-            }
-            .neon-text {
-                font-size: 1rem;
-            }
-            .glow-btn {
-                padding: 8px 12px;
-                font-size: 13px;
-            }
-            .category-buttons {
-                gap: 8px;
-                padding: 6px 10px;
-            }
-            .category-button {
-                width: 38px;
-                height: 38px;
-                font-size: 16px;
+            .card, .subscription-card,
+            .subscription-info-card,
+            .language-card,
+            .subscription-details,
+            .confirm-modal-content {
+                margin: 0 auto;
+                width: 100%;
+                max-width: 360px;
+                padding: 10px 16px;
             }
             .section-title {
                 font-size: 1.5rem;
@@ -507,14 +461,37 @@
                 padding: 8px 10px;
             }
             .subscription-card {
-                margin: 10px 0;
-                padding: 5px 8px;
+                max-width: 300px;
+                padding: 10px 14px;
+            }
+            .subscription-card .card-title {
+                font-size: 14px;
+            }
+            .subscription-card .card-price {
+                font-size: 13px;
+            }
+            .subscription-card .checkmark {
+                width: 16px;
+                height: 16px;
+                right: 10px;
+            }
+            .header-container {
+                padding: 10px 14px;
+            }
+            .category-buttons {
+                bottom: 12px;
+                padding: 6px 12px;
+                gap: 12px;
+            }
+            .category-button {
+                width: 40px;
+                height: 40px;
             }
         }
 
         @media (min-width: 769px) {
             .grid-cols-4 {
-                grid-template-columns: repeat(2, 1fr); /* 2 карточки на больших экранах */
+                grid-template-columns: repeat(2, 1fr);
                 gap: 15px;
             }
             .grid-cols-2 {
@@ -530,9 +507,6 @@
             }
             .content-section {
                 max-width: 1200px;
-            }
-            .product-image {
-                height: 350px; /* Большая высота для больших экранов */
             }
             .section-title {
                 font-size: 2rem;
@@ -562,11 +536,31 @@
                 padding: 6px 8px;
             }
             .subscription-card {
-                margin: 8px 0;
-                padding: 4px 6px;
+                max-width: 280px;
+                padding: 8px 12px;
             }
-            .product-image {
-                height: 180px;
+            .subscription-card .card-title {
+                font-size: 13px;
+            }
+            .subscription-card .card-price {
+                font-size: 12px;
+            }
+            .subscription-card .checkmark {
+                width: 14px;
+                height: 14px;
+                right: 8px;
+            }
+            .header-container {
+                padding: 8px 12px;
+            }
+            .category-buttons {
+                bottom: 8px;
+                padding: 4px 10px;
+                gap: 10px;
+            }
+            .category-button {
+                width: 36px;
+                height: 36px;
             }
         }
 
@@ -601,13 +595,53 @@
         }
 
         @keyframes neonFlicker {
-            0%, 100% { text-shadow: 0 0 5px rgba(255, 105, 180, 0.5); }
-            50% { text-shadow: 0 0 8px rgba(255, 105, 180, 0.6); }
+            0%, 100% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+            50% { text-shadow: 0 0 8px rgba(255, 255, 255, 0.6); }
         }
 
-        @keyframes bounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+        .category-buttons {
+            position: fixed;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            z-index: 10;
+            background: rgba(16, 16, 16, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 8px 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .category-button {
+            background-color: transparent;
+            border-radius: 50%;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            border: none;
+            color: #ffffff;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            box-shadow: none;
+        }
+
+        .category-button:hover {
+            transform: translateY(-1px);
+            background-color: rgba(108, 93, 211, 0.1);
+        }
+
+        .category-button.selected {
+            background-color: #6C5DD3;
+            box-shadow: 0 2px 8px rgba(108, 93, 211, 0.3);
         }
     </style>
 </head>
@@ -616,69 +650,113 @@
         <div id="sectionTitle" class="section-title"></div>
         <div class="balance-flask">
             <div class="balance-item">
-                <span class="photo-icon">📷</span>
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
                 <span id="photoLimitDisplay">5 / 10</span>
             </div>
             <div class="balance-item">
                 <span id="tokenCount"></span>
-                <span class="fire-icon">🔥</span>
+                <span class="ice-icon">🧊</span>
             </div>
-            <button class="plus-btn" onclick="showCurrencySection()">+</button>
+            <button class="plus-btn" onclick="showCurrencySection()">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+            </button>
         </div>
     </div>
 
     <div class="category-buttons">
-        <button id="storeBtn" class="category-button selected" onclick="showSection('storeSection')">🛒</button>
-        <button id="subscriptionsBtn" class="category-button" onclick="showSection('subscriptionsSection')">⭐</button>
-        <button id="settingsBtn" class="category-button" onclick="showSection('settingsSection')">⚙️</button>
+        <button id="storeBtn" class="category-button selected" onclick="showSection('storeSection')">
+            <svg class="icon" viewBox="0 0 24 24">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+        </button>
+        <button id="subscriptionsBtn" class="category-button" onclick="showSection('subscriptionsSection')">
+            <svg class="icon" viewBox="0 0 24 24">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+        </button>
+        <button id="settingsBtn" class="category-button" onclick="showSection('settingsSection')">
+            <svg class="icon" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+        </button>
     </div>
 
     <div id="mainContent" class="content-section">
         <div id="storeSection">
             <div class="tab-container">
-                <button id="scenariosTab" class="tab-button active" onclick="showStoreTab('scenarios')">📖 Scenarios</button>
-                <button id="itemsTab" class="tab-button" onclick="showStoreTab('items')">🛍️ Items</button>
+                <button id="scenariosTab" class="tab-button active" onclick="showStoreTab('scenarios')">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                    </svg>
+                    Adventures
+                </button>
+                <button id="itemsTab" class="tab-button" onclick="showStoreTab('items')">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                    </svg>
+                    Gear
+                </button>
             </div>
             <div id="scenariosContent" class="store-content">
                 <div class="grid grid-cols-4 gap-3">
                     <div class="card">
-                        <div class="product-image" style="background-image: url('');"></div>
-                        <div class="p-3">
-                            <h3 id="scenario1Title" class="text-md font-semibold"></h3>
-                            <p id="scenario1Desc" class="mt-1"></p>
-                            <button class="glow-btn mt-3" onclick="selectScenario(1)">
-                                <span>🔥</span> <span id="scenario1Btn"></span>
-                            </button>
+                        <img src="" alt="Scenario 1" id="scenario1Image">
+                        <div class="card-body">
+                            <div class="card-title" id="scenario1Title"></div>
+                            <div class="card-desc" id="scenario1Desc"></div>
+                            <div class="card-actions">
+                                <button class="btn" onclick="selectScenario(1)">
+                                    <span>🧊</span> <span id="scenario1Btn"></span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="card">
-                        <div class="product-image" style="background-image: url('');"></div>
-                        <div class="p-3">
-                            <h3 id="scenario2Title" class="text-md font-semibold"></h3>
-                            <p id="scenario2Desc" class="mt-1"></p>
-                            <button class="glow-btn mt-3" onclick="selectScenario(2)">
-                                <span>🔥</span> <span id="scenario2Btn"></span>
-                            </button>
+                        <img src="" alt="Scenario 2" id="scenario2Image">
+                        <div class="card-body">
+                            <div class="card-title" id="scenario2Title"></div>
+                            <div class="card-desc" id="scenario2Desc"></div>
+                            <div class="card-actions">
+                                <button class="btn" onclick="selectScenario(2)">
+                                    <span>🧊</span> <span id="scenario2Btn"></span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="card">
-                        <div class="product-image" style="background-image: url('');"></div>
-                        <div class="p-3">
-                            <h3 id="scenario3Title" class="text-md font-semibold"></h3>
-                            <p id="scenario3Desc" class="mt-1"></p>
-                            <button class="glow-btn mt-3" onclick="selectScenario(3)">
-                                <span>🔥</span> <span id="scenario3Btn"></span>
-                            </button>
+                        <img src="" alt="Scenario 3" id="scenario3Image">
+                        <div class="card-body">
+                            <div class="card-title" id="scenario3Title"></div>
+                            <div class="card-desc" id="scenario3Desc"></div>
+                            <div class="card-actions">
+                                <button class="btn" onclick="selectScenario(3)">
+                                    <span>🧊</span> <span id="scenario3Btn"></span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="card">
-                        <div class="product-image" style="background-image: url('');"></div>
-                        <div class="p-3">
-                            <h3 id="scenario4Title" class="text-md font-semibold"></h3>
-                            <p id="scenario4Desc" class="mt-1"></p>
-                            <button class="glow-btn mt-3" onclick="selectScenario(4)">
-                                <span>🔥</span> <span id="scenario4Btn"></span>
-                            </button>
+                        <img src="" alt="Scenario 4" id="scenario4Image">
+                        <div class="card-body">
+                            <div class="card-title" id="scenario4Title"></div>
+                            <div class="card-desc" id="scenario4Desc"></div>
+                            <div class="card-actions">
+                                <button class="btn" onclick="selectScenario(4)">
+                                    <span>🧊</span> <span id="scenario4Btn"></span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -686,93 +764,51 @@
             <div id="itemsContent" class="store-content hidden">
                 <div class="grid grid-cols-4 gap-3 mt-4">
                     <div class="card">
-                        <div class="product-image" style="background-image: url('');"></div>
-                        <div class="p-3 text-center">
-                            <p id="analPlug" class="neon-text text-sm"></p>
-                            <p id="analPlugDesc" class="text-xs mt-1"></p>
-                            <button class="glow-btn mt-3" onclick="buyItem('analPlug', PRICES.items.analPlug.fires)">
-                                <span id="buyBtnAnalPlug"></span>
-                            </button>
+                        <img src="" alt="Map" id="mapImage">
+                        <div class="card-body">
+                            <div class="card-title" id="map"></div>
+                            <div class="card-desc" id="mapDesc"></div>
+                            <div class="card-actions">
+                                <button class="btn" onclick="buyItem('map', PRICES.items.map.fires)">
+                                    <span id="buyBtnMap"></span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="card">
-                        <div class="product-image" style="background-image: url('');"></div>
-                        <div class="p-3 text-center">
-                            <p id="pajamas" class="neon-text text-sm"></p>
-                            <p id="pajamasDesc" class="text-xs mt-1"></p>
-                            <button class="glow-btn mt-3" onclick="buyItem('pajamas', PRICES.items.pajamas.fires)">
-                                <span id="buyBtnPajamas"></span>
-                            </button>
+                        <img src="" alt="Compass" id="compassImage">
+                        <div class="card-body">
+                            <div class="card-title" id="compass"></div>
+                            <div class="card-desc" id="compassDesc"></div>
+                            <div class="card-actions">
+                                <button class="btn" onclick="buyItem('compass', PRICES.items.compass.fires)">
+                                    <span id="buyBtnCompass"></span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="card">
-                        <div class="product-image" style="background-image: url('');"></div>
-                        <div class="p-3 text-center">
-                            <p id="stockings" class="neon-text text-sm"></p>
-                            <p id="stockingsDesc" class="text-xs mt-1"></p>
-                            <button class="glow-btn mt-3" onclick="buyItem('stockings', PRICES.items.stockings.fires)">
-                                <span id="buyBtnStockings"></span>
-                            </button>
+                        <img src="" alt="Backpack" id="backpackImage">
+                        <div class="card-body">
+                            <div class="card-title" id="backpack"></div>
+                            <div class="card-desc" id="backpackDesc"></div>
+                            <div class="card-actions">
+                                <button class="btn" onclick="buyItem('backpack', PRICES.items.backpack.fires)">
+                                    <span id="buyBtnBackpack"></span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="card">
-                        <div class="product-image" style="background-image: url('');"></div>
-                        <div class="p-3 text-center">
-                            <p id="handcuffs" class="neon-text text-sm"></p>
-                            <p id="handcuffsDesc" class="text-xs mt-1"></p>
-                            <button class="glow-btn mt-3" onclick="buyItem('handcuffs', PRICES.items.handcuffs.fires)">
-                                <span id="buyBtnHandcuffs"></span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="product-image" style="background-image: url('');"></div>
-                        <div class="p-3 text-center">
-                            <p id="lube" class="neon-text text-sm"></p>
-                            <p id="lubeDesc" class="text-xs mt-1"></p>
-                            <button class="glow-btn mt-3" onclick="buyItem('lube', PRICES.items.lube.fires)">
-                                <span id="buyBtnLube"></span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="product-image" style="background-image: url('');"></div>
-                        <div class="p-3 text-center">
-                            <p id="truthOrDare" class="neon-text text-sm"></p>
-                            <p id="truthOrDareDesc" class="text-xs mt-1"></p>
-                            <button class="glow-btn mt-3" onclick="buyItem('truthOrDare', PRICES.items.truthOrDare.fires)">
-                                <span id="buyBtnTruthOrDare"></span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="product-image" style="background-image: url('');"></div>
-                        <div class="p-3 text-center">
-                            <p id="masks" class="neon-text text-sm"></p>
-                            <p id="masksDesc" class="text-xs mt-1"></p>
-                            <button class="glow-btn mt-3" onclick="buyItem('masks', PRICES.items.masks.fires)">
-                                <span id="buyBtnMasks"></span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="product-image" style="background-image: url('');"></div>
-                        <div class="p-3 text-center">
-                            <p id="massageFoam" class="neon-text text-sm"></p>
-                            <p id="massageFoamDesc" class="text-xs mt-1"></p>
-                            <button class="glow-btn mt-3" onclick="buyItem('massageFoam', PRICES.items.massageFoam.fires)">
-                                <span id="buyBtnMassageFoam"></span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="product-image" style="background-image: url('');"></div>
-                        <div class="p-3 text-center">
-                            <p id="sexSwing" class="neon-text text-sm"></p>
-                            <p id="sexSwingDesc" class="text-xs mt-1"></p>
-                            <button class="glow-btn mt-3" onclick="buyItem('sexSwing', PRICES.items.sexSwing.fires)">
-                                <span id="buyBtnSexSwing"></span>
-                            </button>
+                        <img src="" alt="Torch" id="torchImage">
+                        <div class="card-body">
+                            <div class="card-title" id="torch"></div>
+                            <div class="card-desc" id="torchDesc"></div>
+                            <div class="card-actions">
+                                <button class="btn" onclick="buyItem('torch', PRICES.items.torch.fires)">
+                                    <span id="buyBtnTorch"></span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -785,111 +821,123 @@
                 <div id="subscriptionsDesc" class="details-content"></div>
             </div>
             <div class="mt-3">
-                <div class="card subscription-card" onclick="selectPlan(1)">
-                    <div class="subscription-info">
-                        <p id="sub1Day" class="neon-text text-sm font-medium"></p>
-                        <p class="price-text">$2.00</p>
+                <div class="subscription-card" onclick="selectPlan(1)">
+                    <div class="card-body">
+                        <div class="card-title" id="sub1Day"></div>
+                        <div class="card-price">$2.00</div>
+                        <div class="checkmark">✔</div>
                     </div>
-                    <div class="checkmark">✔</div>
                 </div>
-                <div class="card subscription-card" onclick="selectPlan(2)">
-                    <div class="subscription-info">
-                        <p id="sub3Days" class="neon-text text-sm font-medium"></p>
-                        <p class="price-text">$5.00</p>
+                <div class="subscription-card" onclick="selectPlan(2)">
+                    <div class="card-body">
+                        <div class="card-title" id="sub3Days"></div>
+                        <div class="card-price">$5.00</div>
+                        <div class="checkmark">✔</div>
                     </div>
-                    <div class="checkmark">✔</div>
                 </div>
-                <div class="card subscription-card" onclick="selectPlan(3)">
-                    <div class="subscription-info">
-                        <p id="sub1Week" class="neon-text text-sm font-medium"></p>
-                        <p class="price-text">$13.00</p>
+                <div class="subscription-card" onclick="selectPlan(3)">
+                    <div class="card-body">
+                        <div class="card-title" id="sub1Week"></div>
+                        <div class="card-price">$13.00</div>
+                        <div class="checkmark">✔</div>
                     </div>
-                    <div class="checkmark">✔</div>
                 </div>
-                <div class="card subscription-card" onclick="selectPlan(4)">
-                    <div class="subscription-info">
-                        <p id="sub1Month" class="neon-text text-sm font-medium"></p>
-                        <p class="price-text">$25.00</p>
+                <div class="subscription-card" onclick="selectPlan(4)">
+                    <div class="card-body">
+                        <div class="card-title" id="sub1Month"></div>
+                        <div class="card-price">$25.00</div>
+                        <div class="checkmark">✔</div>
                     </div>
-                    <div class="checkmark">✔</div>
                 </div>
-                <div class="card subscription-card" onclick="selectPlan(5)">
-                    <div class="subscription-info">
-                        <p id="sub3Months" class="neon-text text-sm font-medium"></p>
-                        <p class="price-text">$70.00</p>
+                <div class="subscription-card" onclick="selectPlan(5)">
+                    <div class="card-body">
+                        <div class="card-title" id="sub3Months"></div>
+                        <div class="card-price">$70.00</div>
+                        <div class="checkmark">✔</div>
                     </div>
-                    <div class="checkmark">✔</div>
                 </div>
-                <div class="card subscription-card" onclick="selectPlan(6)">
-                    <div class="subscription-info">
-                        <p id="subForever" class="neon-text text-sm font-medium"></p>
-                        <p class="price-text">$50.00</p>
+                <div class="subscription-card" onclick="selectPlan(6)">
+                    <div class="card-body">
+                        <div class="card-title" id="subForever"></div>
+                        <div class="card-price">$50.00</div>
+                        <div class="checkmark">✔</div>
                     </div>
-                    <div class="checkmark">✔</div>
                 </div>
-                <div class="card subscription-card" onclick="selectPlan(7)">
-                    <div class="subscription-info">
-                        <p id="subDeluxe" class="neon-text text-sm font-medium"></p>
-                        <p class="price-text">$100.00</p>
+                <div class="subscription-card" onclick="selectPlan(7)">
+                    <div class="card-body">
+                        <div class="card-title" id="subDeluxe"></div>
+                        <div class="card-price">$100.00</div>
+                        <div class="checkmark">✔</div>
                     </div>
-                    <div class="checkmark">✔</div>
+                </div>
+                <div class="card-actions">
+                    <button id="buySubscriptionBtn" class="btn" onclick="buySelectedSubscription()">
+                        <span id="buyBtnText"></span>
+                    </button>
                 </div>
             </div>
-            <button id="buySubscriptionBtn" class="glow-btn mt-3" onclick="buySelectedSubscription()">
-                <span id="buyBtnText"></span>
-            </button>
         </div>
 
         <div id="currencySection" class="hidden">
             <div class="grid grid-cols-2 gap-3 mt-4">
                 <div class="card col-span-2">
-                    <div class="product-image" style="background-image: url('');"></div>
-                    <div class="p-3 text-center">
-                        <p id="morePhotos" class="neon-text text-sm"></p>
-                        <p id="morePhotosDesc" class="text-xs mt-1"></p>
-                        <button class="glow-btn mt-3" onclick="showSection('subscriptionsSection')">
-                            <span id="buyBtnMorePhotos"></span>
-                        </button>
+                    <img src="" alt="More Photos" id="morePhotosImage">
+                    <div class="card-body">
+                        <div class="card-title" id="morePhotos"></div>
+                        <div class="card-desc" id="morePhotosDesc"></div>
+                        <div class="card-actions">
+                            <button class="btn" onclick="showSection('subscriptionsSection')">
+                                <span id="buyBtnMorePhotos"></span>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="card">
-                    <div class="product-image" style="background-image: url('');"></div>
-                    <div class="p-3 text-center">
-                        <p id="smallPack" class="neon-text text-sm"></p>
-                        <p id="smallPackDesc" class="text-xs mt-1"></p>
-                        <button class="glow-btn mt-3" onclick="buyTokens(100, PRICES.currency.smallPack)">
-                            <span id="buyBtnSmallPack"></span>
-                        </button>
+                    <img src="" alt="Small Pack" id="smallPackImage">
+                    <div class="card-body">
+                        <div class="card-title" id="smallPack"></div>
+                        <div class="card-desc" id="smallPackDesc"></div>
+                        <div class="card-actions">
+                            <button class="btn" onclick="buyTokens(100, PRICES.currency.smallPack)">
+                                <span id="buyBtnSmallPack"></span>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="card">
-                    <div class="product-image" style="background-image: url('');"></div>
-                    <div class="p-3 text-center">
-                        <p id="mediumPack" class="neon-text text-sm"></p>
-                        <p id="mediumPackDesc" class="text-xs mt-1"></p>
-                        <button class="glow-btn mt-3" onclick="buyTokens(200, PRICES.currency.mediumPack)">
-                            <span id="buyBtnMediumPack"></span>
-                        </button>
+                    <img src="" alt="Medium Pack" id="mediumPackImage">
+                    <div class="card-body">
+                        <div class="card-title" id="mediumPack"></div>
+                        <div class="card-desc" id="mediumPackDesc"></div>
+                        <div class="card-actions">
+                            <button class="btn" onclick="buyTokens(200, PRICES.currency.mediumPack)">
+                                <span id="buyBtnMediumPack"></span>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="card">
-                    <div class="product-image" style="background-image: url('');"></div>
-                    <div class="p-3 text-center">
-                        <p id="largePack" class="neon-text text-sm"></p>
-                        <p id="largePackDesc" class="text-xs mt-1"></p>
-                        <button class="glow-btn mt-3" onclick="buyTokens(500, PRICES.currency.largePack)">
-                            <span id="buyBtnLargePack"></span>
-                        </button>
+                    <img src="" alt="Large Pack" id="largePackImage">
+                    <div class="card-body">
+                        <div class="card-title" id="largePack"></div>
+                        <div class="card-desc" id="largePackDesc"></div>
+                        <div class="card-actions">
+                            <button class="btn" onclick="buyTokens(500, PRICES.currency.largePack)">
+                                <span id="buyBtnLargePack"></span>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="card">
-                    <div class="product-image" style="background-image: url('');"></div>
-                    <div class="p-3 text-center">
-                        <p id="megaPack" class="neon-text text-sm"></p>
-                        <p id="megaPackDesc" class="text-xs mt-1"></p>
-                        <button class="glow-btn mt-3" onclick="buyTokens(1000, PRICES.currency.megaPack)">
-                            <span id="buyBtnMegaPack"></span>
-                        </button>
+                    <img src="" alt="Mega Pack" id="megaPackImage">
+                    <div class="card-body">
+                        <div class="card-title" id="megaPack"></div>
+                        <div class="card-desc" id="megaPackDesc"></div>
+                        <div class="card-actions">
+                            <button class="btn" onclick="buyTokens(1000, PRICES.currency.megaPack)">
+                                <span id="buyBtnMegaPack"></span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -897,16 +945,20 @@
 
         <div id="settingsSection" class="hidden">
             <div class="card subscription-info-card" onclick="showSubscriptionSection()">
-                <div class="p-3">
-                    <h3 id="settingsTitle" class="text-md font-semibold"></h3>
-                    <p id="subscriptionInfo" class="mt-1"></p>
-                    <button id="renewBtn" class="glow-btn mt-3 hidden" onclick="showSection('subscriptionsSection')"></button>
+                <div class="card-body">
+                    <div class="card-title" id="settingsTitle"></div>
+                    <div class="card-desc" id="subscriptionInfo"></div>
+                    <div class="card-actions">
+                        <button id="renewBtn" class="btn hidden" onclick="showSection('subscriptionsSection')">
+                            <span id="renewBtnText"></span>
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="card language-card" onclick="toggleLanguage()">
-                <div class="p-2 flex items-center justify-between w-full">
-                    <span id="languageLabel" class="neon-text text-sm font-medium"></span>
-                    <span id="currentLanguage" class="neon-text text-sm font-medium"></span>
+                <div class="card-body">
+                    <div class="card-title" id="languageLabel"></div>
+                    <div class="card-desc" id="currentLanguage"></div>
                 </div>
             </div>
         </div>
@@ -914,11 +966,11 @@
 
     <div id="confirmModal" class="modal fixed inset-0 flex items-center justify-center hidden">
         <div class="confirm-modal-content">
-            <h3 id="confirmTitle" class="confirm-title text-md font-semibold"></h3>
+            <h3 id="confirmTitle" class="confirm-title"></h3>
             <p id="confirmText" class="confirm-text mt-2"></p>
             <div class="confirm-buttons">
-                <button id="confirmBtn" class="glow-btn">Confirm</button>
-                <button id="cancelBtn" class="glow-btn">Cancel</button>
+                <button id="confirmBtn" class="btn">Confirm</button>
+                <button id="cancelBtn" class="btn">Cancel</button>
             </div>
         </div>
     </div>
@@ -943,20 +995,20 @@
                 subscriptionInfo: 'Deluxe until May 18, 2025',
                 renewBtnText: 'Renew',
                 scenario1Title: 'Tutor Asleep',
-                scenario1Desc: 'You enter her home, door ajar, finding her naked and dreaming of you. Wake her with a sinful touch! 😈',
-                scenario1Btn: 'Buy for 100🔥',
+                scenario1Desc: 'You enter her home, door ajar, finding her naked and dreaming of you. Wake her with a sinful touch! ❄️',
+                scenario1Btn: 'Buy for 100🧊',
                 scenario2Title: 'Teacher After School',
-                scenario2Desc: 'Alone with her to fix grades, her tight skirt teases as she bends over. 🔥',
-                scenario2Btn: 'Buy for 100🔥',
+                scenario2Desc: 'Alone with her to fix grades, her tight skirt teases as she bends over. ❄️',
+                scenario2Btn: 'Buy for 100🧊',
                 scenario3Title: 'Policewoman Stop',
-                scenario3Desc: 'She pulls you over in the wild, no license—her smirk promises a naughty punishment! 💋',
-                scenario3Btn: 'Buy for 100🔥',
+                scenario3Desc: 'She pulls you over in the wild, no license—her smirk promises a naughty punishment! ❄️',
+                scenario3Btn: 'Buy for 100🧊',
                 scenario4Title: 'Helping Friend',
-                scenario4Desc: 'Her computer’s stuck, and her shy glances turn into wild invites as you lean in. 😏',
-                scenario4Btn: 'Buy for 100🔥',
+                scenario4Desc: 'Her computer\'s stuck, and her shy glances turn into wild invites as you lean in. ❄️',
+                scenario4Btn: 'Buy for 100🧊',
                 detailsHeader: 'Premium Benefits',
-                subscriptionsDescStandard: '<p><strong>Premium Benefits 🔥✨</strong></p><p>New Limit: 50 photos/day + Unlimited Chat! 💬💃</p><p>Better Outfits 🌟</p><p>Faster Responses ⚡</p><p>Enhanced Image Quality 🎨</p><p>Priority Scenario Access 🚀</p>',
-                subscriptionsDescDeluxe: '<p><strong>Premium Benefits 🔥✨</strong></p><p>New Limit: Unlimited photos + Unlimited Chat! 💬💃</p><p>Better Outfits 🌟</p><p>Faster Responses ⚡</p><p>Enhanced Image Quality 🎨</p><p>Priority Scenario Access 🚀</p>',
+                subscriptionsDescStandard: '<p><strong>Premium Benefits 🧊✨</strong></p><p>New Limit: 50 photos/day + Unlimited Chat! 💬❄️</p><p>Better Outfits 🌟</p><p>Faster Responses ⚡</p><p>Enhanced Image Quality 🎨</p><p>Priority Scenario Access 🚀</p>',
+                subscriptionsDescDeluxe: '<p><strong>Premium Benefits 🧊✨</strong></p><p>New Limit: Unlimited photos + Unlimited Chat! 💬❄️</p><p>Better Outfits 🌟</p><p>Faster Responses ⚡</p><p>Enhanced Image Quality 🎨</p><p>Priority Scenario Access 🚀</p>',
                 sub1Day: '1 Day Pass',
                 sub3Days: '3 Days Pass',
                 sub1Week: '1 Week Pass',
@@ -969,44 +1021,29 @@
                 morePhotosDesc: 'Unlock more photo limits!',
                 buyBtnMorePhotos: 'Check Subscriptions',
                 smallPack: 'Small Pack',
-                smallPackDesc: '100 🔥',
+                smallPackDesc: '100 🧊',
                 buyBtnSmallPack: 'Buy for $1.00',
                 mediumPack: 'Medium Pack',
-                mediumPackDesc: '200 🔥',
+                mediumPackDesc: '200 🧊',
                 buyBtnMediumPack: 'Buy for $1.50',
                 largePack: 'Large Pack',
-                largePackDesc: '500 🔥',
+                largePackDesc: '500 🧊',
                 buyBtnLargePack: 'Buy for $3.00',
                 megaPack: 'Mega Pack',
-                megaPackDesc: '1000 🔥',
+                megaPackDesc: '1000 🧊',
                 buyBtnMegaPack: 'Buy for $5.00',
-                analPlug: 'Anal Plug',
-                analPlugDesc: 'Smooth silicone plug for beginners. 💜',
-                buyBtnAnalPlug: 'Buy for 50🔥',
-                pajamas: 'Seductive Pajamas',
-                pajamasDesc: 'Silky set for the mood. 🌙',
-                buyBtnPajamas: 'Buy for 80🔥',
-                stockings: 'Seductive Stockings',
-                stockingsDesc: 'Lacy stockings for a teasing effect. 🖤',
-                buyBtnStockings: 'Buy for 60🔥',
-                handcuffs: 'Furry Handcuffs',
-                handcuffsDesc: 'Soft handcuffs for playful restraints. 🖐️',
-                buyBtnHandcuffs: 'Buy for 70🔥',
-                lube: 'Water-Based Lube',
-                lubeDesc: 'Smooth glide for more pleasure. 💦',
-                buyBtnLube: 'Buy for 40🔥',
-                truthOrDare: 'Truth or Dare Game',
-                truthOrDareDesc: 'Spicy game for bold couples. 🎲',
-                buyBtnTruthOrDare: 'Buy for 90🔥',
-                masks: 'Masks & Blindfolds',
-                masksDesc: 'Satin set to heighten sensations. 😷',
-                buyBtnMasks: 'Buy for 50🔥',
-                massageFoam: 'Massage Foam',
-                massageFoamDesc: 'Aromatic foam for sensual touch. 🫧',
-                buyBtnMassageFoam: 'Buy for 60🔥',
-                sexSwing: 'Sex Swing',
-                sexSwingDesc: 'Unlock new positions with ease. 🏋️',
-                buyBtnSexSwing: 'Buy for 150🔥',
+                map: 'Map',
+                mapDesc: 'A detailed map for your adventure. 🗺️',
+                buyBtnMap: 'Buy for 50🧊',
+                compass: 'Compass',
+                compassDesc: 'A reliable compass for navigation. 🧭',
+                buyBtnCompass: 'Buy for 50🧊',
+                backpack: 'Backpack',
+                backpackDesc: 'A durable backpack for your belongings. 🎒',
+                buyBtnBackpack: 'Buy for 50🧊',
+                torch: 'Torch',
+                torchDesc: 'A powerful torch for lighting up the dark. 🔦',
+                buyBtnTorch: 'Buy for 50🧊',
                 confirmTitle: 'Confirm Purchase',
                 confirmText: 'Are you sure you want to proceed?',
                 cancelText: 'Cancel'
@@ -1024,20 +1061,20 @@
                 subscriptionInfo: 'Делюкс до 18 мая 2025 г.',
                 renewBtnText: 'Продлить',
                 scenario1Title: 'Репетитор спит',
-                scenario1Desc: 'Ты заходишь в её дом, дверь приоткрыта, она голая и мечтает о тебе. Разбуди её грешным касанием! 😈',
-                scenario1Btn: 'Купить за 100🔥',
+                scenario1Desc: 'Ты заходишь в её дом, дверь приоткрыта, она голая и мечтает о тебе. Разбуди её грешным касанием! ❄️',
+                scenario1Btn: 'Купить за 100🧊',
                 scenario2Title: 'Учительница после уроков',
-                scenario2Desc: 'Наедине с ней, чтобы исправить оценки, её обтягивающая юбка дразнит, когда она наклоняется. 🔥',
-                scenario2Btn: 'Купить за 100🔥',
+                scenario2Desc: 'Наедине с ней, чтобы исправить оценки, её обтягивающая юбка дразнит, когда она наклоняется. ❄️',
+                scenario2Btn: 'Купить за 100🧊',
                 scenario3Title: 'Остановка полицейской',
-                scenario3Desc: 'Она останавливает тебя в глуши, без прав — её ухмылка обещает пикантное наказание! 💋',
-                scenario3Btn: 'Купить за 100🔥',
+                scenario3Desc: 'Она останавливает тебя в глуши, без прав — её ухмылка обещает пикантное наказание! ❄️',
+                scenario3Btn: 'Купить за 100🧊',
                 scenario4Title: 'Помощь подруге',
-                scenario4Desc: 'Её компьютер завис, а робкие взгляды превращаются в дерзкие приглашения, когда ты наклоняешься. 😏',
-                scenario4Btn: 'Купить за 100🔥',
+                scenario4Desc: 'Её компьютер завис, а робкие взгляды превращаются в дерзкие приглашения, когда ты наклоняешься. ❄️',
+                scenario4Btn: 'Купить за 100🧊',
                 detailsHeader: 'Преимущества премиума',
-                subscriptionsDescStandard: '<p><strong>Преимущества премиума 🔥✨</strong></p><p>Новый лимит: 50 фото/день + Безлимитный чат! 💬💃</p><p>Лучшая одежда 🌟</p><p>Быстрые ответы ⚡</p><p>Улучшенное качество изображений 🎨</p><p>Приоритетный доступ к сценариям 🚀</p>',
-                subscriptionsDescDeluxe: '<p><strong>Преимущества премиума 🔥✨</strong></p><p>Новый лимит: Безлимит фото + Безлимитный чат! 💬💃</p><p>Лучшая одежда 🌟</p><p>Быстрые ответы ⚡</p><p>Улучшенное качество изображений 🎨</p><p>Приоритетный доступ к сценариям 🚀</p>',
+                subscriptionsDescStandard: '<p><strong>Преимущества премиума 🧊✨</strong></p><p>Новый лимит: 50 фото/день + Безлимитный чат! 💬❄️</p><p>Лучшая одежда 🌟</p><p>Быстрые ответы ⚡</p><p>Улучшенное качество изображений 🎨</p><p>Приоритетный доступ к сценариям 🚀</p>',
+                subscriptionsDescDeluxe: '<p><strong>Преимущества премиума 🧊✨</strong></p><p>Новый лимит: Безлимит фото + Безлимитный чат! 💬❄️</p><p>Лучшая одежда 🌟</p><p>Быстрые ответы ⚡</p><p>Улучшенное качество изображений 🎨</p><p>Приоритетный доступ к сценариям 🚀</p>',
                 sub1Day: 'Пропуск на 1 день',
                 sub3Days: 'Пропуск на 3 дня',
                 sub1Week: 'Пропуск на 1 неделю',
@@ -1050,44 +1087,29 @@
                 morePhotosDesc: 'Разблокируйте больше лимитов на фото!',
                 buyBtnMorePhotos: 'Посмотреть подписки',
                 smallPack: 'Малый набор',
-                smallPackDesc: '100 🔥',
+                smallPackDesc: '100 🧊',
                 buyBtnSmallPack: 'Купить за $1.00',
                 mediumPack: 'Средний набор',
-                mediumPackDesc: '200 🔥',
+                mediumPackDesc: '200 🧊',
                 buyBtnMediumPack: 'Купить за $1.50',
                 largePack: 'Большой набор',
-                largePackDesc: '500 🔥',
+                largePackDesc: '500 🧊',
                 buyBtnLargePack: 'Купить за $3.00',
                 megaPack: 'Мега набор',
-                megaPackDesc: '1000 🔥',
+                megaPackDesc: '1000 🧊',
                 buyBtnMegaPack: 'Купить за $5.00',
-                analPlug: 'Анусная пробка',
-                analPlugDesc: 'Гладкая силиконовая пробка для новичков. 💜',
-                buyBtnAnalPlug: 'Купить за 50🔥',
-                pajamas: 'Соблазнительная пижама',
-                pajamasDesc: 'Шелковый комплект для настроения. 🌙',
-                buyBtnPajamas: 'Купить за 80🔥',
-                stockings: 'Соблазнительные чулки',
-                stockingsDesc: 'Кружевные чулки для дразнящего эффекта. 🖤',
-                buyBtnStockings: 'Купить за 60🔥',
-                handcuffs: 'Наручники с мехом',
-                handcuffsDesc: 'Мягкие наручники для игривых ограничений. 🖐️',
-                buyBtnHandcuffs: 'Купить за 70🔥',
-                lube: 'Смазки на водной основе',
-                lubeDesc: 'Плавное скольжение для большего удовольствия. 💦',
-                buyBtnLube: 'Купить за 40🔥',
-                truthOrDare: 'Игра "Правда или действие"',
-                truthOrDareDesc: 'Пикантная игра для смелых пар. 🎲',
-                buyBtnTruthOrDare: 'Купить за 90🔥',
-                masks: 'Маски и повязки на глаза',
-                masksDesc: 'Атласный набор для усиления ощущений. 😷',
-                buyBtnMasks: 'Купить за 50🔥',
-                massageFoam: 'Пена для массажа',
-                massageFoamDesc: 'Ароматная пена для чувственного прикосновения. 🫧',
-                buyBtnMassageFoam: 'Купить за 60🔥',
-                sexSwing: 'Секс-качели',
-                sexSwingDesc: 'Открой новые позы с легкостью. 🏋️',
-                buyBtnSexSwing: 'Купить за 150🔥',
+                map: 'Карта',
+                mapDesc: 'Детальная карта для вашего приключения. 🗺️',
+                buyBtnMap: 'Купить за 50🧊',
+                compass: 'Компас',
+                compassDesc: 'Надежный компас для навигации. 🧭',
+                buyBtnCompass: 'Купить за 50🧊',
+                backpack: 'Рюкзак',
+                backpackDesc: 'Прочный рюкзак для ваших вещей. 🎒',
+                buyBtnBackpack: 'Купить за 50🧊',
+                torch: 'Фонарик',
+                torchDesc: 'Мощный фонарик для освещения в темноте. 🔦',
+                buyBtnTorch: 'Купить за 50🧊',
                 confirmTitle: 'Подтверждение покупки',
                 confirmText: 'Вы уверены, что хотите продолжить?',
                 cancelText: 'Отмена'
@@ -1104,7 +1126,7 @@
             plan: 'Deluxe',
             expirationDate: new Date('2025-05-18T15:17:00+05:00')
         };
-        const currentDate = new Date('2025-05-18T15:28:00+05:00');
+        const currentDate = new Date('2025-05-30T15:52:00+05:00');
 
         function toggleLanguage() {
             const langKeys = Object.keys(LANGUAGES);
@@ -1127,7 +1149,7 @@
             document.getElementById('settingsTitle').textContent = trans.settingsTitle || 'Your Plan';
             const planName = currentLanguage === 'ru' ? 'Делюкс' : 'Deluxe';
             document.getElementById('subscriptionInfo').textContent = `${planName} ${trans.subscriptionInfo.split(' ').slice(1).join(' ')}`;
-            document.getElementById('renewBtn').textContent = trans.renewBtnText || 'Renew';
+            document.getElementById('renewBtnText').textContent = trans.renewBtnText || 'Renew';
 
             const timeDiff = subscription.expirationDate - currentDate;
             const daysLeft = timeDiff / (1000 * 60 * 60 * 24);
@@ -1160,33 +1182,18 @@
                         document.getElementById(`scenario${i}Btn`).textContent = trans[`scenario${i}Btn`] || 'Buy';
                     }
                 } else if (currentStoreTab === 'items') {
-                    document.getElementById('analPlug').textContent = trans.analPlug || 'Anal Plug';
-                    document.getElementById('analPlugDesc').textContent = trans.analPlugDesc || 'Description';
-                    document.getElementById('buyBtnAnalPlug').textContent = trans.buyBtnAnalPlug || 'Buy';
-                    document.getElementById('pajamas').textContent = trans.pajamas || 'Pajamas';
-                    document.getElementById('pajamasDesc').textContent = trans.pajamasDesc || 'Description';
-                    document.getElementById('buyBtnPajamas').textContent = trans.buyBtnPajamas || 'Buy';
-                    document.getElementById('stockings').textContent = trans.stockings || 'Stockings';
-                    document.getElementById('stockingsDesc').textContent = trans.stockingsDesc || 'Description';
-                    document.getElementById('buyBtnStockings').textContent = trans.buyBtnStockings || 'Buy';
-                    document.getElementById('handcuffs').textContent = trans.handcuffs || 'Handcuffs';
-                    document.getElementById('handcuffsDesc').textContent = trans.handcuffsDesc || 'Description';
-                    document.getElementById('buyBtnHandcuffs').textContent = trans.buyBtnHandcuffs || 'Buy';
-                    document.getElementById('lube').textContent = trans.lube || 'Lube';
-                    document.getElementById('lubeDesc').textContent = trans.lubeDesc || 'Description';
-                    document.getElementById('buyBtnLube').textContent = trans.buyBtnLube || 'Buy';
-                    document.getElementById('truthOrDare').textContent = trans.truthOrDare || 'Truth or Dare';
-                    document.getElementById('truthOrDareDesc').textContent = trans.truthOrDareDesc || 'Description';
-                    document.getElementById('buyBtnTruthOrDare').textContent = trans.buyBtnTruthOrDare || 'Buy';
-                    document.getElementById('masks').textContent = trans.masks || 'Masks';
-                    document.getElementById('masksDesc').textContent = trans.masksDesc || 'Description';
-                    document.getElementById('buyBtnMasks').textContent = trans.buyBtnMasks || 'Buy';
-                    document.getElementById('massageFoam').textContent = trans.massageFoam || 'Massage Foam';
-                    document.getElementById('massageFoamDesc').textContent = trans.massageFoamDesc || 'Description';
-                    document.getElementById('buyBtnMassageFoam').textContent = trans.buyBtnMassageFoam || 'Buy';
-                    document.getElementById('sexSwing').textContent = trans.sexSwing || 'Sex Swing';
-                    document.getElementById('sexSwingDesc').textContent = trans.sexSwingDesc || 'Description';
-                    document.getElementById('buyBtnSexSwing').textContent = trans.buyBtnSexSwing || 'Buy';
+                    document.getElementById('map').textContent = trans.map || 'Map';
+                    document.getElementById('mapDesc').textContent = trans.mapDesc || 'Description';
+                    document.getElementById('buyBtnMap').textContent = trans.buyBtnMap || 'Buy';
+                    document.getElementById('compass').textContent = trans.compass || 'Compass';
+                    document.getElementById('compassDesc').textContent = trans.compassDesc || 'Description';
+                    document.getElementById('buyBtnCompass').textContent = trans.buyBtnCompass || 'Buy';
+                    document.getElementById('backpack').textContent = trans.backpack || 'Backpack';
+                    document.getElementById('backpackDesc').textContent = trans.backpackDesc || 'Description';
+                    document.getElementById('buyBtnBackpack').textContent = trans.buyBtnBackpack || 'Buy';
+                    document.getElementById('torch').textContent = trans.torch || 'Torch';
+                    document.getElementById('torchDesc').textContent = trans.torchDesc || 'Description';
+                    document.getElementById('buyBtnTorch').textContent = trans.buyBtnTorch || 'Buy';
                 }
             } else if (currentSection === 'subscriptionsSection') {
                 document.getElementById('detailsHeader').textContent = trans.detailsHeader || 'Subscription Benefits';
@@ -1204,16 +1211,16 @@
                 document.getElementById('morePhotosDesc').textContent = trans.morePhotosDesc || 'Unlock more photo limits!';
                 document.getElementById('buyBtnMorePhotos').textContent = trans.buyBtnMorePhotos || 'Check Subscriptions';
                 document.getElementById('smallPack').textContent = trans.smallPack || 'Small Pack';
-                document.getElementById('smallPackDesc').textContent = trans.smallPackDesc || '100 🔥';
+                document.getElementById('smallPackDesc').textContent = trans.smallPackDesc || '100 🧊';
                 document.getElementById('buyBtnSmallPack').textContent = trans.buyBtnSmallPack || 'Buy';
                 document.getElementById('mediumPack').textContent = trans.mediumPack || 'Medium Pack';
-                document.getElementById('mediumPackDesc').textContent = trans.mediumPackDesc || '200 🔥';
+                document.getElementById('mediumPackDesc').textContent = trans.mediumPackDesc || '200 🧊';
                 document.getElementById('buyBtnMediumPack').textContent = trans.buyBtnMediumPack || 'Buy';
                 document.getElementById('largePack').textContent = trans.largePack || 'Large Pack';
-                document.getElementById('largePackDesc').textContent = trans.largePackDesc || '500 🔥';
+                document.getElementById('largePackDesc').textContent = trans.largePackDesc || '500 🧊';
                 document.getElementById('buyBtnLargePack').textContent = trans.buyBtnLargePack || 'Buy';
                 document.getElementById('megaPack').textContent = trans.megaPack || 'Mega Pack';
-                document.getElementById('megaPackDesc').textContent = trans.megaPackDesc || '1000 🔥';
+                document.getElementById('megaPackDesc').textContent = trans.megaPackDesc || '1000 🧊';
                 document.getElementById('buyBtnMegaPack').textContent = trans.buyBtnMegaPack || 'Buy';
             }
         }
@@ -1234,14 +1241,13 @@
                 'settingsSection': 'settingsBtn',
                 'currencySection': 'storeBtn'
             };
-            const buttonId = buttonMap[sectionId] || 'storeBtn';
-            document.getElementById(buttonId).classList.add('selected');
+            const buttonId = buttonMap[sectionId];
+            if (buttonId) {
+                document.getElementById(buttonId).classList.add('selected');
+            }
 
             updateLanguage();
-        }
-
-        function showCurrencySection() {
-            showSection('currencySection');
+            updateUI();
         }
 
         function showStoreTab(tab) {
@@ -1257,19 +1263,24 @@
             document.getElementById(`${tab}Tab`).classList.add('active');
 
             updateLanguage();
+            updateUI();
+        }
+
+        function showCurrencySection() {
+            showSection('currencySection');
         }
 
         function selectScenario(id) {
             const cards = document.querySelectorAll('#scenariosContent .card');
             cards.forEach(card => card.classList.remove('selected'));
             cards[id - 1].classList.add('selected');
-            showConfirmModal(`Purchase ${translations[currentLanguage][`scenario${id}Title`]} for ${PRICES.scenarios[`scenario${id}`].fires}🔥?`, () => {
-                if (userTokens >= PRICES.scenarios[`scenario${id}`].fires) {
-                    userTokens -= PRICES.scenarios[`scenario${id}`].fires;
+            showConfirmModal(`Purchase ${translations[currentLanguage][`scenario${id}Title`]} for ${PRICES.scenarios[`scenario${id}`].ice}🧊?`, () => {
+                if (userTokens >= PRICES.scenarios[`scenario${id}`].ice) {
+                    userTokens -= PRICES.scenarios[`scenario${id}`].ice;
                     updateUI();
                     alert(`${translations[currentLanguage][`scenario${id}Title`]} purchased!`);
                 } else {
-                    alert('Not enough tokens!');
+                    alert('Not enough ice cubes!');
                 }
             });
         }
@@ -1301,21 +1312,21 @@
         }
 
         function buyTokens(amount, price) {
-            showConfirmModal(`Purchase ${amount}🔥 for $${price.price}?`, () => {
+            showConfirmModal(`Purchase ${amount}🧊 for $${price.price}?`, () => {
                 userTokens += amount;
                 updateUI();
-                alert(`${amount}🔥 purchased!`);
+                alert(`${amount}🧊 purchased!`);
             });
         }
 
-        function buyItem(item, fires) {
-            showConfirmModal(`Purchase ${translations[currentLanguage][item]} for ${fires}🔥?`, () => {
-                if (userTokens >= fires) {
-                    userTokens -= fires;
+        function buyItem(item, ice) {
+            showConfirmModal(`Purchase ${translations[currentLanguage][item]} for ${ice}🧊?`, () => {
+                if (userTokens >= ice) {
+                    userTokens -= ice;
                     updateUI();
                     alert(`${translations[currentLanguage][item]} purchased!`);
                 } else {
-                    alert('Not enough tokens!');
+                    alert('Not enough ice cubes!');
                 }
             });
         }
@@ -1355,16 +1366,23 @@
             showStoreTab('scenarios');
             updateUI();
 
-            document.querySelectorAll('#scenariosContent .product-image').forEach((el, index) => {
-                el.style.backgroundImage = `url('${IMAGES.scenarios[`scenario${index + 1}`]}')`;
+            document.getElementById('storeBtn').addEventListener('click', () => showSection('storeSection'));
+            document.getElementById('subscriptionsBtn').addEventListener('click', () => showSection('subscriptionsSection'));
+            document.getElementById('settingsBtn').addEventListener('click', () => showSection('settingsSection'));
+
+            document.getElementById('scenariosTab').addEventListener('click', () => showStoreTab('scenarios'));
+            document.getElementById('itemsTab').addEventListener('click', () => showStoreTab('items'));
+
+            document.querySelectorAll('#scenariosContent .card img').forEach((el, index) => {
+                el.src = IMAGES.scenarios[`scenario${index + 1}`];
             });
-            document.querySelectorAll('#itemsContent .product-image').forEach((el, index) => {
+            document.querySelectorAll('#itemsContent .card img').forEach((el, index) => {
                 const itemKeys = Object.keys(IMAGES.items);
-                el.style.backgroundImage = `url('${IMAGES.items[itemKeys[index]]}')`;
+                el.src = IMAGES.items[itemKeys[index]];
             });
-            document.querySelectorAll('#currencySection .product-image').forEach((el, index) => {
+            document.querySelectorAll('#currencySection .card img').forEach((el, index) => {
                 const currencyKeys = Object.keys(IMAGES.currency);
-                el.style.backgroundImage = `url('${IMAGES.currency[currencyKeys[index]]}')`;
+                el.src = IMAGES.currency[currencyKeys[index]];
             });
         });
 
@@ -1376,15 +1394,10 @@
                 scenario4: 'URL_SCENARIO_4'
             },
             items: {
-                analPlug: 'https://i.ibb.co/HLWWnCKj/019a6cef-3bbb-4368-bad4-300c47559d84-019a6cef-3bbb-4368-bad4-300c47559d84.png',
-                pajamas: 'https://i.ibb.co/zHTXpGGC/89f1722b-75a6-4aa9-ba96-f4483e119517-89f1722b-75a6-4aa9-ba96-f4483e119517.png',
-                stockings: 'URL_STOCKINGS',
-                handcuffs: 'URL_HANDCUFFS',
-                lube: 'URL_LUBE',
-                truthOrDare: 'URL_TRUTH_OR_DARE',
-                masks: 'URL_MASKS',
-                massageFoam: 'URL_MASSAGE_FOAM',
-                sexSwing: 'URL_SEX_SWING'
+                map: 'URL_MAP',
+                compass: 'URL_COMPASS',
+                backpack: 'URL_BACKPACK',
+                torch: 'URL_TORCH'
             },
             currency: {
                 morePhotos: 'URL_MORE_PHOTOS',
@@ -1397,10 +1410,10 @@
 
         const PRICES = {
             scenarios: {
-                scenario1: { fires: 100 },
-                scenario2: { fires: 100 },
-                scenario3: { fires: 100 },
-                scenario4: { fires: 100 }
+                scenario1: { ice: 100 },
+                scenario2: { ice: 100 },
+                scenario3: { ice: 100 },
+                scenario4: { ice: 100 }
             },
             subscriptions: {
                 sub1Day: { price: 2.00 },
@@ -1412,21 +1425,16 @@
                 subDeluxe: { price: 100.00 }
             },
             currency: {
-                smallPack: { fires: 100, price: 1.00 },
-                mediumPack: { fires: 200, price: 1.50 },
-                largePack: { fires: 500, price: 3.00 },
-                megaPack: { fires: 1000, price: 5.00 }
+                smallPack: { ice: 100, price: 1.00 },
+                mediumPack: { ice: 200, price: 1.50 },
+                largePack: { ice: 500, price: 3.00 },
+                megaPack: { ice: 1000, price: 5.00 }
             },
             items: {
-                analPlug: { fires: 50 },
-                pajamas: { fires: 80 },
-                stockings: { fires: 60 },
-                handcuffs: { fires: 70 },
-                lube: { fires: 40 },
-                truthOrDare: { fires: 90 },
-                masks: { fires: 50 },
-                massageFoam: { fires: 60 },
-                sexSwing: { fires: 150 }
+                map: { ice: 50 },
+                compass: { ice: 50 },
+                backpack: { ice: 50 },
+                torch: { ice: 50 }
             }
         };
     </script>
