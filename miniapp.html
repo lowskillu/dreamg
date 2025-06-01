@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adventure App</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <style>
         * {
@@ -15,7 +15,7 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+            font-family: 'Inter', sans-serif;
             background: url('https://media.discordapp.net/attachments/1349800672035475533/1377962570501066863/91ae8a950b924696.jpg?ex=683d8226&is=683c30a6&hm=778cc4e56437a460ad5373d6a3d5648e4b1af2058a46d9fd2d9258a68556df07&=&format=webp&width=1126&height=1126') no-repeat center center fixed;
             background-size: cover;
             color: #f0f0f0;
@@ -25,7 +25,6 @@
             flex-direction: column;
             padding: 120px 16px 100px;
             position: relative;
-            touch-action: manipulation; /* Prevent pinch zoom */
         }
 
         body::before {
@@ -43,12 +42,12 @@
             right: 0;
             background: url('https://cdn.discordapp.com/attachments/1349800672035475533/1377962570501066863/91ae8a950b924696.jpg?ex=683adf26&is=68398da6&hm=8eeede46db8fe6b6eb7923dc947b5dada91c3b2f11bd822067ab244a04099346') no-repeat center center fixed;
             background-size: cover;
-            border-bottom: 1px solid rgba(255, 255, 0.08);
-            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 10;
+            z-index: 100;
             height: 80px;
         }
 
@@ -58,12 +57,13 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(16, 16, 0.95);
+            background: rgba(16, 16, 16, 0.95);
+            backdrop-filter: blur(12px);
             z-index: -1;
         }
 
         .section-title {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 600;
             color: #f0f0f0;
             text-align: left;
@@ -78,10 +78,11 @@
         }
 
         .card {
-            background: rgba(16, 16, 0.85);
-            border: 16px;
+            background: rgba(16, 16, 16, 0.85);
+            border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 16px;
-            box-shadow: 0 4px 8px rgba(108, 93, 211, 0.4);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(108, 93, 211, 0.4), 0 0 15px rgba(108, 93, 211, 0.2);
             overflow: hidden;
             color: #f0f0f0;
             display: flex;
@@ -89,7 +90,6 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             opacity: 0;
-            touch-action: none;
         }
 
         .card.reveal {
@@ -98,33 +98,27 @@
 
         .card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(108, 93, 211, 0.8);
+            box-shadow: 0 8px 24px rgba(108, 93, 211, 0.8), 0 0 20px rgba(108, 93, 211, 0.4);
         }
 
         .card.scenario-card {
             width: 100%;
-            max-width: 360px;
-            min-height: 600px;
+            max-width: 454px;
+            min-height: 562px;
             margin: 16px auto;
         }
 
-        .card.item-card {
+        .card.item-card, .card.currency-card {
             width: 100%;
-            max-width: 360px;
-            min-height: 320px;
-            margin: 8px auto;
-        }
-
-        .card.currency-card {
-            width: 100%;
-            max-width: 360px;
-            min-height: 280px;
-            margin: 8px auto;
+            max-width: 238px;
+            min-height: 290px;
+            margin: 4px;
         }
 
         .card.currency-card-wide {
-            max-width: 740px;
-            margin: 8px auto;
+            grid-column: span 2;
+            max-width: 492px;
+            margin: 4px auto;
         }
 
         .card img {
@@ -141,11 +135,11 @@
         }
 
         .card.scenario-card img {
-            height: 360px;
+            height: 360px; /* Increased height for scenario card images */
         }
 
         .card.item-card img, .card.currency-card img {
-            height: 160px;
+            height: 145px;
         }
 
         .card-body {
@@ -153,7 +147,7 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
-            flex-grow: 1;
+            flex-grow: 1; /* Ensure card-body takes remaining space */
         }
 
         .card-title {
@@ -177,7 +171,7 @@
         }
 
         .card-actions {
-            margin-top: auto;
+            margin-top: auto; /* Move buttons to the bottom of the card */
             padding-top: 12px;
         }
 
@@ -198,12 +192,11 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            touch-action: manipulation;
         }
 
         .card.item-card .btn {
-            padding: 8px 24px;
-            font-size: 14px;
+            padding: 8px 24px; /* Adjusted padding for longer, less tall buttons */
+            font-size: 14px; /* Reduced font size for item card buttons */
         }
 
         .btn:hover {
@@ -211,6 +204,7 @@
             border: 2px solid #5A4DC6;
             box-shadow: 0 0 18px rgba(108, 93, 211, 0.9);
             transform: scale(1.02);
+            border-radius: 20px;
         }
 
         #buySubscriptionBtn {
@@ -222,7 +216,8 @@
             background: rgba(16, 16, 16, 0.85);
             border: 2px solid rgba(255, 255, 255, 0.5);
             border-radius: 16px;
-            box-shadow: 0 4px 8px rgba(108, 93, 211, 0.6);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(108, 93, 211, 0.6);
             color: #f0f0f0;
             display: flex;
             flex-direction: column;
@@ -232,7 +227,6 @@
             margin: 8px 0;
             position: relative;
             opacity: 0;
-            touch-action: manipulation;
         }
 
         .subscription-card.reveal {
@@ -265,7 +259,8 @@
             background: rgba(16, 16, 16, 0.85);
             border: 2px solid rgba(255, 255, 255, 0.5);
             border-radius: 16px;
-            box-shadow: 0 4px 8px rgba(108, 93, 211, 0.6);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(108, 93, 211, 0.6);
             color: #ffffff;
             display: flex;
             flex-direction: column;
@@ -302,7 +297,8 @@
             background: rgba(16, 16, 16, 0.85);
             border: 2px solid rgba(255, 255, 255, 0.5);
             border-radius: 16px;
-            box-shadow: 0 4px 8px rgba(108, 93, 211, 0.6);
+            box-shadow: 0 4px 20px rgba(108, 93, 211, 0.6);
+            backdrop-filter: blur(12px);
             opacity: 0;
         }
 
@@ -315,7 +311,8 @@
             border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 16px;
             padding: 24px;
-            box-shadow: 0 8px 24px rgba(108, 93, 211, 0.6);
+            box-shadow: 0 8px 24px rgba(108, 93, 211, 0.6), 0 0 20px rgba(108, 93, 211, 0.3);
+            backdrop-filter: blur(12px);
             width: 90%;
             max-width: 400px;
             text-align: center;
@@ -359,7 +356,7 @@
             color: #ffffff;
             transition: all 0.3s ease;
             box-shadow: 0 4px 12px rgba(108, 93, 211, 0.4);
-            touch-action: manipulation;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
         }
 
         .tab-button:hover {
@@ -381,6 +378,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
@@ -397,7 +395,6 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 12px rgba(108, 93, 211, 0.4);
-            touch-action: manipulation;
         }
 
         .plus-btn:hover {
@@ -422,6 +419,7 @@
 
         .modal {
             background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
             animation: fadeIn 0.3s ease-out;
         }
 
@@ -445,6 +443,8 @@
             display: flex;
             gap: 20px;
             box-shadow: 0 8px 24px rgba(108, 93, 211, 0.6);
+            backdrop-filter: blur(12px);
+            animation: fadeInScale 0.4s ease-out;
         }
 
         #productModal .modal-content img {
@@ -489,7 +489,6 @@
             transition: all 0.3s ease;
             box-shadow: 0 0 12px rgba(108, 93, 211, 0.5);
             align-self: flex-start;
-            touch-action: manipulation;
         }
 
         #productModal .modal-content .buy-btn:hover {
@@ -497,6 +496,7 @@
             border: 2px solid #5A4DC6;
             box-shadow: 0 0 18px rgba(108, 93, 211, 0.9);
             transform: scale(1.02);
+            border-radius: 20px;
         }
 
         .category-buttons {
@@ -508,6 +508,7 @@
             gap: 12px;
             z-index: 10;
             background: rgba(16, 16, 16, 0.95);
+            backdrop-filter: blur(12px);
             border: 1px solid rgba(108, 93, 211, 0.3);
             border-radius: 16px;
             padding: 8px 12px;
@@ -528,7 +529,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            touch-action: manipulation;
         }
 
         .category-button::before {
@@ -579,14 +579,7 @@
             margin-top: 16px;
         }
 
-        #itemsContent .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin-top: 16px;
-        }
-
-        #currencySection .grid {
+        #itemsContent .grid, #currencySection .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 16px;
@@ -613,33 +606,25 @@
             }
 
             .card.scenario-card {
-                max-width: 360px;
-                min-height: 560px;
+                max-width: 410px;
+                min-height: 518px;
             }
 
-            .card.item-card {
-                max-width: 360px;
-                min-height: 300px;
-            }
-
-            .card.currency-card {
-                max-width: 360px;
-                min-height: 260px;
+            .card.item-card, .card.currency-card {
+                max-width: 224px;
+                min-height: 264px;
+                margin: 4px;
             }
 
             .card.currency-card-wide {
-                max-width: 740px;
+                max-width: 464px;
             }
 
             .card.scenario-card img {
-                height: 325px;
+                height: 325px; /* Adjusted for increased height */
             }
 
-            .card.item-card img {
-                height: 150px;
-            }
-
-            .card.currency-card img {
+            .card.item-card img, .card.currency-card img {
                 height: 132px;
             }
 
@@ -699,32 +684,24 @@
 
             .card.scenario-card {
                 max-width: 346px;
-                min-height: 500px;
+                min-height: 454px;
             }
 
-            .card.item-card {
-                max-width: 346px;
-                min-height: 280px;
-            }
-
-            .card.currency-card {
-                max-width: 346px;
-                min-height: 240px;
+            .card.item-card, .card.currency-card {
+                max-width: 211px;
+                min-height: 238px;
+                margin: 4px;
             }
 
             .card.currency-card-wide {
-                max-width: 346px;
+                max-width: 438px;
             }
 
             .card.scenario-card img {
-                height: 300px;
+                height: 300px; /* Adjusted for increased height */
             }
 
-            .card.item-card img {
-                height: 140px;
-            }
-
-            .card.currency-card img {
+            .card.item-card img, .card.currency-card img {
                 height: 119px;
             }
 
@@ -756,40 +733,91 @@
             .language-card .card-desc {
                 font-size: 14px;
             }
-
-            #itemsContent .grid {
-                grid-template-columns: 1fr;
-            }
         }
 
         @keyframes fadeInUp {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes fadeInScale {
-            0% { opacity: 0; transform: scale(0.9); }
-            100% { opacity: 1; transform: scale(1); }
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
         }
 
         @keyframes vibrate {
-            0% { transform: translateX(0); }
-            20% { transform: translateX(-2px); }
-            40% { transform: translateX(2px); }
-            60% { transform: translateX(-2px); }
-            80% { transform: translateX(2px); }
-            100% { transform: translateX(0); }
+            0% {
+                transform: translateX(0);
+            }
+            20% {
+                transform: translateX(-2px);
+            }
+            40% {
+                transform: translateX(2px);
+            }
+            設置: {
+                transform: translateX(-2px);
+            }
+            80% {
+                transform: translateX(2px);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideSection {
+            from { transform: translateY(10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideLeft {
+            from { transform: translateX(-15px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideRight {
+            from { transform: translateX(15px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
     </style>
 </head>
@@ -1164,16 +1192,6 @@
     </div>
 
     <script>
-        // Telegram Web App initialization
-        if (window.Telegram && window.Telegram.WebApp) {
-            window.Telegram.WebApp.ready();
-            window.Telegram.WebApp.disableVerticalSwipes();
-            window.Telegram.WebApp.expand();
-            console.log('Telegram Web App initialized');
-        } else {
-            console.warn('Telegram Web App not detected');
-        }
-
         const LANGUAGES = {
             en: { flag: '🇺🇸', name: 'English' },
             ru: { flag: '🇷🇺', name: 'Русский' }
@@ -1317,7 +1335,7 @@
                 analPlugDesc: 'Гладкая силиконовая пробка для новичков. 💜',
                 buyBtnAnalPlug: 'Подробнее',
                 seductivePajamas: 'Шелковая пижама',
-                seductivePajamasDesc: 'Шелковый комплект для настроения. 🌙',
+                seductivePajamasDesc: 'Шелковый комплект для настроения. �ozi',
                 buyBtnSeductivePajamas: 'Подробнее',
                 seductiveStockings: 'Кружевные чулки',
                 seductiveStockingsDesc: 'Кружевные чулки для дразнящего эффекта. 🖤',
@@ -1356,18 +1374,6 @@
             plan: 'Deluxe',
             expirationDate: new Date('2025-05-18')
         };
-
-        // Add touch event listeners to buttons
-        function addTouchListeners() {
-            const buttons = document.querySelectorAll('.btn, .category-button, .tab-button, .subscription-card');
-            buttons.forEach(button => {
-                button.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    console.log('Touchstart on:', button);
-                    button.dispatchEvent(new Event('click'));
-                }, { passive: false });
-            });
-        }
 
         function toggleLanguage() {
             currentLanguage = currentLanguage === 'en' ? 'ru' : 'en';
@@ -1440,7 +1446,6 @@
         }
 
         function showSection(sectionId) {
-            console.log('Showing section:', sectionId);
             document.querySelectorAll('#mainContent > div').forEach(div => div.classList.add('hidden'));
             document.getElementById(sectionId).classList.remove('hidden');
             currentSection = sectionId;
@@ -1459,7 +1464,6 @@
         }
 
         function showStoreTab(tabId) {
-            console.log('Showing store tab:', tabId);
             currentStoreTab = tabId;
             document.querySelectorAll('.store-content').forEach(content => content.classList.add('hidden'));
             document.getElementById(`${tabId}Content`).classList.remove('hidden');
@@ -1476,7 +1480,6 @@
         }
 
         function showProductDetails(productId) {
-            console.log('Showing product details:', productId);
             const trans = translations[currentLanguage];
             const modal = document.getElementById('productModal');
             const productImage = document.getElementById('productImage');
@@ -1513,17 +1516,9 @@
                     if (userTokens >= data.price) {
                         userTokens -= data.price;
                         updateUI();
-                        if (window.Telegram.WebApp) {
-                            window.Telegram.WebApp.showAlert(`${data.title} purchased successfully!`);
-                        } else {
-                            alert(`${data.title} purchased successfully!`);
-                        }
+                        alert(`${data.title} purchased successfully!`);
                     } else {
-                        if (window.Telegram.WebApp) {
-                            window.Telegram.WebApp.showAlert('Not enough ice cubes!');
-                        } else {
-                            alert('Not enough ice cubes!');
-                        }
+                        alert('Not enough ice cubes!');
                     }
                 });
             };
@@ -1536,7 +1531,6 @@
         }
 
         function selectPlan(id) {
-            console.log('Selecting plan:', id);
             const cards = document.querySelectorAll('.subscription-card');
             cards.forEach(card => card.classList.remove('selected'));
             cards[id - 1].classList.add('selected');
@@ -1546,21 +1540,13 @@
 
         function buySelectedSubscription() {
             if (!selectedPlan) {
-                if (window.Telegram.WebApp) {
-                    window.Telegram.WebApp.showAlert('Please select a plan!');
-                } else {
-                    alert('Please select a plan!');
-                }
+                alert('Please select a plan!');
                 return;
             }
             const planKeys = ['sub1Day', 'sub3Days', 'sub1Week', 'sub1Month', 'sub3Months', 'subForever', 'subDeluxe'];
             const plan = planKeys[selectedPlan - 1];
             showConfirmModal(`Purchase ${translations[currentLanguage][plan]} for $${PRICES.subscriptions[plan].price.toFixed(2)}?`, () => {
-                if (window.Telegram.WebApp) {
-                    window.Telegram.WebApp.showAlert(`${translations[currentLanguage][plan]} purchased successfully`);
-                } else {
-                    alert(`${translations[currentLanguage][plan]} purchased successfully`);
-                }
+                alert(`${translations[currentLanguage][plan]} purchased successfully`);
                 photoLimit = plan === 'subDeluxe' ? { current: 0, max: Infinity } : { current: 0, max: 50 };
                 subscription.plan = plan === 'subDeluxe' ? 'Deluxe' : 'Standard';
                 const currentDate = new Date();
@@ -1573,141 +1559,163 @@
         }
 
         function buyTokens(amount, price) {
-    console.log(`Buying ${amount} tokens for $${price}`);
-    const trans = translations[currentLanguage];
-    showConfirmModal(`${trans.confirmText} ${amount}🧊 for $${price.toFixed(2)}?`, () => {
-        userTokens += amount;
-        updateUI();
-        if (window.Telegram.WebApp) {
-            window.Telegram.WebApp.showAlert(`${amount} Ice Cubes purchased successfully!`);
-        } else {
-            alert(`${amount} Ice Cubes purchased successfully!`);
+            showConfirmModal(`Purchase ${amount}🧊 for $${price.price.toFixed(2)}?`, () => {
+                userTokens += amount;
+                updateUI();
+                alert(`${amount}🧊 purchased successfully`);
+            });
         }
-    });
-}
 
-function showConfirmModal(message, onConfirm) {
-    console.log('Showing confirm modal:', message);
-    const modal = document.getElementById('confirmModal');
-    const confirmText = document.getElementById('confirmText');
-    const confirmBtn = document.getElementById('confirmBtn');
-    const cancelBtn = document.getElementById('cancelBtn');
-    const trans = translations[currentLanguage];
+        function showConfirmModal(message, onConfirm) {
+            const modal = document.getElementById('confirmModal');
+            document.getElementById('confirmTitle').textContent = translations[currentLanguage].confirmTitle;
+            document.getElementById('confirmText').textContent = message;
+            modal.classList.remove('hidden');
 
-    confirmText.textContent = message;
-    document.getElementById('confirmTitle').textContent = trans.confirmTitle;
+            const confirmBtn = document.getElementById('confirmBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
 
-    confirmBtn.onclick = () => {
-        modal.style.display = 'none';
-        onConfirm();
-    };
+            confirmBtn.onclick = () => {
+                modal.classList.add('hidden');
+                onConfirm();
+            };
 
-    cancelBtn.onclick = () => {
-        modal.style.display = 'none';
-    };
-
-    modal.style.display = 'flex';
-}
-
-function updateUI() {
-    console.log('Updating UI');
-    document.getElementById('tokenCount').textContent = userTokens;
-    document.getElementById('photoLimitDisplay').textContent = `${photoLimit.current} / ${photoLimit.max === Infinity ? '∞' : photoLimit.max}`;
-    updateLanguage();
-}
-
-function revealElements() {
-    console.log('Revealing elements');
-    const elements = document.querySelectorAll('.card, .subscription-card, .subscription-info-card, .language-card, .subscription-details-card');
-    elements.forEach((el, index) => {
-        setTimeout(() => {
-            el.classList.add('reveal');
-        }, index * 100);
-    });
-}
-
-const IMAGES = {
-    scenarios: {
-        scenario1: 'https://via.placeholder.com/360x240',
-        scenario2: 'https://via.placeholder.com/360x240',
-        scenario3: 'https://via.placeholder.com/360x240',
-        scenario4: 'https://via.placeholder.com/360x240'
-    },
-    items: {
-        analPlug: 'https://via.placeholder.com/360x240',
-        seductivePajamas: 'https://via.placeholder.com/360x240',
-        seductiveStockings: 'https://via.placeholder.com/360x240',
-        furryHandcuffs: 'https://via.placeholder.com/360x240',
-        waterBasedLube: 'https://via.placeholder.com/360x240',
-        truthOrDareGame: 'https://via.placeholder.com/360x240',
-        masksBlindfolds: 'https://via.placeholder.com/360x240',
-        massageFoam: 'https://via.placeholder.com/360x240',
-        sexSwing: 'https://via.placeholder.com/360x240'
-    },
-    currency: {
-        morePhotos: 'https://via.placeholder.com/360x240',
-        smallPack: 'https://via.placeholder.com/360x240',
-        mediumPack: 'https://via.placeholder.com/360x240',
-        largePack: 'https://via.placeholder.com/360x240',
-        megaPack: 'https://via.placeholder.com/360x240'
-    }
-};
-
-const PRICES = {
-    scenarios: {
-        scenario1: { ice: 50 },
-        scenario2: { ice: 75 },
-        scenario3: { ice: 100 },
-        scenario4: { ice: 125 }
-    },
-    items: {
-        analPlug: { ice: 20 },
-        seductivePajamas: { ice: 30 },
-        seductiveStockings: { ice: 25 },
-        furryHandcuffs: { ice: 15 },
-        waterBasedLube: { ice: 10 },
-        truthOrDareGame: { ice: 40 },
-        masksBlindfolds: { ice: 20 },
-        massageFoam: { ice: 15 },
-        sexSwing: { ice: 50 }
-    },
-    currency: {
-        smallPack: 1.00,
-        mediumPack: 1.50,
-        largePack: 3.00,
-        megaPack: 5.00
-    },
-    subscriptions: {
-        sub1Day: { price: 2.00 },
-        sub3Days: { price: 5.00 },
-        sub1Week: { price: 13.00 },
-        sub1Month: { price: 25.00 },
-        sub3Months: { price: 70.00 },
-        subForever: { price: 50.00 },
-        subDeluxe: { price: 100.00 }
-    }
-};
-
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM loaded, initializing app');
-    addTouchListeners();
-    updateUI();
-    showSection('storeSection');
-    showStoreTab('scenarios');
-    revealElements();
-
-    document.getElementById('productModal').addEventListener('click', (e) => {
-        if (e.target === document.getElementById('productModal')) {
-            closeProductModal();
+            cancelBtn.onclick = () => {
+                modal.classList.add('hidden');
+            };
         }
-    });
 
-    document.getElementById('confirmModal').addEventListener('click', (e) => {
-        if (e.target === document.getElementById('confirmModal')) {
-            document.getElementById('confirmModal').style.display = 'none';
+        function updateUI() {
+            document.getElementById('tokenCount').textContent = userTokens;
+            document.getElementById('photoLimitDisplay').textContent = `${photoLimit.current} / ${photoLimit.max}`;
+            updateLanguage();
+            revealElements();
         }
-    });
-});
-</script>
+
+        function revealElements() {
+            const elements = document.querySelectorAll('.card, .subscription-card, .subscription-info-card, .language-card, .subscription-details-card');
+            elements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.classList.add('reveal');
+                }, index * 100);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateUI();
+            showSection('storeSection');
+            showStoreTab('scenarios');
+
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            });
+
+            window.PRICES = {
+                scenarios: {
+                    scenario1: { ice: 50 },
+                    scenario2: { ice: 50 },
+                    scenario3: { ice: 50 },
+                    scenario4: { ice: 50 }
+                },
+                items: {
+                    analPlug: { ice: 30 },
+                                        seductivePajamas: { ice: 40 },
+                    seductiveStockings: { ice: 35 },
+                    furryHandcuffs: { ice: 25 },
+                    waterBasedLube: { ice: 20 },
+                    truthOrDareGame: { ice: 45 },
+                    masksBlindfolds: { ice: 30 },
+                    massageFoam: { ice: 25 },
+                    sexSwing: { ice: 60 }
+                },
+                subscriptions: {
+                    sub1Day: { price: 2.00 },
+                    sub3Days: { price: 5.00 },
+                    sub1Week: { price: 13.00 },
+                    sub1Month: { price: 25.00 },
+                    sub3Months: { price: 70.00 },
+                    subForever: { price: 50.00 },
+                    subDeluxe: { price: 100.00 }
+                },
+                currency: {
+                    smallPack: { price: 1.00 },
+                    mediumPack: { price: 1.50 },
+                    largePack: { price: 3.00 },
+                    megaPack: { price: 5.00 }
+                }
+            };
+
+            window.IMAGES = {
+                scenarios: {
+                    scenario1: 'https://via.placeholder.com/360x240/6C5DD3/FFFFFF?text=Tutor+Sleep+Scene',
+                    scenario2: 'https://via.placeholder.com/360x240/8F6CED/FFFFFF?text=Teacher+Afterschool',
+                    scenario3: 'https://via.placeholder.com/360x240/5A4DC6/FFFFFF?text=Policewoman+Stop',
+                    scenario4: 'https://via.placeholder.com/360x240/7D5BE0/FFFFFF?text=Help+Friend+Scene'
+                },
+                items: {
+                    analPlug: 'https://via.placeholder.com/360x240/6C5DD3/FFFFFF?text=Silicone+Plug',
+                    seductivePajamas: 'https://via.placeholder.com/360x240/8F6CED/FFFFFF?text=Silk+Pajama+Set',
+                    seductiveStockings: 'https://via.placeholder.com/360x240/5A4DC6/FFFFFF?text=Lace+Stockings',
+                    furryHandcuffs: 'https://via.placeholder.com/360x240/7D5BE0/FFFFFF?text=Soft+Furry+Cuffs',
+                    waterBasedLube: 'https://via.placeholder.com/360x240/6C5DD3/FFFFFF?text=Water+Lube+Gel',
+                    truthOrDareGame: 'https://via.placeholder.com/360x240/8F6CED/FFFFFF?text=Spicy+Dare+Game',
+                    masksBlindfolds: 'https://via.placeholder.com/360x240/5A4DC6/FFFFFF?text=Satin+Mask+Set',
+                    massageFoam: 'https://via.placeholder.com/360x240/7D5BE0/FFFFFF?text=Sensual+Foam',
+                    sexSwing: 'https://via.placeholder.com/360x240/6C5DD3/FFFFFF?text=Swing+for+Play'
+                },
+                currency: {
+                    morePhotos: 'https://via.placeholder.com/360x240/8F6CED/FFFFFF?text=More+Photos',
+                    smallPack: 'https://via.placeholder.com/360x240/5A4DC6/FFFFFF?text=Small+Ice+Pack',
+                    mediumPack: 'https://via.placeholder.com/360x240/7D5BE0/FFFFFF?text=Medium+Ice+Pack',
+                    largePack: 'https://via.placeholder.com/360x240/6C5DD3/FFFFFF?text=Large+Ice+Pack',
+                    megaPack: 'https://via.placeholder.com/360x240/8F6CED/FFFFFF?text=Mega+Ice+Pack'
+                }
+            };
+
+            // Update image sources on page load
+            function updateImages() {
+                // Scenarios
+                for (let i = 1; i <= 4; i++) {
+                    document.getElementById(`scenario${i}Image`).src = IMAGES.scenarios[`scenario${i}`];
+                }
+                // Items
+                ['analPlug', 'seductivePajamas', 'seductiveStockings', 'furryHandcuffs', 'waterBasedLube', 'truthOrDareGame', 'masksBlindfolds', 'massageFoam', 'sexSwing'].forEach(item => {
+                    document.getElementById(`${item}Image`).src = IMAGES.items[item];
+                });
+                // Currency
+                ['morePhotos', 'smallPack', 'mediumPack', 'largePack', 'megaPack'].forEach(item => {
+                    document.getElementById(`${item}Image`).src = IMAGES.currency[item];
+                });
+            }
+
+            // Initialize the app
+            function initializeApp() {
+                updateImages();
+                updateUI();
+                showSection('storeSection');
+                showStoreTab('scenarios');
+                selectPlan(subscription.plan === 'Deluxe' ? 7 : 1);
+            }
+
+            // Handle window resize for responsive adjustments
+            window.addEventListener('resize', () => {
+                revealElements();
+            });
+
+            // Prevent default touch behavior for better mobile experience
+            document.addEventListener('touchstart', (e) => {
+                if (e.target.closest('.btn, .category-button, .tab-button, .subscription-card')) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+
+            // Initialize on page load
+            initializeApp();
+        });
+    </script>
 </body>
 </html>
