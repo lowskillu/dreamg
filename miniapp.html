@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adventure App</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <style>
         * {
@@ -23,34 +23,123 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
+            padding: 120px 16px 100px;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.2));
+            z-index: -1;
+        }
+
+        .header-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: url('https://cdn.discordapp.com/attachments/1349800672035475533/1377962570501066863/91ae8a950b924696.jpg?ex=683adf26&is=68398da6&hm=8eeede46db8fe6b6eb7923dc947b5dada91c3b2f11bd822067ab244a04099346') no-repeat center center fixed;
+            background-size: cover;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            height: 80px;
+        }
+
+        .header-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(16, 16, 16, 0.95);
+            backdrop-filter: blur(12px);
+            z-index: -1;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #f0f0f0;
+            text-align: left;
+            text-shadow: 0 0 8px #6C5DD3, 0 0 16px rgba(108, 93, 211, 0.6);
+        }
+
+        #subscriptionsSection {
+            padding: 24px 16px 120px;
+            overflow-y: auto;
+            height: calc(100vh - 80px);
+            -webkit-overflow-scrolling: touch;
         }
 
         .card {
-            width: 100%;
-            max-width: 260px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(16, 16, 16, 0.85);
+            border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 16px;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(108, 93, 211, 0.4), 0 0 15px rgba(108, 93, 211, 0.2);
             overflow: hidden;
             color: #f0f0f0;
             display: flex;
             flex-direction: column;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
-            margin: 0 auto;
+            opacity: 0;
+        }
+
+        .card.reveal {
+            animation: fadeInUp 0.6s ease both;
         }
 
         .card:hover {
             transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(108, 93, 211, 0.8), 0 0 20px rgba(108, 93, 211, 0.4);
+        }
+
+        .card.scenario-card {
+            width: 100%;
+            max-width: 454px;
+            min-height: 562px;
+            margin: 16px auto;
+        }
+
+        .card.item-card, .card.currency-card {
+            width: 100%;
+            max-width: 238px;
+            min-height: 290px;
+            margin: 4px;
+        }
+
+        .card.currency-card-wide {
+            grid-column: span 2;
+            max-width: 492px;
+            margin: 4px auto;
         }
 
         .card img {
             width: 100%;
-            height: auto;
             display: block;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .card img:hover {
+            transform: scale(1.03);
+        }
+
+        .card.scenario-card img {
+            height: 335px;
+        }
+
+        .card.item-card img, .card.currency-card img {
+            height: 145px;
         }
 
         .card-body {
@@ -63,35 +152,39 @@
         .card-title {
             font-size: 18px;
             font-weight: 600;
+            color: #ffffff;
+            text-shadow: 0 0 8px #6C5DD3;
+            transition: text-shadow 0.3s ease, letter-spacing 0.3s ease;
         }
 
-        .card-desc {
-            font-size: 14px;
-            color: #cccccc;
-            line-height: 1.4;
+        .card-title:hover {
+            text-shadow: 0 0 16px #8F6CED;
+            letter-spacing: 0.5px;
         }
 
         .card-price {
-            font-size: 14px;
-            color: #cccccc;
+            font-size: 16px;
+            color: #6C5DD3;
+            font-weight: 600;
             line-height: 1.4;
         }
 
         .card-actions {
-            margin-top: 16px;
+            margin-top: 12px;
         }
 
         .btn {
             width: 100%;
-            padding: 10px 0;
-            background-color: #6C5DD3;
-            border: none;
-            border-radius: 12px;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #6C5DD3, #8F6CED);
+            border: 2px solid #6C5DD3;
+            border-radius: 20px;
             color: #ffffff;
-            font-size: 14px;
+            font-size: 16px;
             font-family: 'Inter', sans-serif;
+            font-weight: 500;
             cursor: pointer;
-            transition: background-color 0.2s ease, box-shadow 0.3s ease;
+            transition: background 0.5s ease, box-shadow 0.3s ease, transform 0.2s ease;
             box-shadow: 0 0 12px rgba(108, 93, 211, 0.5);
             display: flex;
             align-items: center;
@@ -100,280 +193,221 @@
         }
 
         .btn:hover {
-            background-color: #5A4DC6;
+            background: linear-gradient(135deg, #5A4DC6, #7D5BE0);
+            border: 2px solid #5A4DC6;
             box-shadow: 0 0 18px rgba(108, 93, 211, 0.9);
+            transform: scale(1.02);
+            border-radius: 20px;
+        }
+
+        #buySubscriptionBtn {
+            border-radius: 24px;
         }
 
         .subscription-card {
             width: 100%;
-            max-width: 400px;
             background: rgba(16, 16, 16, 0.85);
-            border: 1px solid rgba(108, 93, 211, 0.3);
-            border-radius: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 16px;
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
-                       0 0 0 1px rgba(108, 93, 211, 0.2),
-                       0 0 20px rgba(108, 93, 211, 0.2);
-            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(108, 93, 211, 0.6);
             color: #f0f0f0;
             display: flex;
             flex-direction: column;
             transition: all 0.2s ease;
-            padding: 12px 20px;
+            padding: 12px 24px;
             cursor: pointer;
-            margin: 8px auto;
+            margin: 8px 0;
             position: relative;
+            opacity: 0;
+        }
+
+        .subscription-card.reveal {
+            animation: fadeInUp 0.6s ease both;
         }
 
         .subscription-card:hover {
-            transform: translateY(-2px);
-            border-color: rgba(108, 93, 211, 0.4);
-            box-shadow: 0 6px 24px rgba(108, 93, 211, 0.25),
-                       0 0 0 1px rgba(108, 93, 211, 0.3),
-                       0 0 25px rgba(108, 93, 211, 0.3);
+            transform: scale(1.01);
+            border-color: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 6px 20px rgba(108, 93, 211, 0.8);
         }
 
         .subscription-card.selected {
             border-color: #6C5DD3;
             background: rgba(108, 93, 211, 0.12);
-            box-shadow: 0 6px 24px rgba(108, 93, 211, 0.3),
-                       0 0 0 1px rgba(108, 93, 211, 0.4),
-                       0 0 30px rgba(108, 93, 211, 0.4);
+            box-shadow: 0 6px 20px rgba(108, 93, 211, 0.8);
         }
 
         .subscription-card .card-body {
-            padding: 0;
+            width: 100%;
             display: flex;
             flex-direction: row;
-            align-items: center;
             justify-content: space-between;
-        }
-
-        .subscription-card .card-title {
-            font-size: 15px;
-            font-weight: 500;
-            color: #ffffff;
-        }
-
-        .subscription-card .card-price {
-            font-size: 14px;
-            color: #6C5DD3;
-            font-weight: 500;
-        }
-
-        .subscription-card .checkmark {
-            position: absolute;
-            top: 50%;
-            right: 12px;
-            transform: translateY(-50%);
-            width: 18px;
-            height: 18px;
-            background: #6C5DD3;
-            border-radius: 50%;
-            display: flex;
             align-items: center;
-            justify-content: center;
+            padding: 0;
+        }
+
+        .subscription-info-card, .language-card {
+            width: 100%;
+            background: rgba(16, 16, 16, 0.85);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 16px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(108, 93, 211, 0.6);
             color: #ffffff;
-            font-size: 10px;
+            display: flex;
+            flex-direction: column;
             transition: all 0.2s ease;
+            padding: 12px 24px;
+            margin: 8px 0;
+            position: relative;
             opacity: 0;
         }
 
-        .subscription-card.selected .checkmark {
-            opacity: 1;
+        .subscription-info-card.reveal, .language-card.reveal {
+            animation: fadeInUp 0.6s ease both;
         }
 
-        .subscription-info-card {
-            min-height: 120px;
-            width: 100%;
-            max-width: 400px;
-            padding: 16px 20px;
-            margin: 0 auto 15px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            background: rgba(16, 16, 16, 0.85);
-            border: 1px solid rgba(108, 93, 211, 0.3);
-            border-radius: 16px;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
-                       0 0 0 1px rgba(108, 93, 211, 0.2),
-                       0 0 20px rgba(108, 93, 211, 0.2);
+        .subscription-info-card:hover, .language-card:hover {
+            transform: scale(1.01);
+            border-color: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 6px 20px rgba(108, 93, 211, 0.8);
         }
 
-        .language-card {
-            height: 60px;
-            width: 100%;
-            max-width: 400px;
-            padding: 10px 20px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(16, 16, 16, 0.85);
-            border: 1px solid rgba(108, 93, 211, 0.3);
-            border-radius: 16px;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
-                       0 0 0 1px rgba(108, 93, 211, 0.2),
-                       0 0 20px rgba(108, 93, 211, 0.2);
-        }
-
-        .language-card .card-body {
+        .subscription-info-card .card-body, .language-card .card-body {
             width: 100%;
             display: flex;
+            flex-direction: row;
             justify-content: space-between;
             align-items: center;
+            padding: 0;
         }
 
-        .language-card .card-title {
-            font-size: 16px;
-            font-weight: 500;
-            color: #ffffff;
-        }
-
-        .language-card .card-desc {
-            font-size: 16px;
-            color: #6C5DD3;
-            font-weight: 500;
-        }
-
-        .subscription-details {
-            margin: 12px auto;
-            padding: 16px 20px;
+        .subscription-details-card {
+            margin: 15px 0;
+            padding: 20px;
             width: 100%;
-            max-width: 400px;
             background: rgba(16, 16, 16, 0.85);
-            border: 1px solid rgba(108, 93, 211, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.5);
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
-                       0 0 0 1px rgba(108, 93, 211, 0.2),
-                       0 0 20px rgba(108, 93, 211, 0.2);
+            box-shadow: 0 4px 20px rgba(108, 93, 211, 0.6);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            opacity: 0;
+        }
+
+        .subscription-details-card.reveal {
+            animation: fadeInUp 0.6s ease both;
         }
 
         .confirm-modal-content {
-            background: rgba(16, 16, 16, 0.85);
-            border: 1px solid rgba(108, 93, 211, 0.3);
+            background: linear-gradient(135deg, rgba(16, 16, 16, 0.9), rgba(30, 30, 30, 0.9));
+            border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 16px;
-            padding: 16px 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
-                       0 0 0 1px rgba(108, 93, 211, 0.2),
-                       0 0 20px rgba(108, 93, 211, 0.2);
+            padding: 24px;
+            box-shadow: 0 8px 24px rgba(108, 93, 211, 0.6), 0 0 20px rgba(108, 93, 211, 0.3);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             width: 90%;
             max-width: 400px;
-            position: relative;
-            overflow: hidden;
+            text-align: center;
+            animation: fadeInScale 0.4s ease-out;
         }
 
-        .confirm-title {
-            font-size: 18px;
+        .confirm-modal-content .confirm-title {
+            font-size: 20px;
             font-weight: 600;
             color: #f0f0f0;
-            animation: slideLeft 0.5s ease-out;
+            text-shadow: 0 0 8px #6C5DD3;
+            margin-bottom: 12px;
         }
 
-        .confirm-text {
-            font-size: 14px;
+        .confirm-modal-content .confirm-text {
+            font-size: 16px;
             color: #cccccc;
-            line-height: 1.4;
-            animation: slideRight 0.5s ease-out 0.1s;
-            animation-fill-mode: both;
+            margin-bottom: 16px;
         }
 
-        .confirm-buttons {
+        .confirm-modal-content .confirm-buttons {
             display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-top: 16px;
-            animation: slideUp 0.5s ease-out 0.2s;
-            animation-fill-mode: both;
+            gap: 12px;
+            justify-content: center;
         }
 
         .tab-container {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 12px;
+            margin: 16px 0;
         }
 
         .tab-button {
-            background-color: #6C5DD3;
-            border-radius: 20px;
-            padding: 6px 15px;
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
+            background: linear-gradient(135deg, #6C5DD3, #8F6CED);
+            border-radius: 10px;
+            padding: 8px 20px;
+            font-size: 16px;
+            font-weight: 600;
             border: none;
             color: #ffffff;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 0 12px rgba(108, 93, 211, 0.5);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(108, 93, 211, 0.4);
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
         }
 
         .tab-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 18px rgba(108, 93, 211, 0.9);
+            background: linear-gradient(135deg, #5A4DC6, #7D5BE0);
+            transform: scale(1.03);
+            box-shadow: 0 4px 16px rgba(108, 93, 211, 0.6);
         }
 
         .tab-button.active {
-            background-color: #5A4DC6;
-            box-shadow: 0 0 18px rgba(108, 93, 211, 0.9);
+            background: linear-gradient(135deg, #5A4DC6, #7D5BE0);
+            box-shadow: 0 4px 16px rgba(108, 93, 211, 0.6);
         }
 
         .balance-flask {
             background: rgba(16, 16, 16, 0.8);
-            border-radius: 16px;
-            padding: 8px 16px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 8px 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             display: flex;
             align-items: center;
-            gap: 12px;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            gap: 10px;
+            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .balance-item {
-            display: flex;
-            align-items: center;
-            font-size: 14px;
-            font-weight: 500;
-            color: #f0f0f0;
-            gap: 3px;
-        }
-
         .plus-btn {
-            background-color: #6C5DD3;
+            background: linear-gradient(135deg, #6C5DD3, #8F6CED);
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: 12px;
+            width: 24px;
+            height: 24px;
+            font-size: 14px;
             border: none;
             color: #ffffff;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 12px rgba(108, 93, 211, 0.5);
+            box-shadow: 0 4px 12px rgba(108, 93, 211, 0.4);
         }
 
         .plus-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 18px rgba(108, 93, 211, 0.9);
+            background: linear-gradient(135deg, #5A4DC6, #7D5BE0);
+            transform: scale(1.1);
+            box-shadow: 0 4px 16px rgba(108, 93, 211, 0.6);
+            animation: pulse 0.5s infinite;
         }
 
         .icon {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             stroke: currentColor;
             stroke-width: 2;
             fill: none;
+            transition: transform 0.3s ease;
+        }
+
+        .category-button:hover .icon {
+            animation: vibrate 0.3s ease;
         }
 
         .modal {
@@ -382,185 +416,370 @@
             animation: fadeIn 0.3s ease-out;
         }
 
-        .neon-text {
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            color: #f0f0f0;
-            animation: neonFlicker 2.5s infinite;
+        #productModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
         }
 
-        h2, h3 {
-            font-family: 'Inter', sans-serif;
-            font-size: 18px;
-            font-weight: 600;
-            color: #f0f0f0;
+        #productModal .modal-content {
+            background: rgba(16, 16, 16, 0.9);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            padding: 20px;
+            width: 90%;
+            max-width: 800px;
+            display: flex;
+            gap: 20px;
+            box-shadow: 0 8px 24px rgba(108, 93, 211, 0.6);
+            backdrop-filter: blur(12px);
+            animation: fadeInScale 0.4s ease-out;
         }
 
-        p {
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
+        #productModal .modal-content img {
+            width: 40%;
+            height: auto;
+            border-radius: 12px;
+            object-fit: cover;
+        }
+
+        #productModal .modal-content .product-details {
+            width: 60%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        #productModal .modal-content .product-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #f0f0f0;
+            margin-bottom: 12px;
+            text-shadow: 0 0 8px #6C5DD3;
+        }
+
+        #productModal .modal-content .product-desc {
+            font-size: 16px;
             color: #cccccc;
-            line-height: 1.4;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        #productModal .modal-content .buy-btn {
+            width: 50%;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #6C5DD3, #8F6CED);
+            border: 2px solid #6C5DD3;
+            border-radius: 20px;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 12px rgba(108, 93, 211, 0.5);
+            align-self: flex-start;
+        }
+
+        #productModal .modal-content .buy-btn:hover {
+            background: linear-gradient(135deg, #5A4DC6, #7D5BE0);
+            border: 2px solid #5A4DC6;
+            box-shadow: 0 0 18px rgba(108, 93, 211, 0.9);
+            transform: scale(1.02);
+            border-radius: 20px;
+        }
+
+        .category-buttons {
+            position: fixed;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 10;
+            background: rgba(16, 16, 16, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(108, 93, 211, 0.3);
+            border-radius: 16px;
+            padding: 8px 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+        }
+
+        .category-button {
+            position: relative;
+            background-color: transparent;
+            border-radius: 50%;
+            padding: 0;
+            font-size: 16px;
+            border: none;
+            color: #ffffff;
+            transition: all 0.3s ease;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .category-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #6C5DD3, #8F6CED);
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .category-button.selected::before {
+            opacity: 1;
+        }
+
+        .category-button:hover {
+            background-color: rgba(108, 93, 211, 0.15);
+            transform: scale(1.1);
+        }
+
+        .category-button:active {
+            background-color: rgba(108, 93, 211, 0.3);
+            transform: scale(0.95);
+        }
+
+        .category-button.selected {
+            box-shadow: 0 4px 12px rgba(108, 93, 211, 0.5);
+        }
+
+        #mainContent {
+            width: 100%;
+            padding: 0 16px;
+        }
+
+        #storeSection {
+            margin-top: 24px;
+        }
+
+        #scenariosContent .grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        #itemsContent .grid, #currencySection .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        #settingsSection {
+            width: 100%;
+            margin: 24px 0;
         }
 
         @media (max-width: 768px) {
-            .grid-cols-4 {
-                grid-template-columns: repeat(1, 1fr);
-                gap: 12px;
-                padding: 0 10px;
+            body {
+                padding: 100px 12px 80px;
             }
-            .grid-cols-2 {
-                grid-template-columns: repeat(1, 1fr);
-                gap: 12px;
-                padding: 0 10px;
-            }
-            .grid-cols-1 {
-                grid-template-columns: repeat(1, 1fr);
-                gap: 12px;
-                padding: 0 10px;
-            }
-            .col-span-2 {
-                grid-column: span 1;
-            }
-            .card, .subscription-card,
-            .subscription-info-card,
-            .language-card,
-            .subscription-details,
-            .confirm-modal-content {
-                margin: 0 auto;
-                width: 100%;
-                max-width: 360px;
+
+            .header-container {
+                height: 70px;
                 padding: 10px 16px;
             }
-            .section-title {
-                font-size: 1.5rem;
-            }
-            .section-title::before,
-            .section-title::after {
-                font-size: 14px;
-            }
-            .balance-flask {
-                gap: 6px;
-                padding: 5px 8px;
-            }
-            .balance-item {
-                font-size: 12px;
-            }
-            .plus-btn {
-                width: 18px;
-                height: 18px;
-                font-size: 10px;
-            }
-            .subscription-info-card {
-                min-height: 100px;
-                padding: 10px;
-            }
-            .language-card {
-                height: 50px;
-                padding: 8px 10px;
-            }
-            .subscription-card {
-                max-width: 300px;
-                padding: 10px 14px;
-            }
-            .subscription-card .card-title {
-                font-size: 14px;
-            }
-            .subscription-card .card-price {
-                font-size: 13px;
-            }
-            .subscription-card .checkmark {
-                width: 16px;
-                height: 16px;
-                right: 10px;
-            }
-            .header-container {
-                padding: 10px 14px;
-            }
-            .category-buttons {
-                bottom: 12px;
-                padding: 6px 12px;
-                gap: 12px;
-            }
-            .category-button {
-                width: 40px;
-                height: 40px;
-            }
-        }
 
-        @media (min-width: 769px) {
-            .grid-cols-4 {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
+            #mainContent {
+                padding: 0 12px;
             }
-            .grid-cols-2 {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
+
+            .card.scenario-card {
+                max-width: 410px;
+                min-height: 518px;
             }
-            .grid-cols-1 {
-                grid-template-columns: repeat(1, 1fr);
-                gap: 15px;
+
+            .card.item-card, .card.currency-card {
+                max-width: 224px;
+                min-height: 264px;
+                margin: 4px;
             }
-            .col-span-2 {
-                grid-column: span 2;
+
+            .card.currency-card-wide {
+                max-width: 464px;
             }
-            .content-section {
-                max-width: 1200px;
+
+            .card.scenario-card img {
+                height: 302px;
             }
-            .section-title {
-                font-size: 2rem;
+
+            .card.item-card img, .card.currency-card img {
+                height: 132px;
             }
-            .subscription-info-card {
-                min-height: 140px;
-                padding: 20px;
+
+            #productModal .modal-content {
+                flex-direction: column;
+                max-width: 600px;
             }
+
+            #productModal .modal-content img {
+                width: 100%;
+                height: 300px;
+            }
+
+            #productModal .modal-content .product-details {
+                width: 100%;
+            }
+
+            .subscription-card,
+            .subscription-info-card,
             .language-card {
-                height: 70px;
-                padding: 12px 20px;
+                padding: 10px 20px;
+                margin: 6px 0;
+            }
+
+            .subscription-details-card {
+                padding: 14px;
+                margin: 10px 0;
+            }
+
+            .subscription-details-card h3 {
+                font-size: 16px;
+            }
+
+            .subscription-card .card-title,
+            .subscription-card .card-price,
+            .subscription-info-card .card-title,
+            .subscription-info-card .card-desc,
+            .language-card .card-title,
+            .language-card .card-desc {
+                font-size: 16px;
             }
         }
 
         @media (max-width: 360px) {
-            .balance-flask {
-                flex-direction: column;
-                align-items: flex-end;
-                gap: 4px;
+            body {
+                padding: 80px 8px 60px;
             }
-            .subscription-info-card {
-                min-height: 90px;
-                padding: 8px;
-            }
-            .language-card {
-                height: 45px;
-                padding: 6px 8px;
-            }
-            .subscription-card {
-                max-width: 280px;
-                padding: 8px 12px;
-            }
-            .subscription-card .card-title {
-                font-size: 13px;
-            }
-            .subscription-card .card-price {
-                font-size: 12px;
-            }
-            .subscription-card .checkmark {
-                width: 14px;
-                height: 14px;
-                right: 8px;
-            }
+
             .header-container {
+                height: 60px;
                 padding: 8px 12px;
             }
-            .category-buttons {
-                bottom: 8px;
-                padding: 4px 10px;
-                gap: 10px;
+
+            #mainContent {
+                padding: 0 8px;
             }
-            .category-button {
-                width: 36px;
-                height: 36px;
+
+            .card.scenario-card {
+                max-width: 346px;
+                min-height: 454px;
+            }
+
+            .card.item-card, .card.currency-card {
+                max-width: 211px;
+                min-height: 238px;
+                margin: 4px;
+            }
+
+            .card.currency-card-wide {
+                max-width: 438px;
+            }
+
+            .card.scenario-card img {
+                height: 281px;
+            }
+
+            .card.item-card img, .card.currency-card img {
+                height: 119px;
+            }
+
+            #productModal .modal-content img {
+                height: 250px;
+            }
+
+            .subscription-card,
+            .subscription-info-card,
+            .language-card {
+                padding: 8px 16px;
+                margin: 4px 0;
+            }
+
+            .subscription-details-card {
+                padding: 12px;
+                margin: 8px 0;
+            }
+
+            .subscription-details-card h3 {
+                font-size: 14px;
+            }
+
+            .subscription-card .card-title,
+            .subscription-card .card-price,
+            .subscription-info-card .card-title,
+            .subscription-info-card .card-desc,
+            .language-card .card-title,
+            .language-card .card-desc {
+                font-size: 14px;
+            }
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes vibrate {
+            0% {
+                transform: translateX(0);
+            }
+            20% {
+                transform: translateX(-2px);
+            }
+            40% {
+                transform: translateX(2px);
+            }
+            60% {
+                transform: translateX(-2px);
+            }
+            80% {
+                transform: translateX(2px);
+            }
+            100% {
+                transform: translateX(0);
             }
         }
 
@@ -593,72 +812,20 @@
             from { transform: translateX(15px); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
-
-        @keyframes neonFlicker {
-            0%, 100% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
-            50% { text-shadow: 0 0 8px rgba(255, 255, 255, 0.6); }
-        }
-
-        .category-buttons {
-            position: fixed;
-            bottom: 16px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            z-index: 10;
-            background: rgba(16, 16, 16, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 24px;
-            padding: 8px 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .category-button {
-            background-color: transparent;
-            border-radius: 50%;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-            font-size: 16px;
-            border: none;
-            color: #ffffff;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            box-shadow: none;
-        }
-
-        .category-button:hover {
-            transform: translateY(-1px);
-            background-color: rgba(108, 93, 211, 0.1);
-        }
-
-        .category-button.selected {
-            background-color: #6C5DD3;
-            box-shadow: 0 2px 8px rgba(108, 93, 211, 0.3);
-        }
     </style>
 </head>
-<body class="flex flex-col items-center p-2">
+<body class="flex flex-col items-center">
     <div class="header-container">
+        <div class="header-overlay"></div>
         <div id="sectionTitle" class="section-title"></div>
         <div class="balance-flask">
             <div class="balance-item">
-                <svg class="icon" viewBox="0 0 24 24">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                </svg>
-                <span id="photoLimitDisplay">5 / 10</span>
+                <span>📸</span>
+                <span id="photoLimitDisplay">0 / 10</span>
             </div>
             <div class="balance-item">
-                <span id="tokenCount"></span>
-                <span class="ice-icon">🧊</span>
+                <span id="tokenCount">0</span>
+                <span>🧊</span>
             </div>
             <button class="plus-btn" onclick="showCurrencySection()">
                 <svg class="icon" viewBox="0 0 24 24">
@@ -685,76 +852,63 @@
         <button id="settingsBtn" class="category-button" onclick="showSection('settingsSection')">
             <svg class="icon" viewBox="0 0 24 24">
                 <circle cx="12" cy="12" r="3"></circle>
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l-.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
             </svg>
         </button>
     </div>
 
-    <div id="mainContent" class="content-section">
+    <div id="mainContent">
         <div id="storeSection">
             <div class="tab-container">
                 <button id="scenariosTab" class="tab-button active" onclick="showStoreTab('scenarios')">
-                    <svg class="icon" viewBox="0 0 24 24">
-                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-                    </svg>
-                    Adventures
+                    <span id="scenariosTabLabel"></span>
                 </button>
                 <button id="itemsTab" class="tab-button" onclick="showStoreTab('items')">
-                    <svg class="icon" viewBox="0 0 24 24">
-                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
-                    </svg>
-                    Gear
+                    <span id="itemsTabLabel"></span>
                 </button>
             </div>
             <div id="scenariosContent" class="store-content">
-                <div class="grid grid-cols-4 gap-3">
-                    <div class="card">
-                        <img src="" alt="Scenario 1" id="scenario1Image">
+                <div class="grid">
+                    <div class="card scenario-card">
+                        <img src="https://via.placeholder.com/360x240" alt="Tutor Asleep Scene" id="scenario1Image">
                         <div class="card-body">
                             <div class="card-title" id="scenario1Title"></div>
-                            <div class="card-desc" id="scenario1Desc"></div>
                             <div class="card-actions">
-                                <button class="btn" onclick="selectScenario(1)">
-                                    <span>🧊</span> <span id="scenario1Btn"></span>
+                                <button class="btn" onclick="showProductDetails('scenario1')">
+                                    <span id="scenario1Btn"></span>
                                 </button>
                             </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <img src="" alt="Scenario 2" id="scenario2Image">
+                    <div class="card scenario-card">
+                        <img src="https://via.placeholder.com/360x240" alt="Teacher After School" id="scenario2Image">
                         <div class="card-body">
                             <div class="card-title" id="scenario2Title"></div>
-                            <div class="card-desc" id="scenario2Desc"></div>
                             <div class="card-actions">
-                                <button class="btn" onclick="selectScenario(2)">
-                                    <span>🧊</span> <span id="scenario2Btn"></span>
+                                <button class="btn" onclick="showProductDetails('scenario2')">
+                                    <span id="scenario2Btn"></span>
                                 </button>
                             </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <img src="" alt="Scenario 3" id="scenario3Image">
+                    <div class="card scenario-card">
+                        <img src="https://via.placeholder.com/360x240" alt="Policewoman Stop" id="scenario3Image">
                         <div class="card-body">
                             <div class="card-title" id="scenario3Title"></div>
-                            <div class="card-desc" id="scenario3Desc"></div>
                             <div class="card-actions">
-                                <button class="btn" onclick="selectScenario(3)">
-                                    <span>🧊</span> <span id="scenario3Btn"></span>
+                                <button class="btn" onclick="showProductDetails('scenario3')">
+                                    <span id="scenario3Btn"></span>
                                 </button>
                             </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <img src="" alt="Scenario 4" id="scenario4Image">
+                    <div class="card scenario-card">
+                        <img src="https://via.placeholder.com/360x240" alt="Helping Friend Scene" id="scenario4Image">
                         <div class="card-body">
                             <div class="card-title" id="scenario4Title"></div>
-                            <div class="card-desc" id="scenario4Desc"></div>
                             <div class="card-actions">
-                                <button class="btn" onclick="selectScenario(4)">
-                                    <span>🧊</span> <span id="scenario4Btn"></span>
+                                <button class="btn" onclick="showProductDetails('scenario4')">
+                                    <span id="scenario4Btn"></span>
                                 </button>
                             </div>
                         </div>
@@ -762,51 +916,102 @@
                 </div>
             </div>
             <div id="itemsContent" class="store-content hidden">
-                <div class="grid grid-cols-4 gap-3 mt-4">
-                    <div class="card">
-                        <img src="" alt="Map" id="mapImage">
+                <div class="grid">
+                    <div class="card item-card">
+                        <img src="https://via.placeholder.com/360x240" alt="Anal Plug Item" id="analPlugImage">
                         <div class="card-body">
-                            <div class="card-title" id="map"></div>
-                            <div class="card-desc" id="mapDesc"></div>
+                            <div class="card-title" id="analPlug"></div>
                             <div class="card-actions">
-                                <button class="btn" onclick="buyItem('map', PRICES.items.map.fires)">
-                                    <span id="buyBtnMap"></span>
+                                <button class="btn" onclick="showProductDetails('analPlug')">
+                                    <span id="buyBtnAnalPlug"></span>
                                 </button>
                             </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <img src="" alt="Compass" id="compassImage">
+                    <div class="card item-card">
+                        <img src="https://via.placeholder.com/360x240" alt="Seductive Pajamas" id="seductivePajamasImage">
                         <div class="card-body">
-                            <div class="card-title" id="compass"></div>
-                            <div class="card-desc" id="compassDesc"></div>
+                            <div class="card-title" id="seductivePajamas"></div>
                             <div class="card-actions">
-                                <button class="btn" onclick="buyItem('compass', PRICES.items.compass.fires)">
-                                    <span id="buyBtnCompass"></span>
+                                <button class="btn" onclick="showProductDetails('seductivePajamas')">
+                                    <span id="buyBtnSeductivePajamas"></span>
                                 </button>
                             </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <img src="" alt="Backpack" id="backpackImage">
+                    <div class="card item-card">
+                        <img src="https://via.placeholder.com/360x240" alt="Seductive Stockings" id="seductiveStockingsImage">
                         <div class="card-body">
-                            <div class="card-title" id="backpack"></div>
-                            <div class="card-desc" id="backpackDesc"></div>
+                            <div class="card-title" id="seductiveStockings"></div>
                             <div class="card-actions">
-                                <button class="btn" onclick="buyItem('backpack', PRICES.items.backpack.fires)">
-                                    <span id="buyBtnBackpack"></span>
+                                <button class="btn" onclick="showProductDetails('seductiveStockings')">
+                                    <span id="buyBtnSeductiveStockings"></span>
                                 </button>
                             </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <img src="" alt="Torch" id="torchImage">
+                    <div class="card item-card">
+                        <img src="https://via.placeholder.com/360x240" alt="Furry Handcuffs" id="furryHandcuffsImage">
                         <div class="card-body">
-                            <div class="card-title" id="torch"></div>
-                            <div class="card-desc" id="torchDesc"></div>
+                            <div class="card-title" id="furryHandcuffs"></div>
                             <div class="card-actions">
-                                <button class="btn" onclick="buyItem('torch', PRICES.items.torch.fires)">
-                                    <span id="buyBtnTorch"></span>
+                                <button class="btn" onclick="showProductDetails('furryHandcuffs')">
+                                    <span id="buyBtnFurryHandcuffs"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card item-card">
+                        <img src="https://via.placeholder.com/360x240" alt="Water-Based Lube" id="waterBasedLubeImage">
+                        <div class="card-body">
+                            <div class="card-title" id="waterBasedLube"></div>
+                            <div class="card-actions">
+                                <button class="btn" onclick="showProductDetails('waterBasedLube')">
+                                    <span id="buyBtnWaterBasedLube"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card item-card">
+                        <img src="https://via.placeholder.com/360x240" alt="Truth or Dare Game" id="truthOrDareGameImage">
+                        <div class="card-body">
+                            <div class="card-title" id="truthOrDareGame"></div>
+                            <div class="card-actions">
+                                <button class="btn" onclick="showProductDetails('truthOrDareGame')">
+                                    <span id="buyBtnTruthOrDareGame"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card item-card">
+                        <img src="https://via.placeholder.com/360x240" alt="Masks & Blindfolds" id="masksBlindfoldsImage">
+                        <div class="card-body">
+                            <div class="card-title" id="masksBlindfolds"></div>
+                            <div class="card-actions">
+                                <button class="btn" onclick="showProductDetails('masksBlindfolds')">
+                                    <span id="buyBtnMasksBlindfolds"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card item-card">
+                        <img src="https://via.placeholder.com/360x240" alt="Massage Foam Item" id="massageFoamImage">
+                        <div class="card-body">
+                            <div class="card-title" id="massageFoam"></div>
+                            <div class="card-actions">
+                                <button class="btn" onclick="showProductDetails('massageFoam')">
+                                    <span id="buyBtnMassageFoam"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card item-card">
+                        <img src="https://via.placeholder.com/360x240" alt="Sex Swing Item" id="sexSwingImage">
+                        <div class="card-body">
+                            <div class="card-title" id="sexSwing"></div>
+                            <div class="card-actions">
+                                <button class="btn" onclick="showProductDetails('sexSwing')">
+                                    <span id="buyBtnSexSwing"></span>
                                 </button>
                             </div>
                         </div>
@@ -816,58 +1021,51 @@
         </div>
 
         <div id="subscriptionsSection" class="hidden">
-            <div id="subscriptionDetails" class="subscription-details">
-                <h3 id="detailsHeader" class="details-header"></h3>
-                <div id="subscriptionsDesc" class="details-content"></div>
+            <div id="subscriptionDetails" class="subscription-details-card">
+                <h3 id="detailsHeader"></h3>
+                <div id="subscriptionsDesc"></div>
             </div>
-            <div class="mt-3">
+            <div class="subscription-list">
                 <div class="subscription-card" onclick="selectPlan(1)">
                     <div class="card-body">
-                        <div class="card-title" id="sub1Day"></div>
+                        <div class="card-title">1 Day Pass</div>
                         <div class="card-price">$2.00</div>
-                        <div class="checkmark">✔</div>
                     </div>
                 </div>
                 <div class="subscription-card" onclick="selectPlan(2)">
                     <div class="card-body">
-                        <div class="card-title" id="sub3Days"></div>
+                        <div class="card-title">3 Days Pass</div>
                         <div class="card-price">$5.00</div>
-                        <div class="checkmark">✔</div>
                     </div>
                 </div>
                 <div class="subscription-card" onclick="selectPlan(3)">
                     <div class="card-body">
-                        <div class="card-title" id="sub1Week"></div>
+                        <div class="card-title">1 Week Pass</div>
                         <div class="card-price">$13.00</div>
-                        <div class="checkmark">✔</div>
                     </div>
                 </div>
                 <div class="subscription-card" onclick="selectPlan(4)">
                     <div class="card-body">
-                        <div class="card-title" id="sub1Month"></div>
+                        <div class="card-title">1 Month Pass</div>
                         <div class="card-price">$25.00</div>
-                        <div class="checkmark">✔</div>
                     </div>
                 </div>
                 <div class="subscription-card" onclick="selectPlan(5)">
                     <div class="card-body">
-                        <div class="card-title" id="sub3Months"></div>
+                        <div class="card-title">3 Months Pass</div>
                         <div class="card-price">$70.00</div>
-                        <div class="checkmark">✔</div>
                     </div>
                 </div>
                 <div class="subscription-card" onclick="selectPlan(6)">
                     <div class="card-body">
-                        <div class="card-title" id="subForever"></div>
+                        <div class="card-title">Forever Pass</div>
                         <div class="card-price">$50.00</div>
-                        <div class="checkmark">✔</div>
                     </div>
                 </div>
                 <div class="subscription-card" onclick="selectPlan(7)">
                     <div class="card-body">
-                        <div class="card-title" id="subDeluxe"></div>
+                        <div class="card-title">Deluxe Pass</div>
                         <div class="card-price">$100.00</div>
-                        <div class="checkmark">✔</div>
                     </div>
                 </div>
                 <div class="card-actions">
@@ -879,12 +1077,11 @@
         </div>
 
         <div id="currencySection" class="hidden">
-            <div class="grid grid-cols-2 gap-3 mt-4">
-                <div class="card col-span-2">
-                    <img src="" alt="More Photos" id="morePhotosImage">
+            <div class="grid">
+                <div class="card currency-card currency-card-wide">
+                    <img src="https://via.placeholder.com/360x240" alt="Want More Photos?" id="morePhotosImage">
                     <div class="card-body">
                         <div class="card-title" id="morePhotos"></div>
-                        <div class="card-desc" id="morePhotosDesc"></div>
                         <div class="card-actions">
                             <button class="btn" onclick="showSection('subscriptionsSection')">
                                 <span id="buyBtnMorePhotos"></span>
@@ -892,11 +1089,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="card">
-                    <img src="" alt="Small Pack" id="smallPackImage">
+                <div class="card currency-card">
+                    <img src="https://via.placeholder.com/360x240" alt="Small Pack" id="smallPackImage">
                     <div class="card-body">
                         <div class="card-title" id="smallPack"></div>
-                        <div class="card-desc" id="smallPackDesc"></div>
                         <div class="card-actions">
                             <button class="btn" onclick="buyTokens(100, PRICES.currency.smallPack)">
                                 <span id="buyBtnSmallPack"></span>
@@ -904,11 +1100,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="card">
-                    <img src="" alt="Medium Pack" id="mediumPackImage">
+                <div class="card currency-card">
+                    <img src="https://via.placeholder.com/360x240" alt="Medium Pack" id="mediumPackImage">
                     <div class="card-body">
                         <div class="card-title" id="mediumPack"></div>
-                        <div class="card-desc" id="mediumPackDesc"></div>
                         <div class="card-actions">
                             <button class="btn" onclick="buyTokens(200, PRICES.currency.mediumPack)">
                                 <span id="buyBtnMediumPack"></span>
@@ -916,11 +1111,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="card">
-                    <img src="" alt="Large Pack" id="largePackImage">
+                <div class="card currency-card">
+                    <img src="https://via.placeholder.com/360x240" alt="Large Pack" id="largePackImage">
                     <div class="card-body">
                         <div class="card-title" id="largePack"></div>
-                        <div class="card-desc" id="largePackDesc"></div>
                         <div class="card-actions">
                             <button class="btn" onclick="buyTokens(500, PRICES.currency.largePack)">
                                 <span id="buyBtnLargePack"></span>
@@ -928,11 +1122,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="card">
-                    <img src="" alt="Mega Pack" id="megaPackImage">
+                <div class="card currency-card">
+                    <img src="https://via.placeholder.com/360x240" alt="Mega Pack" id="megaPackImage">
                     <div class="card-body">
                         <div class="card-title" id="megaPack"></div>
-                        <div class="card-desc" id="megaPackDesc"></div>
                         <div class="card-actions">
                             <button class="btn" onclick="buyTokens(1000, PRICES.currency.megaPack)">
                                 <span id="buyBtnMegaPack"></span>
@@ -944,22 +1137,38 @@
         </div>
 
         <div id="settingsSection" class="hidden">
-            <div class="card subscription-info-card" onclick="showSubscriptionSection()">
+            <div class="subscription-info-card">
                 <div class="card-body">
                     <div class="card-title" id="settingsTitle"></div>
                     <div class="card-desc" id="subscriptionInfo"></div>
-                    <div class="card-actions">
-                        <button id="renewBtn" class="btn hidden" onclick="showSection('subscriptionsSection')">
-                            <span id="renewBtnText"></span>
-                        </button>
-                    </div>
+                </div>
+                <div class="card-actions">
+                    <button id="renewBtn" class="btn" onclick="showSubscriptionSection()">
+                        <span id="renewBtnText"></span>
+                    </button>
                 </div>
             </div>
-            <div class="card language-card" onclick="toggleLanguage()">
+            <div class="language-card">
                 <div class="card-body">
                     <div class="card-title" id="languageLabel"></div>
                     <div class="card-desc" id="currentLanguage"></div>
                 </div>
+                <div class="card-actions">
+                    <button class="btn" onclick="toggleLanguage()">
+                        <span id="languageBtnText"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="productModal" class="modal fixed inset-0 flex items-center justify-center hidden">
+        <div class="modal-content">
+            <img id="productImage" src="" alt="Product Image">
+            <div class="product-details">
+                <div class="product-title" id="productTitle"></div>
+                <div class="product-desc" id="productDesc"></div>
+                <button id="buyProductBtn" class="buy-btn">Buy for <span id="productPrice"></span>🧊</button>
             </div>
         </div>
     </div>
@@ -967,7 +1176,7 @@
     <div id="confirmModal" class="modal fixed inset-0 flex items-center justify-center hidden">
         <div class="confirm-modal-content">
             <h3 id="confirmTitle" class="confirm-title"></h3>
-            <p id="confirmText" class="confirm-text mt-2"></p>
+            <p id="confirmText" class="confirm-text"></p>
             <div class="confirm-buttons">
                 <button id="confirmBtn" class="btn">Confirm</button>
                 <button id="cancelBtn" class="btn">Cancel</button>
@@ -989,26 +1198,27 @@
                 sectionTitleSettings: 'Settings',
                 scenariosTab: 'Scenarios',
                 itemsTab: 'Items',
-                tokenCount: '100',
+                tokenCount: '0',
                 languageLabel: 'Language',
+                languageBtnText: 'Change Language',
                 settingsTitle: 'Your Plan',
                 subscriptionInfo: 'Deluxe until May 18, 2025',
                 renewBtnText: 'Renew',
-                scenario1Title: 'Tutor Asleep',
-                scenario1Desc: 'You enter her home, door ajar, finding her naked and dreaming of you. Wake her with a sinful touch! ❄️',
-                scenario1Btn: 'Buy for 100🧊',
-                scenario2Title: 'Teacher After School',
-                scenario2Desc: 'Alone with her to fix grades, her tight skirt teases as she bends over. ❄️',
-                scenario2Btn: 'Buy for 100🧊',
+                scenario1Title: 'Tutor Sleep Scene',
+                scenario1Desc: 'You enter her house, the door ajar, she’s naked and dreaming of you. Wake her with a sinful touch! 😈',
+                scenario1Btn: 'View Details',
+                scenario2Title: 'Teacher Afterschool',
+                scenario2Desc: 'Alone with her to fix grades, her tight skirt teases as she leans over. 🧊',
+                scenario2Btn: 'View Details',
                 scenario3Title: 'Policewoman Stop',
-                scenario3Desc: 'She pulls you over in the wild, no license—her smirk promises a naughty punishment! ❄️',
-                scenario3Btn: 'Buy for 100🧊',
-                scenario4Title: 'Helping Friend',
-                scenario4Desc: 'Her computer\'s stuck, and her shy glances turn into wild invites as you lean in. ❄️',
-                scenario4Btn: 'Buy for 100🧊',
+                scenario3Desc: 'She stops you in the wilderness, no license—her smirk promises a spicy punishment! 💋',
+                scenario3Btn: 'View Details',
+                scenario4Title: 'Help Friend Scene',
+                scenario4Desc: 'Her computer freezes, shy glances turn into bold invitations as you lean in. 😏',
+                scenario4Btn: 'View Details',
                 detailsHeader: 'Premium Benefits',
-                subscriptionsDescStandard: '<p><strong>Premium Benefits 🧊✨</strong></p><p>New Limit: 50 photos/day + Unlimited Chat! 💬❄️</p><p>Better Outfits 🌟</p><p>Faster Responses ⚡</p><p>Enhanced Image Quality 🎨</p><p>Priority Scenario Access 🚀</p>',
-                subscriptionsDescDeluxe: '<p><strong>Premium Benefits 🧊✨</strong></p><p>New Limit: Unlimited photos + Unlimited Chat! 💬❄️</p><p>Better Outfits 🌟</p><p>Faster Responses ⚡</p><p>Enhanced Image Quality 🎨</p><p>Priority Scenario Access 🚀</p>',
+                subscriptionsDescStandard: '<p><strong>Premium Benefits 🧊✨</strong></p><p>50 photos/day 📷</p><p>Unlimited Chat 💬</p><p>Exclusive Outfits 👗</p><p>Lightning-Fast Responses ⚡</p><p>Enhanced Images 🌟</p><p>Priority Access 🎟️</p><p>Secret Features 🔒</p><p>Elite Support 🤝</p>',
+                subscriptionsDescDeluxe: '<p><strong>Deluxe Benefits 🎉</strong></p><p>Unlimited photos 📷</p><p>Unlimited Chat 💬</p><p>Exclusive Outfits 👗</p><p>Lightning-Fast Responses ⚡</p><p>Enhanced Images 🌟</p><p>Priority Access 🎟️</p><p>Secret Features 🔒</p><p>Elite Support 🤝</p><p>VIP Community Access 👑</p>',
                 sub1Day: '1 Day Pass',
                 sub3Days: '3 Days Pass',
                 sub1Week: '1 Week Pass',
@@ -1017,35 +1227,50 @@
                 subForever: 'Forever Pass',
                 subDeluxe: 'Deluxe Pass',
                 buyBtnText: 'Buy Subscription',
-                morePhotos: 'Want More Photos?',
-                morePhotosDesc: 'Unlock more photo limits!',
-                buyBtnMorePhotos: 'Check Subscriptions',
-                smallPack: 'Small Pack',
+                morePhotos: 'Need More Photos?',
+                morePhotosDesc: 'Unlock higher photo limits!',
+                buyBtnMorePhotos: 'View Subscriptions',
+                smallPack: 'Small Ice Pack',
                 smallPackDesc: '100 🧊',
                 buyBtnSmallPack: 'Buy for $1.00',
-                mediumPack: 'Medium Pack',
+                mediumPack: 'Medium Ice Pack',
                 mediumPackDesc: '200 🧊',
                 buyBtnMediumPack: 'Buy for $1.50',
-                largePack: 'Large Pack',
+                largePack: 'Large Ice Pack',
                 largePackDesc: '500 🧊',
                 buyBtnLargePack: 'Buy for $3.00',
-                megaPack: 'Mega Pack',
+                megaPack: 'Mega Ice Pack',
                 megaPackDesc: '1000 🧊',
                 buyBtnMegaPack: 'Buy for $5.00',
-                map: 'Map',
-                mapDesc: 'A detailed map for your adventure. 🗺️',
-                buyBtnMap: 'Buy for 50🧊',
-                compass: 'Compass',
-                compassDesc: 'A reliable compass for navigation. 🧭',
-                buyBtnCompass: 'Buy for 50🧊',
-                backpack: 'Backpack',
-                backpackDesc: 'A durable backpack for your belongings. 🎒',
-                buyBtnBackpack: 'Buy for 50🧊',
-                torch: 'Torch',
-                torchDesc: 'A powerful torch for lighting up the dark. 🔦',
-                buyBtnTorch: 'Buy for 50🧊',
+                analPlug: 'Silicone Plug',
+                analPlugDesc: 'Smooth silicone plug for beginners. 💜',
+                buyBtnAnalPlug: 'View Details',
+                seductivePajamas: 'Silk Pajama Set',
+                seductivePajamasDesc: 'Silk set for the mood. 🌙',
+                buyBtnSeductivePajamas: 'View Details',
+                seductiveStockings: 'Lace Stockings',
+                seductiveStockingsDesc: 'Lace stockings for a teasing effect. 🖤',
+                buyBtnSeductiveStockings: 'View Details',
+                furryHandcuffs: 'Soft Furry Cuffs',
+                furryHandcuffsDesc: 'Soft cuffs for playful restraints. 🖐️',
+                buyBtnFurryHandcuffs: 'View Details',
+                waterBasedLube: 'Water Lube Gel',
+                waterBasedLubeDesc: 'Smooth glide for more pleasure. 💦',
+                buyBtnWaterBasedLube: 'View Details',
+                truthOrDareGame: 'Spicy Dare Game',
+                truthOrDareGameDesc: 'Spicy game for bold couples. 🎲',
+                buyBtnTruthOrDareGame: 'View Details',
+                masksBlindfolds: 'Satin Mask Set',
+                masksBlindfoldsDesc: 'Satin set to enhance sensations. 😷',
+                buyBtnMasksBlindfolds: 'View Details',
+                massageFoam: 'Sensual Foam',
+                massageFoamDesc: 'Fragrant foam for sensual touch. 🫧',
+                buyBtnMassageFoam: 'View Details',
+                sexSwing: 'Swing for Play',
+                sexSwingDesc: 'Explore new positions with ease. 🏋️',
+                buyBtnSexSwing: 'View Details',
                 confirmTitle: 'Confirm Purchase',
-                confirmText: 'Are you sure you want to proceed?',
+                confirmText: 'Are you sure you want to proceed with the purchase?',
                 cancelText: 'Cancel'
             },
             ru: {
@@ -1055,26 +1280,27 @@
                 sectionTitleSettings: 'Настройки',
                 scenariosTab: 'Сценарии',
                 itemsTab: 'Предметы',
-                tokenCount: '100',
+                tokenCount: '0',
                 languageLabel: 'Язык',
+                languageBtnText: 'Сменить язык',
                 settingsTitle: 'Ваш план',
-                subscriptionInfo: 'Делюкс до 18 мая 2025 г.',
+                subscriptionInfo: 'Делюкс до 18 мая 2025',
                 renewBtnText: 'Продлить',
-                scenario1Title: 'Репетитор спит',
-                scenario1Desc: 'Ты заходишь в её дом, дверь приоткрыта, она голая и мечтает о тебе. Разбуди её грешным касанием! ❄️',
-                scenario1Btn: 'Купить за 100🧊',
-                scenario2Title: 'Учительница после уроков',
-                scenario2Desc: 'Наедине с ней, чтобы исправить оценки, её обтягивающая юбка дразнит, когда она наклоняется. ❄️',
-                scenario2Btn: 'Купить за 100🧊',
+                scenario1Title: 'Сонный репетитор',
+                scenario1Desc: 'Ты заходишь в её дом, дверь приоткрыта, она голая и мечтает о тебе. Разбуди её грешным касанием! 😈',
+                scenario1Btn: 'Подробнее',
+                scenario2Title: 'Учитель после уроков',
+                scenario2Desc: 'Наедине с ней, чтобы исправить оценки, её обтягивающая юбка дразнит, когда она наклоняется. 🧊',
+                scenario2Btn: 'Подробнее',
                 scenario3Title: 'Остановка полицейской',
-                scenario3Desc: 'Она останавливает тебя в глуши, без прав — её ухмылка обещает пикантное наказание! ❄️',
-                scenario3Btn: 'Купить за 100🧊',
+                scenario3Desc: 'Она останавливает тебя в глуши, без прав — её ухмылка обещает пикантное наказание! 💋',
+                scenario3Btn: 'Подробнее',
                 scenario4Title: 'Помощь подруге',
-                scenario4Desc: 'Её компьютер завис, а робкие взгляды превращаются в дерзкие приглашения, когда ты наклоняешься. ❄️',
-                scenario4Btn: 'Купить за 100🧊',
+                scenario4Desc: 'Её компьютер завис, а робкие взгляды превращаются в дерзкие приглашения, когда ты наклоняешься. 😏',
+                scenario4Btn: 'Подробнее',
                 detailsHeader: 'Преимущества премиума',
-                subscriptionsDescStandard: '<p><strong>Преимущества премиума 🧊✨</strong></p><p>Новый лимит: 50 фото/день + Безлимитный чат! 💬❄️</p><p>Лучшая одежда 🌟</p><p>Быстрые ответы ⚡</p><p>Улучшенное качество изображений 🎨</p><p>Приоритетный доступ к сценариям 🚀</p>',
-                subscriptionsDescDeluxe: '<p><strong>Преимущества премиума 🧊✨</strong></p><p>Новый лимит: Безлимит фото + Безлимитный чат! 💬❄️</p><p>Лучшая одежда 🌟</p><p>Быстрые ответы ⚡</p><p>Улучшенное качество изображений 🎨</p><p>Приоритетный доступ к сценариям 🚀</p>',
+                subscriptionsDescStandard: '<p><strong>Преимущества премиума 🧊✨</strong></p><p>50 фото в день 📷</p><p>Безлимитный чат 💬</p><p>Эксклюзивные костюмы 👗</p><p>Молниеносные ответы ⚡</p><p>Улучшенные изображения 🌟</p><p>Приоритетный доступ 🎟️</p><p>Секретные функции 🔒</p><p>Элитная поддержка 🤝</p>',
+                subscriptionsDescDeluxe: '<p><strong>Преимущества делюкса 🎉</strong></p><p>Безлимит фото 📷</p><p>Безлимитный чат 💬</p><p>Эксклюзивные костюмы 👗</p><p>Молниеносные ответы ⚡</p><p>Улучшенные изображения 🌟</p><p>Приоритетный доступ 🎟️</p><p>Секретные функции 🔒</p><p>Элитная поддержка 🤝</p><p>Доступ к VIP-клубу 👑</p>',
                 sub1Day: 'Пропуск на 1 день',
                 sub3Days: 'Пропуск на 3 дня',
                 sub1Week: 'Пропуск на 1 неделю',
@@ -1086,357 +1312,356 @@
                 morePhotos: 'Хотите больше фото?',
                 morePhotosDesc: 'Разблокируйте больше лимитов на фото!',
                 buyBtnMorePhotos: 'Посмотреть подписки',
-                smallPack: 'Малый набор',
+                smallPack: 'Малый набор льда',
                 smallPackDesc: '100 🧊',
                 buyBtnSmallPack: 'Купить за $1.00',
-                mediumPack: 'Средний набор',
+                mediumPack: 'Средний набор льда',
                 mediumPackDesc: '200 🧊',
                 buyBtnMediumPack: 'Купить за $1.50',
-                largePack: 'Большой набор',
+                largePack: 'Большой набор льда',
                 largePackDesc: '500 🧊',
                 buyBtnLargePack: 'Купить за $3.00',
-                megaPack: 'Мега набор',
+                megaPack: 'Мега набор льда',
                 megaPackDesc: '1000 🧊',
                 buyBtnMegaPack: 'Купить за $5.00',
-                map: 'Карта',
-                mapDesc: 'Детальная карта для вашего приключения. 🗺️',
-                buyBtnMap: 'Купить за 50🧊',
-                compass: 'Компас',
-                compassDesc: 'Надежный компас для навигации. 🧭',
-                buyBtnCompass: 'Купить за 50🧊',
-                backpack: 'Рюкзак',
-                backpackDesc: 'Прочный рюкзак для ваших вещей. 🎒',
-                buyBtnBackpack: 'Купить за 50🧊',
-                torch: 'Фонарик',
-                torchDesc: 'Мощный фонарик для освещения в темноте. 🔦',
-                buyBtnTorch: 'Купить за 50🧊',
+                analPlug: 'Силиконовая пробка',
+                analPlugDesc: 'Гладкая силиконовая пробка для новичков. 💜',
+                buyBtnAnalPlug: 'Подробнее',
+                seductivePajamas: 'Шелковая пижама',
+                seductivePajamasDesc: 'Шелковый комплект для настроения. 🌙',
+                buyBtnSeductivePajamas: 'Подробнее',
+                seductiveStockings: 'Кружевные чулки',
+                seductiveStockingsDesc: 'Кружевные чулки для дразнящего эффекта. 🖤',
+                buyBtnSeductiveStockings: 'Подробнее',
+                furryHandcuffs: 'Мягкие наручники',
+                furryHandcuffsDesc: 'Мягкие наручники для игривых ограничений. 🖐️',
+                buyBtnFurryHandcuffs: 'Подробнее',
+                waterBasedLube: 'Смазка водная',
+                waterBasedLubeDesc: 'Плавное скольжение для большего удовольствия. 💦',
+                buyBtnWaterBasedLube: 'Подробнее',
+                truthOrDareGame: 'Игра Правда-Действие',
+                truthOrDareGameDesc: 'Пикантная игра для смелых пар. 🎲',
+                buyBtnTruthOrDareGame: 'Подробнее',
+                masksBlindfolds: 'Маска и повязка',
+                masksBlindfoldsDesc: 'Атласный набор для усиления ощущений. 😷',
+                buyBtnMasksBlindfolds: 'Подробнее',
+                massageFoam: 'Пена для массажа',
+                massageFoamDesc: 'Ароматная пена для чувственного прикосновения. 🫧',
+                buyBtnMassageFoam: 'Подробнее',
+                sexSwing: 'Качели для игр',
+                sexSwingDesc: 'Открой новые позы с легкостью. 🏋️',
+                buyBtnSexSwing: 'Подробнее',
                 confirmTitle: 'Подтверждение покупки',
-                confirmText: 'Вы уверены, что хотите продолжить?',
+                confirmText: 'Вы уверены, что хотите продолжить покупку?',
                 cancelText: 'Отмена'
             }
         };
 
-        let currentLanguage = 'ru';
+        let currentLanguage = 'en';
         let currentSection = 'storeSection';
         let currentStoreTab = 'scenarios';
         let selectedPlan = null;
-        let userTokens = 100;
-        let photoLimit = { current: 5, max: 10 };
+        let userTokens = 0;
+        let photoLimit = { current: 0, max: 10 };
         const subscription = {
             plan: 'Deluxe',
-            expirationDate: new Date('2025-05-18T15:17:00+05:00')
+            expirationDate: new Date('2025-05-18')
         };
-        const currentDate = new Date('2025-05-30T15:52:00+05:00');
 
         function toggleLanguage() {
-            const langKeys = Object.keys(LANGUAGES);
-            const currentIndex = langKeys.indexOf(currentLanguage);
-            currentLanguage = langKeys[(currentIndex + 1) % langKeys.length];
-            updateLanguage();
+            currentLanguage = currentLanguage === 'en' ? 'ru' : 'en';
             updateUI();
         }
 
         function showSubscriptionSection() {
             showSection('subscriptionsSection');
+            if (subscription.plan === 'Deluxe') {
+                selectPlan(7);
+            } else {
+                selectPlan(1);
+            }
         }
 
         function updateLanguage() {
-            const lang = LANGUAGES[currentLanguage];
-            const trans = translations[currentLanguage] || translations.en;
-            document.getElementById('currentLanguage').textContent = lang.name;
-            document.getElementById('languageLabel').textContent = trans.languageLabel || 'Language';
-            document.getElementById('tokenCount').textContent = userTokens;
-            document.getElementById('settingsTitle').textContent = trans.settingsTitle || 'Your Plan';
-            const planName = currentLanguage === 'ru' ? 'Делюкс' : 'Deluxe';
-            document.getElementById('subscriptionInfo').textContent = `${planName} ${trans.subscriptionInfo.split(' ').slice(1).join(' ')}`;
-            document.getElementById('renewBtnText').textContent = trans.renewBtnText || 'Renew';
+            const trans = translations[currentLanguage];
+            document.getElementById('languageLabel').textContent = trans.languageLabel;
+            document.getElementById('currentLanguage').textContent = LANGUAGES[currentLanguage].name;
+            document.getElementById('languageBtnText').textContent = trans.languageBtnText;
+            document.getElementById('settingsTitle').textContent = trans.settingsTitle;
+            document.getElementById('subscriptionInfo').textContent = `${subscription.plan} until ${subscription.expirationDate.toLocaleDateString()}`;
+            document.getElementById('renewBtnText').textContent = trans.renewBtnText;
 
-            const timeDiff = subscription.expirationDate - currentDate;
-            const daysLeft = timeDiff / (1000 * 60 * 60 * 24);
-            if (daysLeft <= 3) {
-                document.getElementById('renewBtn').classList.remove('hidden');
-            } else {
-                document.getElementById('renewBtn').classList.add('hidden');
-            }
+            const daysLeft = Math.floor((subscription.expirationDate - new Date()) / (1000 * 60 * 60 * 24));
+            document.getElementById('renewBtn').classList.toggle('hidden', daysLeft > 30);
 
-            updateSectionContent(trans);
+            updateSectionContent();
         }
 
-        function updateSectionContent(trans) {
+        function updateSectionContent() {
+            const trans = translations[currentLanguage];
             const sectionTitles = {
                 storeSection: trans.sectionTitleStore,
                 subscriptionsSection: trans.sectionTitleSubscriptions,
                 currencySection: trans.sectionTitleCurrency,
                 settingsSection: trans.sectionTitleSettings
             };
-            document.getElementById('sectionTitle').textContent = sectionTitles[currentSection] || 'Section';
+            document.getElementById('sectionTitle').textContent = sectionTitles[currentSection] || '';
 
-            document.getElementById('scenariosTab').textContent = `📖 ${trans.scenariosTab}`;
-            document.getElementById('itemsTab').textContent = `🛍️ ${trans.itemsTab}`;
+            document.getElementById('scenariosTabLabel').textContent = trans.scenariosTab;
+            document.getElementById('itemsTabLabel').textContent = trans.itemsTab;
 
             if (currentSection === 'storeSection') {
                 if (currentStoreTab === 'scenarios') {
                     for (let i = 1; i <= 4; i++) {
-                        document.getElementById(`scenario${i}Title`).textContent = trans[`scenario${i}Title`] || `Scenario ${i}`;
-                        document.getElementById(`scenario${i}Desc`).textContent = trans[`scenario${i}Desc`] || 'Description';
-                        document.getElementById(`scenario${i}Btn`).textContent = trans[`scenario${i}Btn`] || 'Buy';
+                        document.getElementById(`scenario${i}Title`).textContent = trans[`scenario${i}Title`];
+                        document.getElementById(`scenario${i}Btn`).textContent = trans[`scenario${i}Btn`];
                     }
-                } else if (currentStoreTab === 'items') {
-                    document.getElementById('map').textContent = trans.map || 'Map';
-                    document.getElementById('mapDesc').textContent = trans.mapDesc || 'Description';
-                    document.getElementById('buyBtnMap').textContent = trans.buyBtnMap || 'Buy';
-                    document.getElementById('compass').textContent = trans.compass || 'Compass';
-                    document.getElementById('compassDesc').textContent = trans.compassDesc || 'Description';
-                    document.getElementById('buyBtnCompass').textContent = trans.buyBtnCompass || 'Buy';
-                    document.getElementById('backpack').textContent = trans.backpack || 'Backpack';
-                    document.getElementById('backpackDesc').textContent = trans.backpackDesc || 'Description';
-                    document.getElementById('buyBtnBackpack').textContent = trans.buyBtnBackpack || 'Buy';
-                    document.getElementById('torch').textContent = trans.torch || 'Torch';
-                    document.getElementById('torchDesc').textContent = trans.torchDesc || 'Description';
-                    document.getElementById('buyBtnTorch').textContent = trans.buyBtnTorch || 'Buy';
+                } else {
+                    ['analPlug', 'seductivePajamas', 'seductiveStockings', 'furryHandcuffs', 'waterBasedLube', 'truthOrDareGame', 'masksBlindfolds', 'massageFoam', 'sexSwing'].forEach(item => {
+                        document.getElementById(item).textContent = trans[item];
+                        document.getElementById(`buyBtn${item.charAt(0).toUpperCase() + item.slice(1)}`).textContent = trans[`buyBtn${item.charAt(0).toUpperCase() + item.slice(1)}`];
+                    });
                 }
             } else if (currentSection === 'subscriptionsSection') {
-                document.getElementById('detailsHeader').textContent = trans.detailsHeader || 'Subscription Benefits';
+                document.getElementById('detailsHeader').textContent = trans.detailsHeader;
                 document.getElementById('subscriptionsDesc').innerHTML = selectedPlan === 7 ? trans.subscriptionsDescDeluxe : trans.subscriptionsDescStandard;
-                document.getElementById('sub1Day').textContent = trans.sub1Day || '1 Day Pass';
-                document.getElementById('sub3Days').textContent = trans.sub3Days || '3 Days Pass';
-                document.getElementById('sub1Week').textContent = trans.sub1Week || '1 Week Pass';
-                document.getElementById('sub1Month').textContent = trans.sub1Month || '1 Month Pass';
-                document.getElementById('sub3Months').textContent = trans.sub3Months || '3 Months Pass';
-                document.getElementById('subForever').textContent = trans.subForever || 'Forever Pass';
-                document.getElementById('subDeluxe').textContent = trans.subDeluxe || 'Deluxe Pass';
-                document.getElementById('buyBtnText').textContent = trans.buyBtnText || 'Buy Subscription';
+                ['sub1Day', 'sub3Days', 'sub1Week', 'sub1Month', 'sub3Months', 'subForever', 'subDeluxe'].forEach((plan, index) => {
+                    const element = document.querySelector(`.subscription-card:nth-child(${index + 1}) .card-title`);
+                    if (element) element.textContent = trans[plan];
+                });
+                document.getElementById('buyBtnText').textContent = trans.buyBtnText;
             } else if (currentSection === 'currencySection') {
-                document.getElementById('morePhotos').textContent = trans.morePhotos || 'Want More Photos?';
-                document.getElementById('morePhotosDesc').textContent = trans.morePhotosDesc || 'Unlock more photo limits!';
-                document.getElementById('buyBtnMorePhotos').textContent = trans.buyBtnMorePhotos || 'Check Subscriptions';
-                document.getElementById('smallPack').textContent = trans.smallPack || 'Small Pack';
-                document.getElementById('smallPackDesc').textContent = trans.smallPackDesc || '100 🧊';
-                document.getElementById('buyBtnSmallPack').textContent = trans.buyBtnSmallPack || 'Buy';
-                document.getElementById('mediumPack').textContent = trans.mediumPack || 'Medium Pack';
-                document.getElementById('mediumPackDesc').textContent = trans.mediumPackDesc || '200 🧊';
-                document.getElementById('buyBtnMediumPack').textContent = trans.buyBtnMediumPack || 'Buy';
-                document.getElementById('largePack').textContent = trans.largePack || 'Large Pack';
-                document.getElementById('largePackDesc').textContent = trans.largePackDesc || '500 🧊';
-                document.getElementById('buyBtnLargePack').textContent = trans.buyBtnLargePack || 'Buy';
-                document.getElementById('megaPack').textContent = trans.megaPack || 'Mega Pack';
-                document.getElementById('megaPackDesc').textContent = trans.megaPackDesc || '1000 🧊';
-                document.getElementById('buyBtnMegaPack').textContent = trans.buyBtnMegaPack || 'Buy';
+                ['morePhotos', 'smallPack', 'mediumPack', 'largePack', 'megaPack'].forEach(item => {
+                    document.getElementById(item).textContent = trans[item];
+                    document.getElementById(`buyBtn${item.charAt(0).toUpperCase() + item.slice(1)}`).textContent = trans[`buyBtn${item.charAt(0).toUpperCase() + item.slice(1)}`];
+                });
             }
         }
 
         function showSection(sectionId) {
-            document.querySelectorAll('#mainContent > div').forEach(div => {
-                div.classList.add('hidden');
-            });
+            document.querySelectorAll('#mainContent > div').forEach(div => div.classList.add('hidden'));
             document.getElementById(sectionId).classList.remove('hidden');
             currentSection = sectionId;
 
-            document.querySelectorAll('.category-button').forEach(btn => {
-                btn.classList.remove('selected');
-            });
+            document.querySelectorAll('.category-button').forEach(btn => btn.classList.remove('selected'));
             const buttonMap = {
-                'storeSection': 'storeBtn',
-                'subscriptionsSection': 'subscriptionsBtn',
-                'settingsSection': 'settingsBtn',
-                'currencySection': 'storeBtn'
+                storeSection: 'storeBtn',
+                subscriptionsSection: 'subscriptionsBtn',
+                settingsSection: 'settingsBtn',
+                currencySection: 'storeBtn'
             };
-            const buttonId = buttonMap[sectionId];
-            if (buttonId) {
-                document.getElementById(buttonId).classList.add('selected');
-            }
+            document.getElementById(buttonMap[sectionId]).classList.add('selected');
 
             updateLanguage();
-            updateUI();
+            revealElements();
         }
 
-        function showStoreTab(tab) {
-            currentStoreTab = tab;
-            document.querySelectorAll('.store-content').forEach(content => {
-                content.classList.add('hidden');
-            });
-            document.getElementById(`${tab}Content`).classList.remove('hidden');
+        function showStoreTab(tabId) {
+            currentStoreTab = tabId;
+            document.querySelectorAll('.store-content').forEach(content => content.classList.add('hidden'));
+            document.getElementById(`${tabId}Content`).classList.remove('hidden');
 
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.getElementById(`${tab}Tab`).classList.add('active');
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`${tabId}Tab`).classList.add('active');
 
-            updateLanguage();
-            updateUI();
+            updateSectionContent();
+            revealElements();
         }
 
         function showCurrencySection() {
             showSection('currencySection');
         }
 
-        function selectScenario(id) {
-            const cards = document.querySelectorAll('#scenariosContent .card');
-            cards.forEach(card => card.classList.remove('selected'));
-            cards[id - 1].classList.add('selected');
-            showConfirmModal(`Purchase ${translations[currentLanguage][`scenario${id}Title`]} for ${PRICES.scenarios[`scenario${id}`].ice}🧊?`, () => {
-                if (userTokens >= PRICES.scenarios[`scenario${id}`].ice) {
-                    userTokens -= PRICES.scenarios[`scenario${id}`].ice;
-                    updateUI();
-                    alert(`${translations[currentLanguage][`scenario${id}Title`]} purchased!`);
-                } else {
-                    alert('Not enough ice cubes!');
-                }
-            });
+        function showProductDetails(productId) {
+            const trans = translations[currentLanguage];
+            const modal = document.getElementById('productModal');
+            const productImage = document.getElementById('productImage');
+            const productTitle = document.getElementById('productTitle');
+            const productDesc = document.getElementById('productDesc');
+            const buyProductBtn = document.getElementById('buyProductBtn');
+            const productPrice = document.getElementById('productPrice');
+
+            const productData = {
+                scenario1: { title: trans.scenario1Title, desc: trans.scenario1Desc, image: IMAGES.scenarios.scenario1, price: PRICES.scenarios.scenario1.ice },
+                scenario2: { title: trans.scenario2Title, desc: trans.scenario2Desc, image: IMAGES.scenarios.scenario2, price: PRICES.scenarios.scenario2.ice },
+                scenario3: { title: trans.scenario3Title, desc: trans.scenario3Desc, image: IMAGES.scenarios.scenario3, price: PRICES.scenarios.scenario3.ice },
+                scenario4: { title: trans.scenario4Title, desc: trans.scenario4Desc, image: IMAGES.scenarios.scenario4, price: PRICES.scenarios.scenario4.ice },
+                analPlug: { title: trans.analPlug, desc: trans.analPlugDesc, image: IMAGES.items.analPlug, price: PRICES.items.analPlug.ice },
+                seductivePajamas: { title: trans.seductivePajamas, desc: trans.seductivePajamasDesc, image: IMAGES.items.seductivePajamas, price: PRICES.items.seductivePajamas.ice },
+                seductiveStockings: { title: trans.seductiveStockings, desc: trans.seductiveStockingsDesc, image: IMAGES.items.seductiveStockings, price: PRICES.items.seductiveStockings.ice },
+                furryHandcuffs: { title: trans.furryHandcuffs, desc: trans.furryHandcuffsDesc, image: IMAGES.items.furryHandcuffs, price: PRICES.items.furryHandcuffs.ice },
+                waterBasedLube: { title: trans.waterBasedLube, desc: trans.waterBasedLubeDesc, image: IMAGES.items.waterBasedLube, price: PRICES.items.waterBasedLube.ice },
+                truthOrDareGame: { title: trans.truthOrDareGame, desc: trans.truthOrDareGameDesc, image: IMAGES.items.truthOrDareGame, price: PRICES.items.truthOrDareGame.ice },
+                masksBlindfolds: { title: trans.masksBlindfolds, desc: trans.masksBlindfoldsDesc, image: IMAGES.items.masksBlindfolds, price: PRICES.items.masksBlindfolds.ice },
+                massageFoam: { title: trans.massageFoam, desc: trans.massageFoamDesc, image: IMAGES.items.massageFoam, price: PRICES.items.massageFoam.ice },
+                sexSwing: { title: trans.sexSwing, desc: trans.sexSwingDesc, image: IMAGES.items.sexSwing, price: PRICES.items.sexSwing.ice }
+            };
+
+            const data = productData[productId];
+            productImage.src = data.image;
+            productTitle.textContent = data.title;
+            productDesc.textContent = data.desc;
+            productPrice.textContent = data.price;
+
+            buyProductBtn.onclick = () => {
+                modal.style.display = 'none';
+                showConfirmModal(`${trans.confirmText} ${data.title} for ${data.price}🧊?`, () => {
+                    if (userTokens >= data.price) {
+                        userTokens -= data.price;
+                        updateUI();
+                        alert(`${data.title} purchased successfully!`);
+                    } else {
+                        alert('Not enough ice cubes!');
+                    }
+                });
+            };
+
+            modal.style.display = 'flex';
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').style.display = 'none';
         }
 
         function selectPlan(id) {
-            const cards = document.querySelectorAll('#subscriptionsSection .subscription-card');
+            const cards = document.querySelectorAll('.subscription-card');
             cards.forEach(card => card.classList.remove('selected'));
             cards[id - 1].classList.add('selected');
             selectedPlan = id;
-            const trans = translations[currentLanguage] || translations.en;
-            document.getElementById('subscriptionsDesc').innerHTML = id === 7 ? trans.subscriptionsDescDeluxe : trans.subscriptionsDescStandard;
+            updateSectionContent();
         }
 
         function buySelectedSubscription() {
             if (!selectedPlan) {
-                alert('Please select a subscription plan!');
+                alert('Please select a plan!');
                 return;
             }
             const planKeys = ['sub1Day', 'sub3Days', 'sub1Week', 'sub1Month', 'sub3Months', 'subForever', 'subDeluxe'];
             const plan = planKeys[selectedPlan - 1];
-            showConfirmModal(`Purchase ${translations[currentLanguage][plan]} for $${PRICES.subscriptions[plan].price}?`, () => {
-                alert(`${translations[currentLanguage][plan]} purchased!`);
+            showConfirmModal(`Purchase ${translations[currentLanguage][plan]} for $${PRICES.subscriptions[plan].price.toFixed(2)}?`, () => {
+                alert(`${translations[currentLanguage][plan]} purchased successfully`);
                 photoLimit = plan === 'subDeluxe' ? { current: 0, max: Infinity } : { current: 0, max: 50 };
                 subscription.plan = plan === 'subDeluxe' ? 'Deluxe' : 'Standard';
-                subscription.expirationDate = new Date(currentDate.getTime() + (plan === 'sub1Day' ? 1 : plan === 'sub3Days' ? 3 : plan === 'sub1Week' ? 7 : plan === 'sub1Month' ? 30 : plan === 'sub3Months' ? 90 : 365) * 24 * 60 * 60 * 1000);
+                const currentDate = new Date();
+                const durationDays = plan === 'sub1Day' ? 1 : plan === 'sub3Days' ? 3 : plan === 'sub1Week' ? 7 : plan === 'sub1Month' ? 30 : plan === 'sub3Months' ? 90 : plan === 'subForever' ? 365 * 100 : 365;
+                subscription.expirationDate = new Date(currentDate.getTime() + durationDays * 24 * 60 * 60 * 1000);
                 updateUI();
                 updateLanguage();
+                document.getElementById('subscriptionInfo').textContent = `${subscription.plan} until ${subscription.expirationDate.toLocaleDateString()}`;
             });
         }
 
         function buyTokens(amount, price) {
-            showConfirmModal(`Purchase ${amount}🧊 for $${price.price}?`, () => {
+            showConfirmModal(`Purchase ${amount}🧊 for $${price.price.toFixed(2)}?`, () => {
                 userTokens += amount;
                 updateUI();
-                alert(`${amount}🧊 purchased!`);
-            });
-        }
-
-        function buyItem(item, ice) {
-            showConfirmModal(`Purchase ${translations[currentLanguage][item]} for ${ice}🧊?`, () => {
-                if (userTokens >= ice) {
-                    userTokens -= ice;
-                    updateUI();
-                    alert(`${translations[currentLanguage][item]} purchased!`);
-                } else {
-                    alert('Not enough ice cubes!');
-                }
+                alert(`${amount}🧊 purchased successfully`);
             });
         }
 
         function showConfirmModal(message, onConfirm) {
             const modal = document.getElementById('confirmModal');
-            document.getElementById('confirmTitle').textContent = translations[currentLanguage].confirmTitle || 'Confirm Purchase';
+            document.getElementById('confirmTitle').textContent = translations[currentLanguage].confirmTitle;
             document.getElementById('confirmText').textContent = message;
             modal.classList.remove('hidden');
 
             const confirmBtn = document.getElementById('confirmBtn');
             const cancelBtn = document.getElementById('cancelBtn');
-            const newConfirm = () => {
+
+            confirmBtn.onclick = () => {
+                modal.classList.add('hidden');
                 onConfirm();
-                modal.classList.add('hidden');
-                confirmBtn.removeEventListener('click', newConfirm);
-            };
-            const newCancel = () => {
-                modal.classList.add('hidden');
-                cancelBtn.removeEventListener('click', newCancel);
             };
 
-            confirmBtn.textContent = translations[currentLanguage].confirmTitle || 'Confirm';
-            cancelBtn.textContent = translations[currentLanguage].cancelText || 'Cancel';
-            confirmBtn.addEventListener('click', newConfirm);
-            cancelBtn.addEventListener('click', newCancel);
+            cancelBtn.onclick = () => {
+                modal.classList.add('hidden');
+            };
         }
 
         function updateUI() {
             document.getElementById('tokenCount').textContent = userTokens;
-            document.getElementById('photoLimitDisplay').textContent = `${photoLimit.current} / ${photoLimit.max === Infinity ? '∞' : photoLimit.max}`;
+            document.getElementById('photoLimitDisplay').textContent = `${photoLimit.current} / ${photoLimit.max}`;
+            updateLanguage();
+            revealElements();
+        }
+
+        function revealElements() {
+            const elements = document.querySelectorAll('.card, .subscription-card, .subscription-info-card, .language-card, .subscription-details-card');
+            elements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.classList.add('reveal');
+                }, index * 100);
+            });
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            updateLanguage();
+            updateUI();
             showSection('storeSection');
             showStoreTab('scenarios');
-            updateUI();
 
-            document.getElementById('storeBtn').addEventListener('click', () => showSection('storeSection'));
-            document.getElementById('subscriptionsBtn').addEventListener('click', () => showSection('subscriptionsSection'));
-            document.getElementById('settingsBtn').addEventListener('click', () => showSection('settingsSection'));
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            });
 
-            document.getElementById('scenariosTab').addEventListener('click', () => showStoreTab('scenarios'));
-            document.getElementById('itemsTab').addEventListener('click', () => showStoreTab('items'));
+            window.PRICES = {
+                scenarios: {
+                    scenario1: { ice: 50 },
+                    scenario2: { ice: 50 },
+                    scenario3: { ice: 50 },
+                    scenario4: { ice: 50 }
+                },
+                items: {
+                    analPlug: { ice: 30 },
+                    seductivePajamas: { ice: 40 },
+                    seductiveStockings: { ice: 35 },
+                    furryHandcuffs: { ice: 25 },
+                    waterBasedLube: { ice: 20 },
+                    truthOrDareGame: { ice: 30 },
+                    masksBlindfolds: { ice: 25 },
+                    massageFoam: { ice: 20 },
+                    sexSwing: { ice: 100 }
+                },
+                subscriptions: {
+                    sub1Day: { price: 2.00 },
+                    sub3Days: { price: 5.00 },
+                    sub1Week: { price: 13.00 },
+                    sub1Month: { price: 25.00 },
+                    sub3Months: { price: 70.00 },
+                    subForever: { price: 50.00 },
+                    subDeluxe: { price: 100.00 }
+                },
+                currency: {
+                    smallPack: { price: 1.00 },
+                    mediumPack: { price: 1.50 },
+                    largePack: { price: 3.00 },
+                    megaPack: { price: 5.00 }
+                }
+            };
 
-            document.querySelectorAll('#scenariosContent .card img').forEach((el, index) => {
-                el.src = IMAGES.scenarios[`scenario${index + 1}`];
-            });
-            document.querySelectorAll('#itemsContent .card img').forEach((el, index) => {
-                const itemKeys = Object.keys(IMAGES.items);
-                el.src = IMAGES.items[itemKeys[index]];
-            });
-            document.querySelectorAll('#currencySection .card img').forEach((el, index) => {
-                const currencyKeys = Object.keys(IMAGES.currency);
-                el.src = IMAGES.currency[currencyKeys[index]];
-            });
+            window.IMAGES = {
+                scenarios: {
+                    scenario1: 'https://via.placeholder.com/360x240',
+                    scenario2: 'https://via.placeholder.com/360x240',
+                    scenario3: 'https://via.placeholder.com/360x240',
+                    scenario4: 'https://via.placeholder.com/360x240'
+                },
+                items: {
+                    analPlug: 'https://via.placeholder.com/360x240',
+                    seductivePajamas: 'https://via.placeholder.com/360x240',
+                    seductiveStockings: 'https://via.placeholder.com/360x240',
+                    furryHandcuffs: 'https://via.placeholder.com/360x240',
+                    waterBasedLube: 'https://via.placeholder.com/360x240',
+                    truthOrDareGame: 'https://via.placeholder.com/360x240',
+                    masksBlindfolds: 'https://via.placeholder.com/360x240',
+                    massageFoam: 'https://via.placeholder.com/360x240',
+                    sexSwing: 'https://via.placeholder.com/360x240'
+                }
+            };
         });
-
-        const IMAGES = {
-            scenarios: {
-                scenario1: 'URL_SCENARIO_1',
-                scenario2: 'URL_SCENARIO_2',
-                scenario3: 'URL_SCENARIO_3',
-                scenario4: 'URL_SCENARIO_4'
-            },
-            items: {
-                map: 'URL_MAP',
-                compass: 'URL_COMPASS',
-                backpack: 'URL_BACKPACK',
-                torch: 'URL_TORCH'
-            },
-            currency: {
-                morePhotos: 'URL_MORE_PHOTOS',
-                smallPack: 'URL_SMALL_PACK',
-                mediumPack: 'URL_MEDIUM_PACK',
-                largePack: 'URL_LARGE_PACK',
-                megaPack: 'URL_MEGA_PACK'
-            }
-        };
-
-        const PRICES = {
-            scenarios: {
-                scenario1: { ice: 100 },
-                scenario2: { ice: 100 },
-                scenario3: { ice: 100 },
-                scenario4: { ice: 100 }
-            },
-            subscriptions: {
-                sub1Day: { price: 2.00 },
-                sub3Days: { price: 5.00 },
-                sub1Week: { price: 13.00 },
-                sub1Month: { price: 25.00 },
-                sub3Months: { price: 70.00 },
-                subForever: { price: 50.00 },
-                subDeluxe: { price: 100.00 }
-            },
-            currency: {
-                smallPack: { ice: 100, price: 1.00 },
-                mediumPack: { ice: 200, price: 1.50 },
-                largePack: { ice: 500, price: 3.00 },
-                megaPack: { ice: 1000, price: 5.00 }
-            },
-            items: {
-                map: { ice: 50 },
-                compass: { ice: 50 },
-                backpack: { ice: 50 },
-                torch: { ice: 50 }
-            }
-        };
     </script>
 </body>
 </html>
