@@ -23,8 +23,9 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            padding: 120px 16px 100px;
+            padding: 150px 16px 100px; /* Увеличен верхний отступ для предотвращения смахивания */
             position: relative;
+            overscroll-behavior-y: contain; /* Предотвращает нежелательное поведение прокрутки */
         }
 
         body::before {
@@ -135,7 +136,7 @@
         }
 
         .card.scenario-card img {
-            height: 360px; /* Increased height for scenario card images */
+            height: 360px;
         }
 
         .card.item-card img, .card.currency-card img {
@@ -147,7 +148,7 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
-            flex-grow: 1; /* Ensure card-body takes remaining space */
+            flex-grow: 1;
         }
 
         .card-title {
@@ -171,7 +172,7 @@
         }
 
         .card-actions {
-            margin-top: auto; /* Move buttons to the bottom of the card */
+            margin-top: auto;
             padding-top: 12px;
         }
 
@@ -195,8 +196,8 @@
         }
 
         .card.item-card .btn {
-            padding: 8px 24px; /* Adjusted padding for longer, less tall buttons */
-            font-size: 14px; /* Reduced font size for item card buttons */
+            padding: 8px 24px;
+            font-size: 14px;
         }
 
         .btn:hover {
@@ -205,6 +206,11 @@
             box-shadow: 0 0 18px rgba(108, 93, 211, 0.9);
             transform: scale(1.02);
             border-radius: 20px;
+        }
+
+        .btn.active, .category-button.active, .tab-button.active, .subscription-card.active {
+            transform: scale(0.95); /* Визуальный эффект нажатия */
+            background: linear-gradient(135deg, #5A4DC6, #7D5BE0);
         }
 
         #buySubscriptionBtn {
@@ -566,6 +572,7 @@
         #mainContent {
             width: 100%;
             padding: 0 16px;
+            min-height: 100vh; /* Гарантирует минимальную высоту контента */
         }
 
         #storeSection {
@@ -621,7 +628,7 @@
             }
 
             .card.scenario-card img {
-                height: 325px; /* Adjusted for increased height */
+                height: 325px;
             }
 
             .card.item-card img, .card.currency-card img {
@@ -698,7 +705,7 @@
             }
 
             .card.scenario-card img {
-                height: 300px; /* Adjusted for increased height */
+                height: 300px;
             }
 
             .card.item-card img, .card.currency-card img {
@@ -736,58 +743,28 @@
         }
 
         @keyframes fadeInUp {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fadeInScale {
-            0% {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
         }
 
         @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-            }
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
         @keyframes vibrate {
-            0% {
-                transform: translateX(0);
-            }
-            20% {
-                transform: translateX(-2px);
-            }
-            40% {
-                transform: translateX(2px);
-            }
-            設置: {
-                transform: translateX(-2px);
-            }
-            80% {
-                transform: translateX(2px);
-            }
-            100% {
-                transform: translateX(0);
-            }
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-2px); }
+            40% { transform: translateX(2px); }
+            60% { transform: translateX(-2px); }
+            80% { transform: translateX(2px); }
+            100% { transform: translateX(0); }
         }
 
         @keyframes slideIn {
@@ -1335,7 +1312,7 @@
                 analPlugDesc: 'Гладкая силиконовая пробка для новичков. 💜',
                 buyBtnAnalPlug: 'Подробнее',
                 seductivePajamas: 'Шелковая пижама',
-                seductivePajamasDesc: 'Шелковый комплект для настроения. �ozi',
+                seductivePajamasDesc: 'Шелковый комплект для настроения. 🌙',
                 buyBtnSeductivePajamas: 'Подробнее',
                 seductiveStockings: 'Кружевные чулки',
                 seductiveStockingsDesc: 'Кружевные чулки для дразнящего эффекта. 🖤',
@@ -1526,14 +1503,14 @@
             modal.style.display = 'flex';
         }
 
-        function closeProductModal() {
+        function closeProductDetailsModal() {
             document.getElementById('productModal').style.display = 'none';
         }
 
         function selectPlan(id) {
             const cards = document.querySelectorAll('.subscription-card');
-            cards.forEach(card => card.classList.remove('selected'));
-            cards[id - 1].classList.add('selected');
+            cards.forEach(card => card.classList.remove('active'));
+            cards[id - 1].classList.add('active');
             selectedPlan = id;
             updateSectionContent();
         }
@@ -1545,7 +1522,7 @@
             }
             const planKeys = ['sub1Day', 'sub3Days', 'sub1Week', 'sub1Month', 'sub3Months', 'subForever', 'subDeluxe'];
             const plan = planKeys[selectedPlan - 1];
-            showConfirmModal(`Purchase ${translations[currentLanguage][plan]} for $${PRICES.subscriptions[plan].price.toFixed(2)}?`, () => {
+            showConfirmModal(`Purchase ${translations[currentLanguage][plan]} for $${PRICES.subscriptions[plan].desc.toFixed(2)}?`, () => {
                 alert(`${translations[currentLanguage][plan]} purchased successfully`);
                 photoLimit = plan === 'subDeluxe' ? { current: 0, max: Infinity } : { current: 0, max: 50 };
                 subscription.plan = plan === 'subDeluxe' ? 'Deluxe' : 'Standard';
@@ -1601,36 +1578,102 @@
             });
         }
 
+        // Ensure content is visible on load
+        function ensureContentVisible() {
+            const storeSection = document.getElementById('storeSection');
+            const scenariosContent = document.getElementById('scenariosContent');
+            const mainContent = document.getElementById('mainContent');
+
+            if (storeSection && scenariosContent && mainContent) {
+                mainContent.classList.remove('hidden');
+                storeSection.classList.remove('hidden');
+                scenariosContent.classList.remove('hidden');
+
+                // Force visibility of cards
+                document.querySelectorAll('.card').forEach(card => {
+                    card.classList.remove('hidden');
+                    card.classList.add('reveal');
+                });
+
+                // Ensure active tab
+                document.getElementById('scenariosTab').classList.add('active');
+                document.getElementById('itemsTab').classList.remove('active');
+            } else {
+                console.error('Missing elements: storeSection, scenariosContent, or mainContent');
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM loaded, initializing UI');
             updateUI();
             showSection('storeSection');
             showStoreTab('scenarios');
+            ensureContentVisible();
 
-            document.querySelectorAll('.modal').forEach(modal => {
-                modal.addEventListener('click', (e) => {
-                    if (e.target === modal) {
-                        modal.style.display = 'none';
-                    }
-                });
+            // Handle modal closing on background click
+            document.getElementById('productModal').addEventListener('click', (event) => {
+                if (event.target === event.currentTarget) {
+                    closeProductModal();
+                }
             });
 
-            window.PRICES = {
+            document.getElementById('confirmModal').addEventListener('click', (event) => {
+                if (event.target === event.currentTarget) {
+                    document.getElementById('confirmModal').classList.add('hidden');
+                }
+            });
+
+            // Initialize constants for images and prices
+            const IMAGES = {
                 scenarios: {
-                    scenario1: { ice: 50 },
-                    scenario2: { ice: 50 },
-                    scenario3: { ice: 50 },
-                    scenario4: { ice: 50 }
+                    scenario1: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=360',
+                    scenario2: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&auto=format&crop&w=600&q=360',
+                    scenario3: 'https://images.unsplash.com/photo-1525824236856-0a31dfe3be?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+                    scenario4: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'
                 },
                 items: {
-                    analPlug: { ice: 30 },
-                                        seductivePajamas: { ice: 40 },
-                    seductiveStockings: { ice: 35 },
-                    furryHandcuffs: { ice: 25 },
-                    waterBasedLube: { ice: 20 },
-                    truthOrDareGame: { ice: 45 },
-                    masksBlindfolds: { ice: 30 },
-                    massageFoam: { ice: 25 },
-                    sexSwing: { ice: 60 }
+                    analPlug: 'https://via.placeholder.com/360x240?text=Silicone+Plug',
+                    seductivePajamas: 'https://via.placeholder.com/360x240?text=Silk+Pajama+Set',
+                    seductiveStockings: 'https://via.placeholder.com/360x240?text=Lace+Stockings',
+                    furryHandcuffs: 'https://via.placeholder.com/360x240?text=Soft+Furry+Cuffs',
+                    waterBasedLube: 'https://via.placeholder.com/360x240?text=Water+Lube+Gel',
+                    truthOrDareGame: 'https://via.placeholder.com/360x240?text=Spicy+Dare+Game',
+                    masksBlindfolds: 'https://via.placeholder.com/360x240?text=Satin+Mask+Set',
+                    massageFoam: 'https://via.placeholder.com/360x240?text=Sensual+Foam',
+                    sexSwing: 'https://via.placeholder.com/360x240?text=Swing+for+Play'
+                },
+                currency: {
+                    morePhotos: 'https://via.placeholder.com/360x240?text=More+Photos',
+                    smallPack: 'https://via.placeholder.com/360x240?text=Small+Ice+Pack',
+                    mediumPack: 'https://via.placeholder.com/360x240?text=Medium+Ice+Pack',
+                    largePack: 'https://via.placeholder.com/360x240?text=Large+Ice+Pack',
+                    megaPack: 'https://via.placeholder.com/360x240?text=Mega+Ice+Pack'
+                }
+            };
+
+            const PRICES = {
+                scenarios: {
+                    scenario1: { ice: 50 },
+                    scenario2: { ice: 60 },
+                    scenario3: { ice: 70 },
+                    scenario4: { ice: 80 }
+                },
+                items: {
+                    analPlug: { ice: 25 },
+                    seductivePajamas: { ice: 30 },
+                    seductiveStockings: { ice: 25 },
+                    furryHandcuffs: { ice: 15 },
+                    waterBasedLube: { ice: 10 },
+                    truthOrDareGame: { ice: 35 },
+                    masksBlindfolds: { ice: 20 },
+                    massageFoam: { ice: 15 },
+                    sexSwing: { ice: 50 }
+                },
+                currency: {
+                    smallPack: { price: 1.00 },
+                    mediumPack: { price: 1.50 },
+                    largePack: { price: 3.00 },
+                    megaPack: { price: 5.00 }
                 },
                 subscriptions: {
                     sub1Day: { price: 2.00 },
@@ -1640,81 +1683,10 @@
                     sub3Months: { price: 70.00 },
                     subForever: { price: 50.00 },
                     subDeluxe: { price: 100.00 }
-                },
-                currency: {
-                    smallPack: { price: 1.00 },
-                    mediumPack: { price: 1.50 },
-                    largePack: { price: 3.00 },
-                    megaPack: { price: 5.00 }
                 }
             };
 
-            window.IMAGES = {
-                scenarios: {
-                    scenario1: 'https://via.placeholder.com/360x240/6C5DD3/FFFFFF?text=Tutor+Sleep+Scene',
-                    scenario2: 'https://via.placeholder.com/360x240/8F6CED/FFFFFF?text=Teacher+Afterschool',
-                    scenario3: 'https://via.placeholder.com/360x240/5A4DC6/FFFFFF?text=Policewoman+Stop',
-                    scenario4: 'https://via.placeholder.com/360x240/7D5BE0/FFFFFF?text=Help+Friend+Scene'
-                },
-                items: {
-                    analPlug: 'https://via.placeholder.com/360x240/6C5DD3/FFFFFF?text=Silicone+Plug',
-                    seductivePajamas: 'https://via.placeholder.com/360x240/8F6CED/FFFFFF?text=Silk+Pajama+Set',
-                    seductiveStockings: 'https://via.placeholder.com/360x240/5A4DC6/FFFFFF?text=Lace+Stockings',
-                    furryHandcuffs: 'https://via.placeholder.com/360x240/7D5BE0/FFFFFF?text=Soft+Furry+Cuffs',
-                    waterBasedLube: 'https://via.placeholder.com/360x240/6C5DD3/FFFFFF?text=Water+Lube+Gel',
-                    truthOrDareGame: 'https://via.placeholder.com/360x240/8F6CED/FFFFFF?text=Spicy+Dare+Game',
-                    masksBlindfolds: 'https://via.placeholder.com/360x240/5A4DC6/FFFFFF?text=Satin+Mask+Set',
-                    massageFoam: 'https://via.placeholder.com/360x240/7D5BE0/FFFFFF?text=Sensual+Foam',
-                    sexSwing: 'https://via.placeholder.com/360x240/6C5DD3/FFFFFF?text=Swing+for+Play'
-                },
-                currency: {
-                    morePhotos: 'https://via.placeholder.com/360x240/8F6CED/FFFFFF?text=More+Photos',
-                    smallPack: 'https://via.placeholder.com/360x240/5A4DC6/FFFFFF?text=Small+Ice+Pack',
-                    mediumPack: 'https://via.placeholder.com/360x240/7D5BE0/FFFFFF?text=Medium+Ice+Pack',
-                    largePack: 'https://via.placeholder.com/360x240/6C5DD3/FFFFFF?text=Large+Ice+Pack',
-                    megaPack: 'https://via.placeholder.com/360x240/8F6CED/FFFFFF?text=Mega+Ice+Pack'
-                }
-            };
-
-            // Update image sources on page load
-            function updateImages() {
-                // Scenarios
-                for (let i = 1; i <= 4; i++) {
-                    document.getElementById(`scenario${i}Image`).src = IMAGES.scenarios[`scenario${i}`];
-                }
-                // Items
-                ['analPlug', 'seductivePajamas', 'seductiveStockings', 'furryHandcuffs', 'waterBasedLube', 'truthOrDareGame', 'masksBlindfolds', 'massageFoam', 'sexSwing'].forEach(item => {
-                    document.getElementById(`${item}Image`).src = IMAGES.items[item];
-                });
-                // Currency
-                ['morePhotos', 'smallPack', 'mediumPack', 'largePack', 'megaPack'].forEach(item => {
-                    document.getElementById(`${item}Image`).src = IMAGES.currency[item];
-                });
-            }
-
-            // Initialize the app
-            function initializeApp() {
-                updateImages();
-                updateUI();
-                showSection('storeSection');
-                showStoreTab('scenarios');
-                selectPlan(subscription.plan === 'Deluxe' ? 7 : 1);
-            }
-
-            // Handle window resize for responsive adjustments
-            window.addEventListener('resize', () => {
-                revealElements();
-            });
-
-            // Prevent default touch behavior for better mobile experience
-            document.addEventListener('touchstart', (e) => {
-                if (e.target.closest('.btn, .category-button, .tab-button, .subscription-card')) {
-                    e.preventDefault();
-                }
-            }, { passive: false });
-
-            // Initialize on page load
-            initializeApp();
+            console.log('Initialization complete. Current section:', currentSection, 'Current tab:', currentStoreTab);
         });
     </script>
 </body>
