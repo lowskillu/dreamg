@@ -16,7 +16,7 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: url('https://media.discordapp.net/attachments/1349800672035475533/1377962570501066863/91ae8a950b924696.jpg?ex=683d8226&is=683c30a6&hm=778cc4e56437a460ad5373d6a3d5648e4b1af2058a46d9fd2d9258a68556df07&=&format=webp&width=1126&height=1126') no-repeat center center fixed;
+            background: url('https://cdn.discordapp.com/attachments/1349800672035475533/1377962570501066863/91ae8a950b924696.jpg?ex=683adf26&is=68398da6&hm=8eeede46db8fe6b6eb7923dc947b5dada91c3b2f11bd822067ab244a04099346') no-repeat center center fixed;
             background-size: cover;
             color: #f0f0f0;
             min-height: 100vh;
@@ -1601,131 +1601,121 @@
             });
         }
 
-        // Остальной код остается без изменений, заменяем только обработку событий
+        document.addEventListener('DOMContentLoaded', () => {
+            updateUI();
+            showSection('storeSection');
+            showStoreTab('scenarios');
 
-document.addEventListener('DOMContentLoaded', () => {
-    updateUI();
-    showSection('storeSection');
-    showStoreTab('scenarios');
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            });
 
-    document.querySelectorAll('.modal').forEach(modal => {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.style.display = 'none';
+            window.PRICES = {
+                scenarios: {
+                    scenario1: { ice: 50 },
+                    scenario2: { ice: 50 },
+                    scenario3: { ice: 50 },
+                    scenario4: { ice: 50 }
+                },
+                items: {
+                    analPlug: { ice: 30 },
+                                        seductivePajamas: { ice: 40 },
+                    seductiveStockings: { ice: 35 },
+                    furryHandcuffs: { ice: 25 },
+                    waterBasedLube: { ice: 20 },
+                    truthOrDareGame: { ice: 45 },
+                    masksBlindfolds: { ice: 30 },
+                    massageFoam: { ice: 25 },
+                    sexSwing: { ice: 60 }
+                },
+                subscriptions: {
+                    sub1Day: { price: 2.00 },
+                    sub3Days: { price: 5.00 },
+                    sub1Week: { price: 13.00 },
+                    sub1Month: { price: 25.00 },
+                    sub3Months: { price: 70.00 },
+                    subForever: { price: 50.00 },
+                    subDeluxe: { price: 100.00 }
+                },
+                currency: {
+                    smallPack: { price: 1.00 },
+                    mediumPack: { price: 1.50 },
+                    largePack: { price: 3.00 },
+                    megaPack: { price: 5.00 }
+                }
+            };
+
+            window.IMAGES = {
+                scenarios: {
+                    scenario1: 'https://via.placeholder.com/360x240/6C5DD3/FFFFFF?text=Tutor+Sleep+Scene',
+                    scenario2: 'https://via.placeholder.com/360x240/8F6CED/FFFFFF?text=Teacher+Afterschool',
+                    scenario3: 'https://via.placeholder.com/360x240/5A4DC6/FFFFFF?text=Policewoman+Stop',
+                    scenario4: 'https://via.placeholder.com/360x240/7D5BE0/FFFFFF?text=Help+Friend+Scene'
+                },
+                items: {
+                    analPlug: 'https://via.placeholder.com/360x240/6C5DD3/FFFFFF?text=Silicone+Plug',
+                    seductivePajamas: 'https://via.placeholder.com/360x240/8F6CED/FFFFFF?text=Silk+Pajama+Set',
+                    seductiveStockings: 'https://via.placeholder.com/360x240/5A4DC6/FFFFFF?text=Lace+Stockings',
+                    furryHandcuffs: 'https://via.placeholder.com/360x240/7D5BE0/FFFFFF?text=Soft+Furry+Cuffs',
+                    waterBasedLube: 'https://via.placeholder.com/360x240/6C5DD3/FFFFFF?text=Water+Lube+Gel',
+                    truthOrDareGame: 'https://via.placeholder.com/360x240/8F6CED/FFFFFF?text=Spicy+Dare+Game',
+                    masksBlindfolds: 'https://via.placeholder.com/360x240/5A4DC6/FFFFFF?text=Satin+Mask+Set',
+                    massageFoam: 'https://via.placeholder.com/360x240/7D5BE0/FFFFFF?text=Sensual+Foam',
+                    sexSwing: 'https://via.placeholder.com/360x240/6C5DD3/FFFFFF?text=Swing+for+Play'
+                },
+                currency: {
+                    morePhotos: 'https://via.placeholder.com/360x240/8F6CED/FFFFFF?text=More+Photos',
+                    smallPack: 'https://via.placeholder.com/360x240/5A4DC6/FFFFFF?text=Small+Ice+Pack',
+                    mediumPack: 'https://via.placeholder.com/360x240/7D5BE0/FFFFFF?text=Medium+Ice+Pack',
+                    largePack: 'https://via.placeholder.com/360x240/6C5DD3/FFFFFF?text=Large+Ice+Pack',
+                    megaPack: 'https://via.placeholder.com/360x240/8F6CED/FFFFFF?text=Mega+Ice+Pack'
+                }
+            };
+
+            // Update image sources on page load
+            function updateImages() {
+                // Scenarios
+                for (let i = 1; i <= 4; i++) {
+                    document.getElementById(`scenario${i}Image`).src = IMAGES.scenarios[`scenario${i}`];
+                }
+                // Items
+                ['analPlug', 'seductivePajamas', 'seductiveStockings', 'furryHandcuffs', 'waterBasedLube', 'truthOrDareGame', 'masksBlindfolds', 'massageFoam', 'sexSwing'].forEach(item => {
+                    document.getElementById(`${item}Image`).src = IMAGES.items[item];
+                });
+                // Currency
+                ['morePhotos', 'smallPack', 'mediumPack', 'largePack', 'megaPack'].forEach(item => {
+                    document.getElementById(`${item}Image`).src = IMAGES.currency[item];
+                });
             }
-        });
-    });
 
-    // Улучшенная обработка событий касания и кликов
-    function handleInteraction(e) {
-        const target = e.target.closest('.btn, .category-button, .tab-button, .subscription-card');
-        if (target) {
-            // Предотвращаем стандартное поведение только для целевых элементов
-            if (e.type === 'touchstart') {
-                e.preventDefault();
+            // Initialize the app
+            function initializeApp() {
+                updateImages();
+                updateUI();
+                showSection('storeSection');
+                showStoreTab('scenarios');
+                selectPlan(subscription.plan === 'Deluxe' ? 7 : 1);
             }
-            // Вызываем соответствующий обработчик события click
-            target.dispatchEvent(new Event('click', { bubbles: true }));
-        }
-    }
 
-    // Добавляем обработчики событий
-    document.addEventListener('touchstart', handleInteraction, { passive: false });
-    document.addEventListener('pointerdown', handleInteraction, { passive: false });
-    document.addEventListener('click', handleInteraction);
+            // Handle window resize for responsive adjustments
+            window.addEventListener('resize', () => {
+                revealElements();
+            });
 
-    window.PRICES = {
-        scenarios: {
-            scenario1: { ice: 50 },
-            scenario2: { ice: 50 },
-            scenario3: { ice: 50 },
-            scenario4: { ice: 50 }
-        },
-        items: {
-            analPlug: { ice: 30 },
-            seductivePajamas: { ice: 40 },
-            seductiveStockings: { ice: 35 },
-            furryHandcuffs: { ice: 25 },
-            waterBasedLube: { ice: 20 },
-            truthOrDareGame: { ice: 45 },
-            masksBlindfolds: { ice: 30 },
-            massageFoam: { ice: 25 },
-            sexSwing: { ice: 60 }
-        },
-        subscriptions: {
-            sub1Day: { price: 2.00 },
-            sub3Days: { price: 5.00 },
-            sub1Week: { price: 13.00 },
-            sub1Month: { price: 25.00 },
-            sub3Months: { price: 70.00 },
-            subForever: { price: 50.00 },
-            subDeluxe: { price: 100.00 }
-        },
-        currency: {
-            smallPack: { price: 1.00 },
-            mediumPack: { price: 1.50 },
-            largePack: { price: 3.00 },
-            megaPack: { price: 5.00 }
-        }
-    };
+            // Prevent default touch behavior for better mobile experience
+            document.addEventListener('touchstart', (e) => {
+                if (e.target.closest('.btn, .category-button, .tab-button, .subscription-card')) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
 
-    window.IMAGES = {
-        scenarios: {
-            scenario1: 'https://via.placeholder.com/360x240/6C5DD3/FFFFFF?text=Tutor+Sleep+Scene',
-            scenario2: 'https://via.placeholder.com/360x240/8F6CED/FFFFFF?text=Teacher+Afterschool',
-            scenario3: 'https://via.placeholder.com/360x240/5A4DC6/FFFFFF?text=Policewoman+Stop',
-            scenario4: 'https://via.placeholder.com/360x240/7D5BE0/FFFFFF?text=Help+Friend+Scene'
-        },
-        items: {
-            analPlug: 'https://via.placeholder.com/360x240/6C5DD3/FFFFFF?text=Silicone+Plug',
-            seductivePajamas: 'https://via.placeholder.com/360x240/8F6CED/FFFFFF?text=Silk+Pajama+Set',
-            seductiveStockings: 'https://via.placeholder.com/360x240/5A4DC6/FFFFFF?text=Lace+Stockings',
-            furryHandcuffs: 'https://via.placeholder.com/360x240/7D5BE0/FFFFFF?text=Soft+Furry+Cuffs',
-            waterBasedLube: 'https://via.placeholder.com/360x240/6C5DD3/FFFFFF?text=Water+Lube+Gel',
-            truthOrDareGame: 'https://via.placeholder.com/360x240/8F6CED/FFFFFF?text=Spicy+Dare+Game',
-            masksBlindfolds: 'https://via.placeholder.com/360x240/5A4DC6/FFFFFF?text=Satin+Mask+Set',
-            massageFoam: 'https://via.placeholder.com/360x240/7D5BE0/FFFFFF?text=Sensual+Foam',
-            sexSwing: 'https://via.placeholder.com/360x240/6C5DD3/FFFFFF?text=Swing+for+Play'
-        },
-        currency: {
-            morePhotos: 'https://via.placeholder.com/360x240/8F6CED/FFFFFF?text=More+Photos',
-            smallPack: 'https://via.placeholder.com/360x240/5A4DC6/FFFFFF?text=Small+Ice+Pack',
-            mediumPack: 'https://via.placeholder.com/360x240/7D5BE0/FFFFFF?text=Medium+Ice+Pack',
-            largePack: 'https://via.placeholder.com/360x240/6C5DD3/FFFFFF?text=Large+Ice+Pack',
-            megaPack: 'https://via.placeholder.com/360x240/8F6CED/FFFFFF?text=Mega+Ice+Pack'
-        }
-    };
-
-    // Update image sources on page load
-    function updateImages() {
-        for (let i = 1; i <= 4; i++) {
-            document.getElementById(`scenario${i}Image`).src = IMAGES.scenarios[`scenario${i}`];
-        }
-        ['analPlug', 'seductivePajamas', 'seductiveStockings', 'furryHandcuffs', 'waterBasedLube', 'truthOrDareGame', 'masksBlindfolds', 'massageFoam', 'sexSwing'].forEach(item => {
-            document.getElementById(`${item}Image`).src = IMAGES.items[item];
+            // Initialize on page load
+            initializeApp();
         });
-        ['morePhotos', 'smallPack', 'mediumPack', 'largePack', 'megaPack'].forEach(item => {
-            document.getElementById(`${item}Image`).src = IMAGES.currency[item];
-        });
-    }
-
-    // Initialize the app
-    function initializeApp() {
-        updateImages();
-        updateUI();
-        showSection('storeSection');
-        showStoreTab('scenarios');
-        selectPlan(subscription.plan === 'Deluxe' ? 7 : 1);
-    }
-
-    // Handle window resize for responsive adjustments
-    window.addEventListener('resize', () => {
-        revealElements();
-    });
-
-    // Initialize on page load
-    initializeApp();
-});
-</script>
+    </script>
 </body>
 </html>
