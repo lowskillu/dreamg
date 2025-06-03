@@ -109,8 +109,12 @@
             min-height: 400px;
         }
 
-        .card.item-card, .card.currency-card {
-            max-width: 238px;
+        .card.item-card {
+            max-width: 150px; /* Smaller size for item cards */
+        }
+
+        .card.currency-card {
+            max-width: 200px; /* Uniform size for currency cards except the first */
         }
 
         .card.currency-card-wide {
@@ -125,6 +129,10 @@
             border-top-right-radius: 16px;
             transition: transform 0.3s ease;
             aspect-ratio: 3/2;
+        }
+
+        .card.item-card img {
+            height: 100px; /* Smaller image height for item cards */
         }
 
         .card img:hover {
@@ -406,7 +414,7 @@
             box-shadow: 0 8px 24px rgba(108, 93, 211, 0.6);
             backdrop-filter: blur(12px);
             width: 90%;
-            max-width: 320px;
+            max-width: 400px; /* Increased for better readability */
             max-height: 80vh;
             overflow-y: auto;
             margin: 0 auto;
@@ -415,48 +423,19 @@
 
         .product-modal-content .flex {
             display: flex;
-            flex-direction: column;
-        }
-
-        @media (min-width: 360px) {
-            .product-modal-content .flex {
-                flex-direction: row;
-            }
-            .product-modal-content img {
-                width: 140px;
-                height: 140px;
-                object-fit: cover;
-                border-radius: 8px;
-                margin-right: 16px;
-            }
-            .product-modal-content .details {
-                flex: 1;
-            }
+            flex-direction: row;
+            align-items: flex-start;
         }
 
         .product-modal-content img {
-            width: 100%;
+            width: 150px; /* Smaller image */
             height: auto;
             border-radius: 8px;
-            margin-bottom: 16px;
+            margin-right: 16px;
         }
 
-        @media (min-width: 360px) {
-            .product-modal-content img {
-                margin-bottom: 0;
-            }
-        }
-
-        .product-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #ffffff;
-        }
-
-        .product-desc {
-            color: #f0f0f0;
-            margin-top: 8px;
-            font-size: 14px;
+        .product-modal-content .details {
+            flex: 1;
         }
 
         .close-btn {
@@ -490,7 +469,7 @@
 
         #itemsContent .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Smaller columns for item cards */
             gap: 16px;
         }
 
