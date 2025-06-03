@@ -285,14 +285,15 @@
             align-items: center;
             gap: 12px;
             background: rgba(16, 16, 16, 0.8);
-            border-radius: 12px;
-            padding: 8px 12px;
+            border-radius: 20px;
+            padding: 0 12px;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            height: 40px;
         }
 
         .plus-btn {
-            width: 44px;
-            height: 44px;
+            width: 36px;
+            height: 36px;
             background: linear-gradient(135deg, #6C5DD3, #8F6CED);
             border-radius: 50%;
             font-size: 16px;
@@ -313,16 +314,15 @@
         .category-buttons {
             position: fixed;
             bottom: 16px;
-            left: 0;
-            right: 0;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
-            justify-content: center;
             gap: 12px;
             z-index: 10;
             background: rgba(16, 16, 16, 0.95);
             border: 1px solid rgba(108, 93, 211, 0.3);
             border-radius: 16px;
-            padding: 8px;
+            padding: 4px 8px;
         }
 
         .category-button {
@@ -346,6 +346,37 @@
 
         .category-button.selected {
             background: linear-gradient(135deg, #6C5DD3, #8F6CED);
+        }
+
+        .product-modal-content {
+            position: relative;
+            background: rgba(16, 16, 16, 0.9);
+            border: 2px solid #6C5DD3;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 24px rgba(108, 93, 211, 0.6);
+            backdrop-filter: blur(12px);
+            width: 90%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            background: transparent;
+            color: #ffffff;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #6C5DD3;
         }
 
         #storeSection .grid {
@@ -439,7 +470,7 @@
                 <span>🧊</span>
             </div>
             <button class="plus-btn" onclick="showCurrencySection()">
-                <svg class="icon w-6 h-6" viewBox="0 0 24 24">
+                <svg class="icon w-5 h-5" viewBox="0 0 24 24">
                     <line x1="12" y1="5" x2="12" y2="19" stroke="#ffffff" stroke-width="2"/>
                     <line x1="5" y1="12" x2="19" y2="12" stroke="#ffffff" stroke-width="2"/>
                 </svg>
@@ -699,53 +730,53 @@
                             </button>
                         </div>
                     </div>
-                    </div>
-                    <div class="card currency-card">
-                        <img src="https://via.placeholder.com/360x240?text=Small+Ice+Pack" alt="Small Ice Pack" id="smallPackImage" class="w-full h-auto object-cover aspect-3/2">
-                        <div class="card-body">
-                            <div class="card-title" id="smallPack"></div>
-                            <div class="card-actions">
-                                <button class="btn" onclick="buyTokens(100, {price: 1.00})">
-                                    <span id="buyBtnSmallPack"></span>
-                                </button>
-                            </div>
+                </div>
+                <div class="card currency-card">
+                    <img src="https://via.placeholder.com/360x240?text=Small+Ice+Pack" alt="Small Ice Pack" id="smallPackImage" class="w-full h-auto object-cover aspect-3/2">
+                    <div class="card-body">
+                        <div class="card-title" id="smallPack"></div>
+                        <div class="card-actions">
+                            <button class="btn" onclick="buyTokens(100, {price: 1.00})">
+                                <span id="buyBtnSmallPack"></span>
+                            </button>
                         </div>
                     </div>
-                    <div class="card currency-card">
-                        <img src="https://via.placeholder.com/360x240?text=Medium+Ice+Pack" alt="Medium Ice Pack" id="mediumPackImage" class="w-full h-auto object-cover aspect-3/2">
-                        <div class="card-body">
-                            <div class="card-title" id="mediumPack"></div>
-                            <div class="card-actions">
-                                <button class="btn" onclick="buyTokens(200, {price: 1.50})">
-                                    <span id="buyBtnMediumPack"></span>
-                                </button>
-                            </div>
+                </div>
+                <div class="card currency-card">
+                    <img src="https://via.placeholder.com/360x240?text=Medium+Ice+Pack" alt="Medium Ice Pack" id="mediumPackImage" class="w-full h-auto object-cover aspect-3/2">
+                    <div class="card-body">
+                        <div class="card-title" id="mediumPack"></div>
+                        <div class="card-actions">
+                            <button class="btn" onclick="buyTokens(200, {price: 1.50})">
+                                <span id="buyBtnMediumPack"></span>
+                            </button>
                         </div>
                     </div>
-                    <div class="card currency-card">
-                        <img src="https://via.placeholder.com/360x240?text=Large+Ice+Pack" alt="Large Ice Pack" id="largePackImage" class="w-full h-auto object-cover aspect-3/2">
-                        <div class="card-body">
-                            <div class="card-title" id="largePack"></div>
-                            <div class="card-actions">
-                                <button class="btn" onclick="buyTokens(500, {price: 3.00})">
-                                    <span id="buyBtnLargePack"></span>
-                                </button>
-                            </div>
+                </div>
+                <div class="card currency-card">
+                    <img src="https://via.placeholder.com/360x240?text=Large+Ice+Pack" alt="Large Ice Pack" id="largePackImage" class="w-full h-auto object-cover aspect-3/2">
+                    <div class="card-body">
+                        <div class="card-title" id="largePack"></div>
+                        <div class="card-actions">
+                            <button class="btn" onclick="buyTokens(500, {price: 3.00})">
+                                <span id="buyBtnLargePack"></span>
+                            </button>
                         </div>
                     </div>
-                    <div class="card currency-card">
-                        <img src="https://via.placeholder.com/360x240?text=Mega+Ice+Pack" alt="Mega Ice Pack" id="megaPackImage" class="w-full h-auto object-cover aspect-3/2">
-                        <div class="card-body">
-                            <div class="card-title" id="megaPack"></div>
-                            <div class="card-actions">
-                                <button class="btn" onclick="buyTokens(1000, {price: 5.00})">
-                                    <span id="buyBtnMegaPack"></span>
-                                </button>
-                            </div>
+                </div>
+                <div class="card currency-card">
+                    <img src="https://via.placeholder.com/360x240?text=Mega+Ice+Pack" alt="Mega Ice Pack" id="megaPackImage" class="w-full h-auto object-cover aspect-3/2">
+                    <div class="card-body">
+                        <div class="card-title" id="megaPack"></div>
+                        <div class="card-actions">
+                            <button class="btn" onclick="buyTokens(1000, {price: 5.00})">
+                                <span id="buyBtnMegaPack"></span>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
         <div id="settingsSection" class="hidden space-y-4">
             <div class="subscription-info-card">
@@ -774,7 +805,8 @@
     </div>
 
     <div id="productModal" class="modal fixed inset-0 flex items-center justify-center hidden">
-        <div class="modal-content p-4 bg-gray-900 rounded-lg">
+        <div class="product-modal-content">
+            <button class="close-btn" onclick="closeProductDetailsModal()">✕</button>
             <img id="productImage" src="" alt="Product Image" class="w-full h-auto object-cover aspect-3/2 rounded-lg">
             <div class="product-details space-y-4">
                 <div class="product-title text-xl font-semibold" id="productTitle"></div>
