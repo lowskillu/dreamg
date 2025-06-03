@@ -106,16 +106,15 @@
         }
 
         .card.scenario-card {
-            min-height: 500px;
+            min-height: 400px;
         }
 
         .card.item-card, .card.currency-card {
             max-width: 238px;
-            min-height: 290px;
         }
 
         .card.currency-card-wide {
-            max-width: 492px;
+            grid-column: span 2;
         }
 
         .card img {
@@ -133,7 +132,7 @@
         }
 
         .card.scenario-card img {
-            height: 300px;
+            height: 250px;
         }
 
         .card-body {
@@ -159,7 +158,7 @@
 
         .card-actions {
             margin-top: auto;
-            padding-top: 12px;
+            padding: 8px 16px;
         }
 
         .btn {
@@ -184,8 +183,8 @@
         }
 
         .subscription-card {
-            background: rgba(16, 16, 16, 0.85);
-            border: 2px solid rgba(255, 255, 255, 0.5);
+            background: linear-gradient(135deg, rgba(16, 16, 16, 0.9), rgba(40, 40, 40, 0.9));
+            border: 2px solid rgba(108, 93, 211, 0.5);
             border-radius: 16px;
             backdrop-filter: blur(12px);
             box-shadow: 0 4px 20px rgba(108, 93, 211, 0.6);
@@ -194,7 +193,7 @@
             margin: 8px 0;
             cursor: pointer;
             opacity: 0;
-            transition: all 0.2s ease;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .subscription-card.reveal {
@@ -202,13 +201,13 @@
         }
 
         .subscription-card:hover {
-            transform: scale(1.01);
+            transform: scale(1.05);
             box-shadow: 0 6px 20px rgba(108, 93, 211, 0.8);
         }
 
         .subscription-card.selected {
             border-color: #6C5DD3;
-            background: rgba(108, 93, 211, 0.12);
+            background: linear-gradient(135deg, rgba(108, 93, 211, 0.2), rgba(143, 108, 237, 0.2));
         }
 
         .subscription-info-card, .language-card {
@@ -348,17 +347,25 @@
             background: linear-gradient(135deg, #6C5DD3, #8F6CED);
         }
 
+        .product-modal {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+        }
+
         .product-modal-content {
             position: relative;
-            background: rgba(16, 16, 16, 0.9);
-            border: 2px solid #6C5DD3;
+            background: linear-gradient(135deg, rgba(16, 16, 16, 0.95), rgba(40, 40, 40, 0.95));
+            border: 2px solid rgba(108, 93, 211, 0.7);
             border-radius: 16px;
-            padding: 24px;
+            padding: 20px;
             box-shadow: 0 8px 24px rgba(108, 93, 211, 0.6);
             backdrop-filter: blur(12px);
             width: 90%;
-            max-width: 400px;
+            max-width: 360px;
+            max-height: 80vh;
+            overflow-y: auto;
             margin: 0 auto;
+            animation: slideIn 0.3s ease-in-out;
         }
 
         .close-btn {
@@ -367,16 +374,20 @@
             right: 10px;
             width: 30px;
             height: 30px;
-            background: transparent;
+            background: rgba(108, 93, 211, 0.8);
             color: #ffffff;
             font-size: 20px;
             border: none;
+            border-radius: 50%;
             cursor: pointer;
-            transition: color 0.3s ease;
+            transition: background 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .close-btn:hover {
-            color: #6C5DD3;
+            background: rgba(143, 108, 237, 1);
         }
 
         #storeSection .grid {
@@ -386,15 +397,32 @@
             margin-top: 16px;
         }
 
-        #itemsContent .grid, #currencySection .grid {
-            grid-template-columns: 1fr;
+        #itemsContent .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 16px;
         }
 
-        @media (min-width: 640px) {
-            #itemsContent .grid, #currencySection .grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        #currencySection .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .image-container {
+            position: relative;
+        }
+
+        .image-title {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 5px 10px;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 4px;
         }
 
         @media (max-width: 768px) {
@@ -408,21 +436,15 @@
             }
 
             .card.scenario-card {
-                max-width: 410px;
-                min-height: 450px;
-            }
-
-            .card.item-card, .card.currency-card {
-                max-width: 224px;
-                min-height: 264px;
+                min-height: 350px;
             }
 
             .card.scenario-card img {
-                height: 250px;
+                height: 200px;
             }
 
-            .card.item-card img, .card.currency-card img {
-                height: 150px;
+            .card.item-card, .card.currency-card {
+                max-width: 100%;
             }
         }
 
@@ -432,26 +454,25 @@
             }
 
             .card.scenario-card {
-                max-width: 346px;
-                min-height: 400px;
-            }
-
-            .card.item-card, .card.currency-card {
-                max-width: 211px;
-                min-height: 238px;
+                min-height: 300px;
             }
 
             .card.scenario-card img {
-                height: 200px;
+                height: 150px;
             }
 
-            .card.item-card img, .card.currency-card img {
-                height: 120px;
+            .card.item-card, .card.currency-card {
+                max-width: 100%;
             }
         }
 
         @keyframes fadeInUp {
             0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateY(-20px); }
             100% { opacity: 1; transform: translateY(0); }
         }
     </style>
@@ -494,7 +515,7 @@
         <button id="settingsBtn" class="category-button" onclick="showSection('settingsSection')">
             <svg class="icon w-6 h-6" viewBox="0 0 24 24">
                 <circle cx="12" cy="12" r="3" fill="#ffffff"/>
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l-.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" fill="#ffffff"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l-.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l-.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" fill="#ffffff"/>
             </svg>
         </button>
     </div>
@@ -560,102 +581,102 @@
             <div id="itemsContent" class="store-content hidden">
                 <div class="grid">
                     <div class="card item-card">
-                        <img src="https://i.ibb.co/23C2JXvQ/653ee620-307c-4c91-9eaa-7ebc5b1cac16-653ee620-307c-4c91-9eaa-7ebc5b1cac16.png" alt="Anal Plug Item" id="analPlugImage" class="w-full h-auto object-cover aspect-3/2">
-                        <div class="card-body">
-                            <div class="card-title" id="analPlug"></div>
-                            <div class="card-actions">
-                                <button class="btn" onclick="showProductDetails('analPlug')">
-                                    <span id="buyBtnAnalPlug"></span>
-                                </button>
-                            </div>
+                        <div class="image-container">
+                            <img src="https://i.ibb.co/23C2JXvQ/653ee620-307c-4c91-9eaa-7ebc5b1cac16-653ee620-307c-4c91-9eaa-7ebc5b1cac16.png" alt="Anal Plug Item" id="analPlugImage" class="w-full h-auto object-cover aspect-3/2">
+                            <div class="image-title" id="analPlug"></div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn" onclick="showProductDetails('analPlug')">
+                                <span id="buyBtnAnalPlug"></span>
+                            </button>
                         </div>
                     </div>
                     <div class="card item-card">
-                        <img src="https://via.placeholder.com/360x240?text=Silk+Pajama+Set" alt="Seductive Pajamas" id="seductivePajamasImage" class="w-full h-auto object-cover aspect-3/2">
-                        <div class="card-body">
-                            <div class="card-title" id="seductivePajamas"></div>
-                            <div class="card-actions">
-                                <button class="btn" onclick="showProductDetails('seductivePajamas')">
-                                    <span id="buyBtnSeductivePajamas"></span>
-                                </button>
-                            </div>
+                        <div class="image-container">
+                            <img src="https://via.placeholder.com/360x240?text=Silk+Pajama+Set" alt="Seductive Pajamas" id="seductivePajamasImage" class="w-full h-auto object-cover aspect-3/2">
+                            <div class="image-title" id="seductivePajamas"></div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn" onclick="showProductDetails('seductivePajamas')">
+                                <span id="buyBtnSeductivePajamas"></span>
+                            </button>
                         </div>
                     </div>
                     <div class="card item-card">
-                        <img src="https://via.placeholder.com/360x240?text=Lace+Stockings" alt="Seductive Stockings" id="seductiveStockingsImage" class="w-full h-auto object-cover aspect-3/2">
-                        <div class="card-body">
-                            <div class="card-title" id="seductiveStockings"></div>
-                            <div class="card-actions">
-                                <button class="btn" onclick="showProductDetails('seductiveStockings')">
-                                    <span id="buyBtnSeductiveStockings"></span>
-                                </button>
-                            </div>
+                        <div class="image-container">
+                            <img src="https://via.placeholder.com/360x240?text=Lace+Stockings" alt="Seductive Stockings" id="seductiveStockingsImage" class="w-full h-auto object-cover aspect-3/2">
+                            <div class="image-title" id="seductiveStockings"></div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn" onclick="showProductDetails('seductiveStockings')">
+                                <span id="buyBtnSeductiveStockings"></span>
+                            </button>
                         </div>
                     </div>
                     <div class="card item-card">
-                        <img src="https://via.placeholder.com/360x240?text=Soft+Furry+Cuffs" alt="Furry Handcuffs" id="furryHandcuffsImage" class="w-full h-auto object-cover aspect-3/2">
-                        <div class="card-body">
-                            <div class="card-title" id="furryHandcuffs"></div>
-                            <div class="card-actions">
-                                <button class="btn" onclick="showProductDetails('furryHandcuffs')">
-                                    <span id="buyBtnFurryHandcuffs"></span>
-                                </button>
-                            </div>
+                        <div class="image-container">
+                            <img src="https://via.placeholder.com/360x240?text=Soft+Furry+Cuffs" alt="Furry Handcuffs" id="furryHandcuffsImage" class="w-full h-auto object-cover aspect-3/2">
+                            <div class="image-title" id="furryHandcuffs"></div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn" onclick="showProductDetails('furryHandcuffs')">
+                                <span id="buyBtnFurryHandcuffs"></span>
+                            </button>
                         </div>
                     </div>
                     <div class="card item-card">
-                        <img src="https://via.placeholder.com/360x240?text=Water+Lube+Gel" alt="Water Based Lube" id="waterBasedLubeImage" class="w-full h-auto object-cover aspect-3/2">
-                        <div class="card-body">
-                            <div class="card-title" id="waterBasedLube"></div>
-                            <div class="card-actions">
-                                <button class="btn" onclick="showProductDetails('waterBasedLube')">
-                                    <span id="buyBtnWaterBasedLube"></span>
-                                </button>
-                            </div>
+                        <div class="image-container">
+                            <img src="https://via.placeholder.com/360x240?text=Water+Lube+Gel" alt="Water Based Lube" id="waterBasedLubeImage" class="w-full h-auto object-cover aspect-3/2">
+                            <div class="image-title" id="waterBasedLube"></div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn" onclick="showProductDetails('waterBasedLube')">
+                                <span id="buyBtnWaterBasedLube"></span>
+                            </button>
                         </div>
                     </div>
                     <div class="card item-card">
-                        <img src="https://via.placeholder.com/360x240?text=Spicy+Dare+Game" alt="Truth or Dare Game" id="truthOrDareGameImage" class="w-full h-auto object-cover aspect-3/2">
-                        <div class="card-body">
-                            <div class="card-title" id="truthOrDareGame"></div>
-                            <div class="card-actions">
-                                <button class="btn" onclick="showProductDetails('truthOrDareGame')">
-                                    <span id="buyBtnTruthOrDareGame"></span>
-                                </button>
-                            </div>
+                        <div class="image-container">
+                            <img src="https://via.placeholder.com/360x240?text=Spicy+Dare+Game" alt="Truth or Dare Game" id="truthOrDareGameImage" class="w-full h-auto object-cover aspect-3/2">
+                            <div class="image-title" id="truthOrDareGame"></div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn" onclick="showProductDetails('truthOrDareGame')">
+                                <span id="buyBtnTruthOrDareGame"></span>
+                            </button>
                         </div>
                     </div>
                     <div class="card item-card">
-                        <img src="https://via.placeholder.com/360x240?text=Satin+Mask+Set" alt="Masks Blindfolds" id="masksBlindfoldsImage" class="w-full h-auto object-cover aspect-3/2">
-                        <div class="card-body">
-                            <div class="card-title" id="masksBlindfolds"></div>
-                            <div class="card-actions">
-                                <button class="btn" onclick="showProductDetails('masksBlindfolds')">
-                                    <span id="buyBtnMasksBlindfolds"></span>
-                                </button>
-                            </div>
+                        <div class="image-container">
+                            <img src="https://via.placeholder.com/360x240?text=Satin+Mask+Set" alt="Masks Blindfolds" id="masksBlindfoldsImage" class="w-full h-auto object-cover aspect-3/2">
+                            <div class="image-title" id="masksBlindfolds"></div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn" onclick="showProductDetails('masksBlindfolds')">
+                                <span id="buyBtnMasksBlindfolds"></span>
+                            </button>
                         </div>
                     </div>
                     <div class="card item-card">
-                        <img src="https://via.placeholder.com/360x240?text=Sensual+Foam" alt="Massage Foam" id="massageFoamImage" class="w-full h-auto object-cover aspect-3/2">
-                        <div class="card-body">
-                            <div class="card-title" id="massageFoam"></div>
-                            <div class="card-actions">
-                                <button class="btn" onclick="showProductDetails('massageFoam')">
-                                    <span id="buyBtnMassageFoam"></span>
-                                </button>
-                            </div>
+                        <div class="image-container">
+                            <img src="https://via.placeholder.com/360x240?text=Sensual+Foam" alt="Massage Foam" id="massageFoamImage" class="w-full h-auto object-cover aspect-3/2">
+                            <div class="image-title" id="massageFoam"></div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn" onclick="showProductDetails('massageFoam')">
+                                <span id="buyBtnMassageFoam"></span>
+                            </button>
                         </div>
                     </div>
                     <div class="card item-card">
-                        <img src="https://via.placeholder.com/360x240?text=Swing+for+Play" alt="Sex Swing" id="sexSwingImage" class="w-full h-auto object-cover aspect-3/2">
-                        <div class="card-body">
-                            <div class="card-title" id="sexSwing"></div>
-                            <div class="card-actions">
-                                <button class="btn" onclick="showProductDetails('sexSwing')">
-                                    <span id="buyBtnSexSwing"></span>
-                                </button>
-                            </div>
+                        <div class="image-container">
+                            <img src="https://via.placeholder.com/360x240?text=Swing+for+Play" alt="Sex Swing" id="sexSwingImage" class="w-full h-auto object-cover aspect-3/2">
+                            <div class="image-title" id="sexSwing"></div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn" onclick="showProductDetails('sexSwing')">
+                                <span id="buyBtnSexSwing"></span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -804,10 +825,10 @@
         </div>
     </div>
 
-    <div id="productModal" class="modal fixed inset-0 flex items-center justify-center hidden">
+    <div id="productModal" class="modal fixed inset-0 flex items-center justify-center hidden product-modal">
         <div class="product-modal-content">
             <button class="close-btn" onclick="closeProductDetailsModal()">✕</button>
-            <img id="productImage" src="" alt="Product Image" class="w-full h-auto object-cover aspect-3/2 rounded-lg">
+            <img id="productImage" src="" alt="Product Image" class="w-full h-auto object-cover aspect-3/2 rounded-lg mb-4">
             <div class="product-details space-y-4">
                 <div class="product-title text-xl font-semibold" id="productTitle"></div>
                 <div class="product-desc text-gray-300" id="productDesc"></div>
@@ -860,8 +881,8 @@
                 scenario4Desc: 'Her computer freezes, shy glances turn into bold invitations as you lean in. 😏',
                 scenario4Btn: 'View Details',
                 detailsHeader: 'Premium Benefits',
-                subscriptionsDescStandard: '<p><strong>Premium Benefits 🧊✨</strong></p><p>50 photos/day 📷</p><p>Unlimited Chat 💬</p><p>Exclusive Outfits 👗</p><p>Lightning-Fast Responses ⚡</p><p>Enhanced Images 🌟</p><p>Priority Access 🎟️</p><p>Secret Features 🔒</p><p>Elite Support 🤝</p>',
-                subscriptionsDescDeluxe: '<p><strong>Deluxe Benefits 🎉</strong></p><p>Unlimited photos 📷</p><p>Unlimited Chat 💬</p><p>Exclusive Outfits 👗</p><p>Lightning-Fast Responses ⚡</p><p>Enhanced Images 🌟</p><p>Priority Access 🎟️</p><p>Secret Features 🔒</p><p>Elite Support 🤝</p><p>VIP Community Access 👑</p>',
+                subscriptionsDescStandard: '<p><strong>Premium Benefits 🧊✨</strong></p><p>50 photos/day 📷</p><p>Unlimited Chat 💬</p><p>Exclusive Outfits 👗</p><p>Fast Responses ⚡</p>',
+                subscriptionsDescDeluxe: '<p><strong>Deluxe Benefits 🎉</strong></p><p>Unlimited photos 📷</p><p>Unlimited Chat 💬</p><p>Exclusive Outfits 👗</p><p>Priority Access 🎟️</p><p>VIP Community 👑</p>',
                 sub1Day: '1 Day Pass',
                 sub3Days: '3 Days Pass',
                 sub1Week: '1 Week Pass',
@@ -939,11 +960,11 @@
                 scenario3Desc: 'Она останавливает тебя в глуши, без прав — её ухмылка обещает пикантное наказание! 💋',
                 scenario3Btn: 'Подробнее',
                 scenario4Title: 'Помощь подруге',
-                scenario4Desc: 'Её компьютер завис, а робкие взгляды превращаются в дерзкие приглашения, когда ты наклоняешься. 😏',
+                scenario4Desc: 'Её компьютер завис, робкие взгляды превращаются в дерзкие приглашения, когда ты наклоняешься. 😏',
                 scenario4Btn: 'Подробнее',
                 detailsHeader: 'Преимущества премиума',
-                subscriptionsDescStandard: '<p><strong>Преимущества премиума 🧊✨</strong></p><p>50 фото в день 📷</p><p>Безлимитный чат 💬</p><p>Эксклюзивные костюмы 👗</p><p>Молниеносные ответы ⚡</p><p>Улучшенные изображения 🌟</p><p>Приоритетный доступ 🎟️</p><p>Секретные функции 🔒</p><p>Элитная поддержка 🤝</p>',
-                subscriptionsDescDeluxe: '<p><strong>Преимущества делюкса 🎉</strong></p><p>Безлимит фото 📷</p><p>Безлимитный чат 💬</p><p>Эксклюзивные костюмы 👗</p><p>Молниеносные ответы ⚡</p><p>Улучшенные изображения 🌟</p><p>Приоритетный доступ 🎟️</p><p>Секретные функции 🔒</p><p>Элитная поддержка 🤝</p><p>Доступ к VIP-клубу 👑</p>',
+                subscriptionsDescStandard: '<p><strong>Преимущества премиума 🧊✨</strong></p><p>50 фото в день 📷</p><p>Безлимитный чат 💬</p><p>Эксклюзивные костюмы 👗</p><p>Быстрые ответы ⚡</p>',
+                subscriptionsDescDeluxe: '<p><strong>Преимущества делюкса 🎉</strong></p><p>Безлимит фото 📷</p><p>Безлимитный чат 💬</p><p>Эксклюзивные костюмы 👗</p><p>Приоритетный доступ 🎟️</p><p>VIP-клуб 👑</p>',
                 sub1Day: 'Пропуск на 1 день',
                 sub3Days: 'Пропуск на 3 дня',
                 sub1Week: 'Пропуск на 1 неделю',
