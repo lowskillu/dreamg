@@ -189,7 +189,7 @@
             backdrop-filter: blur(12px);
             box-shadow: 0 4px 20px rgba(108, 93, 211, 0.6);
             color: #f0f0f0;
-            padding: 12px 16px;
+            padding: 16px 24px;
             margin: 8px 0;
             cursor: pointer;
             opacity: 0;
@@ -210,6 +210,20 @@
             background: linear-gradient(135deg, rgba(108, 93, 211, 0.2), rgba(143, 108, 237, 0.2));
         }
 
+        .subscription-card .card-title {
+            font-size: 20px;
+        }
+
+        .subscription-card .card-price {
+            font-size: 18px;
+        }
+
+        .subscription-card .card-body {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
         .subscription-info-card, .language-card {
             background: rgba(16, 16, 16, 0.85);
             border: 2px solid rgba(255, 255, 255, 0.5);
@@ -226,17 +240,48 @@
         }
 
         .subscription-details-card {
-            background: rgba(16, 16, 16, 0.85);
-            border: 2px solid rgba(255, 255, 255, 0.5);
+            background: linear-gradient(135deg, rgba(16, 16, 16, 0.95), rgba(40, 40, 40, 0.95));
+            border: 2px solid rgba(108, 93, 211, 0.7);
             border-radius: 16px;
             box-shadow: 0 4px 20px rgba(108, 93, 211, 0.6);
-            padding: 16px;
+            padding: 20px;
             margin: 12px 0;
             opacity: 0;
         }
 
         .subscription-details-card.reveal {
             animation: fadeInUp 0.6s ease both;
+        }
+
+        .subscription-details-card h3 {
+            font-size: 22px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 16px;
+            text-shadow: 0 0 8px #6C5DD3;
+        }
+
+        #subscriptionsDesc {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(108, 93, 211, 0.5);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        #subscriptionsDesc ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+
+        #subscriptionsDesc li {
+            margin-bottom: 8px;
+            font-size: 16px;
+            color: #f0f0f0;
+        }
+
+        #buySubscriptionBtn {
+            padding: 16px 24px;
+            font-size: 18px;
         }
 
         .confirm-modal-content {
@@ -361,11 +406,57 @@
             box-shadow: 0 8px 24px rgba(108, 93, 211, 0.6);
             backdrop-filter: blur(12px);
             width: 90%;
-            max-width: 360px;
+            max-width: 320px;
             max-height: 80vh;
             overflow-y: auto;
             margin: 0 auto;
             animation: slideIn 0.3s ease-in-out;
+        }
+
+        .product-modal-content .flex {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (min-width: 360px) {
+            .product-modal-content .flex {
+                flex-direction: row;
+            }
+            .product-modal-content img {
+                width: 140px;
+                height: 140px;
+                object-fit: cover;
+                border-radius: 8px;
+                margin-right: 16px;
+            }
+            .product-modal-content .details {
+                flex: 1;
+            }
+        }
+
+        .product-modal-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        @media (min-width: 360px) {
+            .product-modal-content img {
+                margin-bottom: 0;
+            }
+        }
+
+        .product-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .product-desc {
+            color: #f0f0f0;
+            margin-top: 8px;
+            font-size: 14px;
         }
 
         .close-btn {
@@ -828,11 +919,13 @@
     <div id="productModal" class="modal fixed inset-0 flex items-center justify-center hidden product-modal">
         <div class="product-modal-content">
             <button class="close-btn" onclick="closeProductDetailsModal()">✕</button>
-            <img id="productImage" src="" alt="Product Image" class="w-full h-auto object-cover aspect-3/2 rounded-lg mb-4">
-            <div class="product-details space-y-4">
-                <div class="product-title text-xl font-semibold" id="productTitle"></div>
-                <div class="product-desc text-gray-300" id="productDesc"></div>
-                <button id="buyProductBtn" class="btn">Buy for <span id="productPrice"></span>🧊</button>
+            <div class="flex">
+                <img id="productImage" src="" alt="Product Image">
+                <div class="details">
+                    <div class="product-title" id="productTitle"></div>
+                    <div class="product-desc" id="productDesc"></div>
+                    <button id="buyProductBtn" class="btn mt-4">Buy for <span id="productPrice"></span>🧊</button>
+                </div>
             </div>
         </div>
     </div>
@@ -881,8 +974,23 @@
                 scenario4Desc: 'Her computer freezes, shy glances turn into bold invitations as you lean in. 😏',
                 scenario4Btn: 'View Details',
                 detailsHeader: 'Premium Benefits',
-                subscriptionsDescStandard: '<p><strong>Premium Benefits 🧊✨</strong></p><p>50 photos/day 📷</p><p>Unlimited Chat 💬</p><p>Exclusive Outfits 👗</p><p>Fast Responses ⚡</p>',
-                subscriptionsDescDeluxe: '<p><strong>Deluxe Benefits 🎉</strong></p><p>Unlimited photos 📷</p><p>Unlimited Chat 💬</p><p>Exclusive Outfits 👗</p><p>Priority Access 🎟️</p><p>VIP Community 👑</p>',
+                subscriptionsDescStandard: `
+                    <ul class="list-disc">
+                        <li>50 photos/day 📷</li>
+                        <li>Unlimited Chat 💬</li>
+                        <li>Exclusive Outfits 👗</li>
+                        <li>Fast Responses ⚡</li>
+                    </ul>
+                `,
+                subscriptionsDescDeluxe: `
+                    <ul class="list-disc">
+                        <li>Unlimited photos 📷</li>
+                        <li>Unlimited Chat 💬</li>
+                        <li>Exclusive Outfits 👗</li>
+                        <li>Priority Access 🎟️</li>
+                        <li>VIP Community 👑</li>
+                    </ul>
+                `,
                 sub1Day: '1 Day Pass',
                 sub3Days: '3 Days Pass',
                 sub1Week: '1 Week Pass',
@@ -963,8 +1071,23 @@
                 scenario4Desc: 'Её компьютер завис, робкие взгляды превращаются в дерзкие приглашения, когда ты наклоняешься. 😏',
                 scenario4Btn: 'Подробнее',
                 detailsHeader: 'Преимущества премиума',
-                subscriptionsDescStandard: '<p><strong>Преимущества премиума 🧊✨</strong></p><p>50 фото в день 📷</p><p>Безлимитный чат 💬</p><p>Эксклюзивные костюмы 👗</p><p>Быстрые ответы ⚡</p>',
-                subscriptionsDescDeluxe: '<p><strong>Преимущества делюкса 🎉</strong></p><p>Безлимит фото 📷</p><p>Безлимитный чат 💬</p><p>Эксклюзивные костюмы 👗</p><p>Приоритетный доступ 🎟️</p><p>VIP-клуб 👑</p>',
+                subscriptionsDescStandard: `
+                    <ul class="list-disc">
+                        <li>50 фото в день 📷</li>
+                        <li>Безлимитный чат 💬</li>
+                        <li>Эксклюзивные костюмы 👗</li>
+                        <li>Быстрые ответы ⚡</li>
+                    </ul>
+                `,
+                subscriptionsDescDeluxe: `
+                    <ul class="list-disc">
+                        <li>Безлимит фото 📷</li>
+                        <li>Безлимитный чат 💬</li>
+                        <li>Эксклюзивные костюмы 👗</li>
+                        <li>Приоритетный доступ 🎟️</li>
+                        <li>VIP-клуб 👑</li>
+                    </ul>
+                `,
                 sub1Day: 'Пропуск на 1 день',
                 sub3Days: 'Пропуск на 3 дня',
                 sub1Week: 'Пропуск на 1 неделю',
