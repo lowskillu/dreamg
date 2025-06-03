@@ -23,9 +23,9 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            padding: 150px 16px 100px; /* Увеличен верхний отступ для предотвращения смахивания */
+            padding: 80px 16px 80px;
             position: relative;
-            overscroll-behavior-y: contain; /* Предотвращает нежелательное поведение прокрутки */
+            overscroll-behavior-y: contain;
         }
 
         body::before {
@@ -44,12 +44,12 @@
             background: url('https://cdn.discordapp.com/attachments/1349800672035475533/1377962570501066863/91ae8a950b924696.jpg?ex=683adf26&is=68398da6&hm=8eeede46db8fe6b6eb7923dc947b5dada91c3b2f11bd822067ab244a04099346') no-repeat center center fixed;
             background-size: cover;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 12px 20px;
+            padding: 12px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 100;
-            height: 80px;
+            height: 60px;
         }
 
         .header-overlay {
@@ -72,9 +72,9 @@
         }
 
         #subscriptionsSection {
-            padding: 24px 16px 120px;
+            padding: 24px 16px 100px;
             overflow-y: auto;
-            height: calc(100vh - 80px);
+            height: calc(100vh - 60px);
             -webkit-overflow-scrolling: touch;
         }
 
@@ -83,7 +83,7 @@
             border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 16px;
             backdrop-filter: blur(12px);
-            box-shadow: 0 4px 20px rgba(108, 93, 211, 0.4), 0 0 15px rgba(108, 93, 211, 0.2);
+            box-shadow: 0 4px 20px rgba(108, 93, 211, 0.4);
             overflow: hidden;
             color: #f0f0f0;
             display: flex;
@@ -91,6 +91,9 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             opacity: 0;
+            width: 100%;
+            max-width: 454px;
+            margin: 0 auto 16px;
         }
 
         .card.reveal {
@@ -99,36 +102,30 @@
 
         .card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(108, 93, 211, 0.8), 0 0 20px rgba(108, 93, 211, 0.4);
+            box-shadow: 0 8px 24px rgba(108, 93, 211, 0.8);
         }
 
         .card.scenario-card {
-            width: 100%;
-            max-width: 454px;
-            min-height: 562px;
-            margin: 16px auto;
+            min-height: 500px;
         }
 
         .card.item-card, .card.currency-card {
-            width: 100%;
             max-width: 238px;
             min-height: 290px;
-            margin: 4px;
         }
 
         .card.currency-card-wide {
-            grid-column: span 2;
             max-width: 492px;
-            margin: 4px auto;
         }
 
         .card img {
             width: 100%;
-            display: block;
+            height: 200px;
+            object-fit: cover;
             border-top-left-radius: 16px;
             border-top-right-radius: 16px;
-            object-fit: cover;
             transition: transform 0.3s ease;
+            aspect-ratio: 3/2;
         }
 
         .card img:hover {
@@ -136,11 +133,7 @@
         }
 
         .card.scenario-card img {
-            height: 360px;
-        }
-
-        .card.item-card img, .card.currency-card img {
-            height: 145px;
+            height: 300px;
         }
 
         .card-body {
@@ -156,19 +149,12 @@
             font-weight: 600;
             color: #ffffff;
             text-shadow: 0 0 8px #6C5DD3;
-            transition: text-shadow 0.3s ease, letter-spacing 0.3s ease;
-        }
-
-        .card-title:hover {
-            text-shadow: 0 0 16px #8F6CED;
-            letter-spacing: 0.5px;
         }
 
         .card-price {
             font-size: 16px;
             color: #6C5DD3;
             font-weight: 600;
-            line-height: 1.4;
         }
 
         .card-actions {
@@ -184,55 +170,31 @@
             border-radius: 20px;
             color: #ffffff;
             font-size: 16px;
-            font-family: 'Inter', sans-serif;
             font-weight: 500;
             cursor: pointer;
-            transition: background 0.5s ease, box-shadow 0.3s ease, transform 0.2s ease;
+            transition: all 0.3s ease;
             box-shadow: 0 0 12px rgba(108, 93, 211, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        .card.item-card .btn {
-            padding: 8px 24px;
-            font-size: 14px;
+            min-height: 48px;
         }
 
         .btn:hover {
             background: linear-gradient(135deg, #5A4DC6, #7D5BE0);
-            border: 2px solid #5A4DC6;
             box-shadow: 0 0 18px rgba(108, 93, 211, 0.9);
             transform: scale(1.02);
-            border-radius: 20px;
-        }
-
-        .btn.active, .category-button.active, .tab-button.active, .subscription-card.active {
-            transform: scale(0.95); /* Визуальный эффект нажатия */
-            background: linear-gradient(135deg, #5A4DC6, #7D5BE0);
-        }
-
-        #buySubscriptionBtn {
-            border-radius: 24px;
         }
 
         .subscription-card {
-            width: 100%;
             background: rgba(16, 16, 16, 0.85);
             border: 2px solid rgba(255, 255, 255, 0.5);
             border-radius: 16px;
             backdrop-filter: blur(12px);
             box-shadow: 0 4px 20px rgba(108, 93, 211, 0.6);
             color: #f0f0f0;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.2s ease;
-            padding: 12px 24px;
-            cursor: pointer;
+            padding: 12px 16px;
             margin: 8px 0;
-            position: relative;
+            cursor: pointer;
             opacity: 0;
+            transition: all 0.2s ease;
         }
 
         .subscription-card.reveal {
@@ -241,39 +203,22 @@
 
         .subscription-card:hover {
             transform: scale(1.01);
-            border-color: rgba(255, 255, 255, 0.7);
             box-shadow: 0 6px 20px rgba(108, 93, 211, 0.8);
         }
 
         .subscription-card.selected {
             border-color: #6C5DD3;
             background: rgba(108, 93, 211, 0.12);
-            box-shadow: 0 6px 20px rgba(108, 93, 211, 0.8);
-        }
-
-        .subscription-card .card-body {
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0;
         }
 
         .subscription-info-card, .language-card {
-            width: 100%;
             background: rgba(16, 16, 16, 0.85);
             border: 2px solid rgba(255, 255, 255, 0.5);
             border-radius: 16px;
             backdrop-filter: blur(12px);
             box-shadow: 0 4px 20px rgba(108, 93, 211, 0.6);
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.2s ease;
-            padding: 12px 24px;
+            padding: 12px 16px;
             margin: 8px 0;
-            position: relative;
             opacity: 0;
         }
 
@@ -281,30 +226,13 @@
             animation: fadeInUp 0.6s ease both;
         }
 
-        .subscription-info-card:hover, .language-card:hover {
-            transform: scale(1.01);
-            border-color: rgba(255, 255, 255, 0.7);
-            box-shadow: 0 6px 20px rgba(108, 93, 211, 0.8);
-        }
-
-        .subscription-info-card .card-body, .language-card .card-body {
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0;
-        }
-
         .subscription-details-card {
-            margin: 15px 0;
-            padding: 20px;
-            width: 100%;
             background: rgba(16, 16, 16, 0.85);
             border: 2px solid rgba(255, 255, 255, 0.5);
             border-radius: 16px;
             box-shadow: 0 4px 20px rgba(108, 93, 211, 0.6);
-            backdrop-filter: blur(12px);
+            padding: 16px;
+            margin: 12px 0;
             opacity: 0;
         }
 
@@ -317,32 +245,11 @@
             border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 16px;
             padding: 24px;
-            box-shadow: 0 8px 24px rgba(108, 93, 211, 0.6), 0 0 20px rgba(108, 93, 211, 0.3);
+            box-shadow: 0 8px 24px rgba(108, 93, 211, 0.6);
             backdrop-filter: blur(12px);
             width: 90%;
             max-width: 400px;
             text-align: center;
-            animation: fadeInScale 0.4s ease-out;
-        }
-
-        .confirm-modal-content .confirm-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: #f0f0f0;
-            text-shadow: 0 0 8px #6C5DD3;
-            margin-bottom: 12px;
-        }
-
-        .confirm-modal-content .confirm-text {
-            font-size: 16px;
-            color: #cccccc;
-            margin-bottom: 16px;
-        }
-
-        .confirm-modal-content .confirm-buttons {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
         }
 
         .tab-container {
@@ -353,331 +260,115 @@
         }
 
         .tab-button {
+            padding: 8px 20px;
             background: linear-gradient(135deg, #6C5DD3, #8F6CED);
             border-radius: 10px;
-            padding: 8px 20px;
             font-size: 16px;
             font-weight: 600;
-            border: none;
             color: #ffffff;
+            border: none;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(108, 93, 211, 0.4);
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+            min-height: 44px;
         }
 
         .tab-button:hover {
             background: linear-gradient(135deg, #5A4DC6, #7D5BE0);
             transform: scale(1.03);
-            box-shadow: 0 4px 16px rgba(108, 93, 211, 0.6);
         }
 
         .tab-button.active {
             background: linear-gradient(135deg, #5A4DC6, #7D5BE0);
-            box-shadow: 0 4px 16px rgba(108, 93, 211, 0.6);
         }
 
         .balance-flask {
+            display: flex;
+            align-items: center;
+            gap: 12px;
             background: rgba(16, 16, 16, 0.8);
             border-radius: 12px;
             padding: 8px 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .plus-btn {
+            width: 44px;
+            height: 44px;
             background: linear-gradient(135deg, #6C5DD3, #8F6CED);
             border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            font-size: 14px;
+            font-size: 16px;
             border: none;
             color: #ffffff;
-            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(108, 93, 211, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
         .plus-btn:hover {
             background: linear-gradient(135deg, #5A4DC6, #7D5BE0);
             transform: scale(1.1);
-            box-shadow: 0 4px 16px rgba(108, 93, 211, 0.6);
-            animation: pulse 0.5s infinite;
-        }
-
-        .icon {
-            width: 18px;
-            height: 18px;
-            stroke: currentColor;
-            stroke-width: 2;
-            fill: none;
-            transition: transform 0.3s ease;
-        }
-
-        .category-button:hover .icon {
-            animation: vibrate 0.3s ease;
-        }
-
-        .modal {
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(10px);
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        #productModal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #productModal .modal-content {
-            background: rgba(16, 16, 16, 0.9);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 16px;
-            padding: 20px;
-            width: 90%;
-            max-width: 800px;
-            display: flex;
-            gap: 20px;
-            box-shadow: 0 8px 24px rgba(108, 93, 211, 0.6);
-            backdrop-filter: blur(12px);
-            animation: fadeInScale 0.4s ease-out;
-        }
-
-        #productModal .modal-content img {
-            width: 40%;
-            height: auto;
-            border-radius: 12px;
-            object-fit: cover;
-        }
-
-        #productModal .modal-content .product-details {
-            width: 60%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        #productModal .modal-content .product-title {
-            font-size: 24px;
-            font-weight: 600;
-            color: #f0f0f0;
-            margin-bottom: 12px;
-            text-shadow: 0 0 8px #6C5DD3;
-        }
-
-        #productModal .modal-content .product-desc {
-            font-size: 16px;
-            color: #cccccc;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
-        #productModal .modal-content .buy-btn {
-            width: 50%;
-            padding: 12px 16px;
-            background: linear-gradient(135deg, #6C5DD3, #8F6CED);
-            border: 2px solid #6C5DD3;
-            border-radius: 20px;
-            color: #ffffff;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 12px rgba(108, 93, 211, 0.5);
-            align-self: flex-start;
-        }
-
-        #productModal .modal-content .buy-btn:hover {
-            background: linear-gradient(135deg, #5A4DC6, #7D5BE0);
-            border: 2px solid #5A4DC6;
-            box-shadow: 0 0 18px rgba(108, 93, 211, 0.9);
-            transform: scale(1.02);
-            border-radius: 20px;
         }
 
         .category-buttons {
             position: fixed;
             bottom: 16px;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 0;
+            right: 0;
             display: flex;
+            justify-content: center;
             gap: 12px;
             z-index: 10;
             background: rgba(16, 16, 16, 0.95);
-            backdrop-filter: blur(12px);
             border: 1px solid rgba(108, 93, 211, 0.3);
             border-radius: 16px;
-            padding: 8px 12px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+            padding: 8px;
         }
 
         .category-button {
-            position: relative;
-            background-color: transparent;
-            border-radius: 50%;
-            padding: 0;
-            font-size: 16px;
-            border: none;
-            color: #ffffff;
-            transition: all 0.3s ease;
             width: 48px;
             height: 48px;
+            background: transparent;
+            border-radius: 50%;
+            border: none;
+            color: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        .category-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #6C5DD3, #8F6CED);
-            border-radius: 50%;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: -1;
-        }
-
-        .category-button.selected::before {
-            opacity: 1;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
         .category-button:hover {
-            background-color: rgba(108, 93, 211, 0.15);
+            background: rgba(108, 93, 211, 0.15);
             transform: scale(1.1);
         }
 
-        .category-button:active {
-            background-color: rgba(108, 93, 211, 0.3);
-            transform: scale(0.95);
-        }
-
         .category-button.selected {
-            box-shadow: 0 4px 12px rgba(108, 93, 211, 0.5);
+            background: linear-gradient(135deg, #6C5DD3, #8F6CED);
         }
 
-        #mainContent {
-            width: 100%;
-            padding: 0 16px;
-            min-height: 100vh; /* Гарантирует минимальную высоту контента */
-        }
-
-        #storeSection {
-            margin-top: 24px;
-        }
-
-        #scenariosContent .grid {
-            display: flex;
-            flex-direction: column;
+        #storeSection .grid {
+            display: grid;
+            grid-template-columns: 1fr;
             gap: 16px;
             margin-top: 16px;
         }
 
         #itemsContent .grid, #currencySection .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1fr;
             gap: 16px;
-            margin-top: 16px;
         }
 
-        #settingsSection {
-            width: 100%;
-            margin: 24px 0;
+        @media (min-width: 640px) {
+            #itemsContent .grid, #currencySection .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (max-width: 768px) {
             body {
-                padding: 100px 12px 80px;
-            }
-
-            .header-container {
-                height: 70px;
-                padding: 10px 16px;
-            }
-
-            #mainContent {
-                padding: 0 12px;
-            }
-
-            .card.scenario-card {
-                max-width: 410px;
-                min-height: 518px;
-            }
-
-            .card.item-card, .card.currency-card {
-                max-width: 224px;
-                min-height: 264px;
-                margin: 4px;
-            }
-
-            .card.currency-card-wide {
-                max-width: 464px;
-            }
-
-            .card.scenario-card img {
-                height: 325px;
-            }
-
-            .card.item-card img, .card.currency-card img {
-                height: 132px;
-            }
-
-            #productModal .modal-content {
-                flex-direction: column;
-                max-width: 600px;
-            }
-
-            #productModal .modal-content img {
-                width: 100%;
-                height: 300px;
-            }
-
-            #productModal .modal-content .product-details {
-                width: 100%;
-            }
-
-            .subscription-card,
-            .subscription-info-card,
-            .language-card {
-                padding: 10px 20px;
-                margin: 6px 0;
-            }
-
-            .subscription-details-card {
-                padding: 14px;
-                margin: 10px 0;
-            }
-
-            .subscription-details-card h3 {
-                font-size: 16px;
-            }
-
-            .subscription-card .card-title,
-            .subscription-card .card-price,
-            .subscription-info-card .card-title,
-            .subscription-info-card .card-desc,
-            .language-card .card-title,
-            .language-card .card-desc {
-                font-size: 16px;
-            }
-        }
-
-        @media (max-width: 360px) {
-            body {
-                padding: 80px 8px 60px;
+                padding: 70px 12px 70px;
             }
 
             .header-container {
@@ -685,116 +376,52 @@
                 padding: 8px 12px;
             }
 
-            #mainContent {
-                padding: 0 8px;
+            .card.scenario-card {
+                max-width: 410px;
+                min-height: 450px;
+            }
+
+            .card.item-card, .card.currency-card {
+                max-width: 224px;
+                min-height: 264px;
+            }
+
+            .card.scenario-card img {
+                height: 250px;
+            }
+
+            .card.item-card img, .card.currency-card img {
+                height: 150px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            body {
+                padding: 60px 8px 60px;
             }
 
             .card.scenario-card {
                 max-width: 346px;
-                min-height: 454px;
+                min-height: 400px;
             }
 
             .card.item-card, .card.currency-card {
                 max-width: 211px;
                 min-height: 238px;
-                margin: 4px;
-            }
-
-            .card.currency-card-wide {
-                max-width: 438px;
             }
 
             .card.scenario-card img {
-                height: 300px;
+                height: 200px;
             }
 
             .card.item-card img, .card.currency-card img {
-                height: 119px;
-            }
-
-            #productModal .modal-content img {
-                height: 250px;
-            }
-
-            .subscription-card,
-            .subscription-info-card,
-            .language-card {
-                padding: 8px 16px;
-                margin: 4px 0;
-            }
-
-            .subscription-details-card {
-                padding: 12px;
-                margin: 8px 0;
-            }
-
-            .subscription-details-card h3 {
-                font-size: 14px;
-            }
-
-            .subscription-card .card-title,
-            .subscription-card .card-price,
-            .subscription-info-card .card-title,
-            .subscription-info-card .card-desc,
-            .language-card .card-title,
-            .language-card .card-desc {
-                font-size: 14px;
+                height: 120px;
             }
         }
 
         @keyframes fadeInUp {
             0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeInScale {
-            0% { opacity: 0; transform: scale(0.9); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes vibrate {
-            0% { transform: translateX(0); }
-            20% { transform: translateX(-2px); }
-            40% { transform: translateX(2px); }
-            60% { transform: translateX(-2px); }
-            80% { transform: translateX(2px); }
-            100% { transform: translateX(0); }
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(-20px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes slideSection {
-            from { transform: translateY(10px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        @keyframes slideLeft {
-            from { transform: translateX(-15px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes slideRight {
-            from { transform: translateX(15px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
         }
     </style>
 </head>
@@ -803,18 +430,18 @@
         <div class="header-overlay"></div>
         <div id="sectionTitle" class="section-title"></div>
         <div class="balance-flask">
-            <div class="balance-item">
+            <div class="balance-item flex items-center gap-2">
                 <span>📸</span>
                 <span id="photoLimitDisplay">0 / 10</span>
             </div>
-            <div class="balance-item">
+            <div class="balance-item flex items-center gap-2">
                 <span id="tokenCount">0</span>
                 <span>🧊</span>
             </div>
             <button class="plus-btn" onclick="showCurrencySection()">
-                <svg class="icon" viewBox="0 0 24 24">
-                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                <svg class="icon w-6 h-6" viewBox="0 0 24 24">
+                    <line x1="12" y1="5" x2="12" y2="19" stroke="#ffffff" stroke-width="2"/>
+                    <line x1="5" y1="12" x2="19" y2="12" stroke="#ffffff" stroke-width="2"/>
                 </svg>
             </button>
         </div>
@@ -822,28 +449,28 @@
 
     <div class="category-buttons">
         <button id="storeBtn" class="category-button selected" onclick="showSection('storeSection')">
-            <svg class="icon" viewBox="0 0 24 24">
-                <circle cx="9" cy="21" r="1"></circle>
-                <circle cx="20" cy="21" r="1"></circle>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            <svg class="icon w-6 h-6" viewBox="0 0 24 24">
+                <circle cx="9" cy="21" r="1" fill="#ffffff"/>
+                <circle cx="20" cy="21" r="1" fill="#ffffff"/>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" stroke="#ffffff" stroke-width="2" fill="none"/>
             </svg>
         </button>
         <button id="subscriptionsBtn" class="category-button" onclick="showSection('subscriptionsSection')">
-            <svg class="icon" viewBox="0 0 24 24">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            <svg class="icon w-6 h-6" viewBox="0 0 24 24">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#ffffff"/>
             </svg>
         </button>
         <button id="settingsBtn" class="category-button" onclick="showSection('settingsSection')">
-            <svg class="icon" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="3"></circle>
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l-.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            <svg class="icon w-6 h-6" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="3" fill="#ffffff"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l-.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" fill="#ffffff"/>
             </svg>
         </button>
     </div>
 
-    <div id="mainContent">
+    <div id="mainContent" class="w-full p-4">
         <div id="storeSection">
-            <div class="tab-container">
+            <div class="tab-container flex justify-center space-x-4">
                 <button id="scenariosTab" class="tab-button active" onclick="showStoreTab('scenarios')">
                     <span id="scenariosTabLabel"></span>
                 </button>
@@ -854,7 +481,7 @@
             <div id="scenariosContent" class="store-content">
                 <div class="grid">
                     <div class="card scenario-card">
-                        <img src="https://via.placeholder.com/360x240" alt="Tutor Asleep Scene" id="scenario1Image">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=360" alt="Tutor Asleep Scene" id="scenario1Image" class="w-full h-auto object-cover aspect-3/2">
                         <div class="card-body">
                             <div class="card-title" id="scenario1Title"></div>
                             <div class="card-actions">
@@ -865,7 +492,7 @@
                         </div>
                     </div>
                     <div class="card scenario-card">
-                        <img src="https://via.placeholder.com/360x240" alt="Teacher After School" id="scenario2Image">
+                        <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=360" alt="Teacher Afterschool" id="scenario2Image" class="w-full h-auto object-cover aspect-3/2">
                         <div class="card-body">
                             <div class="card-title" id="scenario2Title"></div>
                             <div class="card-actions">
@@ -876,7 +503,7 @@
                         </div>
                     </div>
                     <div class="card scenario-card">
-                        <img src="https://via.placeholder.com/360x240" alt="Policewoman Stop" id="scenario3Image">
+                        <img src="https://images.unsplash.com/photo-1525824236856-0a31dfe3be?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Policewoman Stop" id="scenario3Image" class="w-full h-auto object-cover aspect-3/2">
                         <div class="card-body">
                             <div class="card-title" id="scenario3Title"></div>
                             <div class="card-actions">
@@ -887,7 +514,7 @@
                         </div>
                     </div>
                     <div class="card scenario-card">
-                        <img src="https://via.placeholder.com/360x240" alt="Helping Friend Scene" id="scenario4Image">
+                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Help Friend Scene" id="scenario4Image" class="w-full h-auto object-cover aspect-3/2">
                         <div class="card-body">
                             <div class="card-title" id="scenario4Title"></div>
                             <div class="card-actions">
@@ -902,7 +529,7 @@
             <div id="itemsContent" class="store-content hidden">
                 <div class="grid">
                     <div class="card item-card">
-                        <img src="https://via.placeholder.com/360x240" alt="Anal Plug Item" id="analPlugImage">
+                        <img src="https://i.ibb.co/23C2JXvQ/653ee620-307c-4c91-9eaa-7ebc5b1cac16-653ee620-307c-4c91-9eaa-7ebc5b1cac16.png" alt="Anal Plug Item" id="analPlugImage" class="w-full h-auto object-cover aspect-3/2">
                         <div class="card-body">
                             <div class="card-title" id="analPlug"></div>
                             <div class="card-actions">
@@ -913,7 +540,7 @@
                         </div>
                     </div>
                     <div class="card item-card">
-                        <img src="https://via.placeholder.com/360x240" alt="Seductive Pajamas" id="seductivePajamasImage">
+                        <img src="https://via.placeholder.com/360x240?text=Silk+Pajama+Set" alt="Seductive Pajamas" id="seductivePajamasImage" class="w-full h-auto object-cover aspect-3/2">
                         <div class="card-body">
                             <div class="card-title" id="seductivePajamas"></div>
                             <div class="card-actions">
@@ -924,7 +551,7 @@
                         </div>
                     </div>
                     <div class="card item-card">
-                        <img src="https://via.placeholder.com/360x240" alt="Seductive Stockings" id="seductiveStockingsImage">
+                        <img src="https://via.placeholder.com/360x240?text=Lace+Stockings" alt="Seductive Stockings" id="seductiveStockingsImage" class="w-full h-auto object-cover aspect-3/2">
                         <div class="card-body">
                             <div class="card-title" id="seductiveStockings"></div>
                             <div class="card-actions">
@@ -935,7 +562,7 @@
                         </div>
                     </div>
                     <div class="card item-card">
-                        <img src="https://via.placeholder.com/360x240" alt="Furry Handcuffs" id="furryHandcuffsImage">
+                        <img src="https://via.placeholder.com/360x240?text=Soft+Furry+Cuffs" alt="Furry Handcuffs" id="furryHandcuffsImage" class="w-full h-auto object-cover aspect-3/2">
                         <div class="card-body">
                             <div class="card-title" id="furryHandcuffs"></div>
                             <div class="card-actions">
@@ -946,7 +573,7 @@
                         </div>
                     </div>
                     <div class="card item-card">
-                        <img src="https://via.placeholder.com/360x240" alt="Water-Based Lube" id="waterBasedLubeImage">
+                        <img src="https://via.placeholder.com/360x240?text=Water+Lube+Gel" alt="Water Based Lube" id="waterBasedLubeImage" class="w-full h-auto object-cover aspect-3/2">
                         <div class="card-body">
                             <div class="card-title" id="waterBasedLube"></div>
                             <div class="card-actions">
@@ -957,7 +584,7 @@
                         </div>
                     </div>
                     <div class="card item-card">
-                        <img src="https://via.placeholder.com/360x240" alt="Truth or Dare Game" id="truthOrDareGameImage">
+                        <img src="https://via.placeholder.com/360x240?text=Spicy+Dare+Game" alt="Truth or Dare Game" id="truthOrDareGameImage" class="w-full h-auto object-cover aspect-3/2">
                         <div class="card-body">
                             <div class="card-title" id="truthOrDareGame"></div>
                             <div class="card-actions">
@@ -968,7 +595,7 @@
                         </div>
                     </div>
                     <div class="card item-card">
-                        <img src="https://via.placeholder.com/360x240" alt="Masks & Blindfolds" id="masksBlindfoldsImage">
+                        <img src="https://via.placeholder.com/360x240?text=Satin+Mask+Set" alt="Masks Blindfolds" id="masksBlindfoldsImage" class="w-full h-auto object-cover aspect-3/2">
                         <div class="card-body">
                             <div class="card-title" id="masksBlindfolds"></div>
                             <div class="card-actions">
@@ -979,7 +606,7 @@
                         </div>
                     </div>
                     <div class="card item-card">
-                        <img src="https://via.placeholder.com/360x240" alt="Massage Foam Item" id="massageFoamImage">
+                        <img src="https://via.placeholder.com/360x240?text=Sensual+Foam" alt="Massage Foam" id="massageFoamImage" class="w-full h-auto object-cover aspect-3/2">
                         <div class="card-body">
                             <div class="card-title" id="massageFoam"></div>
                             <div class="card-actions">
@@ -990,7 +617,7 @@
                         </div>
                     </div>
                     <div class="card item-card">
-                        <img src="https://via.placeholder.com/360x240" alt="Sex Swing Item" id="sexSwingImage">
+                        <img src="https://via.placeholder.com/360x240?text=Swing+for+Play" alt="Sex Swing" id="sexSwingImage" class="w-full h-auto object-cover aspect-3/2">
                         <div class="card-body">
                             <div class="card-title" id="sexSwing"></div>
                             <div class="card-actions">
@@ -1004,50 +631,50 @@
             </div>
         </div>
 
-        <div id="subscriptionsSection" class="hidden">
+        <div id="subscriptionsSection" class="hidden space-y-4">
             <div id="subscriptionDetails" class="subscription-details-card">
                 <h3 id="detailsHeader"></h3>
                 <div id="subscriptionsDesc"></div>
             </div>
-            <div class="subscription-list">
+            <div class="subscription-list space-y-4">
                 <div class="subscription-card" onclick="selectPlan(1)">
-                    <div class="card-body">
+                    <div class="card-body flex justify-between items-center">
                         <div class="card-title">1 Day Pass</div>
                         <div class="card-price">$2.00</div>
                     </div>
                 </div>
                 <div class="subscription-card" onclick="selectPlan(2)">
-                    <div class="card-body">
+                    <div class="card-body flex justify-between items-center">
                         <div class="card-title">3 Days Pass</div>
                         <div class="card-price">$5.00</div>
                     </div>
                 </div>
                 <div class="subscription-card" onclick="selectPlan(3)">
-                    <div class="card-body">
+                    <div class="card-body flex justify-between items-center">
                         <div class="card-title">1 Week Pass</div>
                         <div class="card-price">$13.00</div>
                     </div>
                 </div>
                 <div class="subscription-card" onclick="selectPlan(4)">
-                    <div class="card-body">
+                    <div class="card-body flex justify-between items-center">
                         <div class="card-title">1 Month Pass</div>
                         <div class="card-price">$25.00</div>
                     </div>
                 </div>
                 <div class="subscription-card" onclick="selectPlan(5)">
-                    <div class="card-body">
+                    <div class="card-body flex justify-between items-center">
                         <div class="card-title">3 Months Pass</div>
                         <div class="card-price">$70.00</div>
                     </div>
                 </div>
                 <div class="subscription-card" onclick="selectPlan(6)">
-                    <div class="card-body">
+                    <div class="card-body flex justify-between items-center">
                         <div class="card-title">Forever Pass</div>
                         <div class="card-price">$50.00</div>
                     </div>
                 </div>
                 <div class="subscription-card" onclick="selectPlan(7)">
-                    <div class="card-body">
+                    <div class="card-body flex justify-between items-center">
                         <div class="card-title">Deluxe Pass</div>
                         <div class="card-price">$100.00</div>
                     </div>
@@ -1063,7 +690,7 @@
         <div id="currencySection" class="hidden">
             <div class="grid">
                 <div class="card currency-card currency-card-wide">
-                    <img src="https://via.placeholder.com/360x240" alt="Want More Photos?" id="morePhotosImage">
+                    <img src="https://via.placeholder.com/360x240?text=More+Photos" alt="Want More Photos?" id="morePhotosImage" class="w-full h-auto object-cover aspect-3/2">
                     <div class="card-body">
                         <div class="card-title" id="morePhotos"></div>
                         <div class="card-actions">
@@ -1072,57 +699,57 @@
                             </button>
                         </div>
                     </div>
-                </div>
-                <div class="card currency-card">
-                    <img src="https://via.placeholder.com/360x240" alt="Small Pack" id="smallPackImage">
-                    <div class="card-body">
-                        <div class="card-title" id="smallPack"></div>
-                        <div class="card-actions">
-                            <button class="btn" onclick="buyTokens(100, PRICES.currency.smallPack)">
-                                <span id="buyBtnSmallPack"></span>
-                            </button>
+                    </div>
+                    <div class="card currency-card">
+                        <img src="https://via.placeholder.com/360x240?text=Small+Ice+Pack" alt="Small Ice Pack" id="smallPackImage" class="w-full h-auto object-cover aspect-3/2">
+                        <div class="card-body">
+                            <div class="card-title" id="smallPack"></div>
+                            <div class="card-actions">
+                                <button class="btn" onclick="buyTokens(100, {price: 1.00})">
+                                    <span id="buyBtnSmallPack"></span>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="card currency-card">
-                    <img src="https://via.placeholder.com/360x240" alt="Medium Pack" id="mediumPackImage">
-                    <div class="card-body">
-                        <div class="card-title" id="mediumPack"></div>
-                        <div class="card-actions">
-                            <button class="btn" onclick="buyTokens(200, PRICES.currency.mediumPack)">
-                                <span id="buyBtnMediumPack"></span>
-                            </button>
+                    <div class="card currency-card">
+                        <img src="https://via.placeholder.com/360x240?text=Medium+Ice+Pack" alt="Medium Ice Pack" id="mediumPackImage" class="w-full h-auto object-cover aspect-3/2">
+                        <div class="card-body">
+                            <div class="card-title" id="mediumPack"></div>
+                            <div class="card-actions">
+                                <button class="btn" onclick="buyTokens(200, {price: 1.50})">
+                                    <span id="buyBtnMediumPack"></span>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="card currency-card">
-                    <img src="https://via.placeholder.com/360x240" alt="Large Pack" id="largePackImage">
-                    <div class="card-body">
-                        <div class="card-title" id="largePack"></div>
-                        <div class="card-actions">
-                            <button class="btn" onclick="buyTokens(500, PRICES.currency.largePack)">
-                                <span id="buyBtnLargePack"></span>
-                            </button>
+                    <div class="card currency-card">
+                        <img src="https://via.placeholder.com/360x240?text=Large+Ice+Pack" alt="Large Ice Pack" id="largePackImage" class="w-full h-auto object-cover aspect-3/2">
+                        <div class="card-body">
+                            <div class="card-title" id="largePack"></div>
+                            <div class="card-actions">
+                                <button class="btn" onclick="buyTokens(500, {price: 3.00})">
+                                    <span id="buyBtnLargePack"></span>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="card currency-card">
-                    <img src="https://via.placeholder.com/360x240" alt="Mega Pack" id="megaPackImage">
-                    <div class="card-body">
-                        <div class="card-title" id="megaPack"></div>
-                        <div class="card-actions">
-                            <button class="btn" onclick="buyTokens(1000, PRICES.currency.megaPack)">
-                                <span id="buyBtnMegaPack"></span>
-                            </button>
+                    <div class="card currency-card">
+                        <img src="https://via.placeholder.com/360x240?text=Mega+Ice+Pack" alt="Mega Ice Pack" id="megaPackImage" class="w-full h-auto object-cover aspect-3/2">
+                        <div class="card-body">
+                            <div class="card-title" id="megaPack"></div>
+                            <div class="card-actions">
+                                <button class="btn" onclick="buyTokens(1000, {price: 5.00})">
+                                    <span id="buyBtnMegaPack"></span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div id="settingsSection" class="hidden">
+        <div id="settingsSection" class="hidden space-y-4">
             <div class="subscription-info-card">
-                <div class="card-body">
+                <div class="card-body flex justify-between items-center">
                     <div class="card-title" id="settingsTitle"></div>
                     <div class="card-desc" id="subscriptionInfo"></div>
                 </div>
@@ -1133,7 +760,7 @@
                 </div>
             </div>
             <div class="language-card">
-                <div class="card-body">
+                <div class="card-body flex justify-between items-center">
                     <div class="card-title" id="languageLabel"></div>
                     <div class="card-desc" id="currentLanguage"></div>
                 </div>
@@ -1147,12 +774,12 @@
     </div>
 
     <div id="productModal" class="modal fixed inset-0 flex items-center justify-center hidden">
-        <div class="modal-content">
-            <img id="productImage" src="" alt="Product Image">
-            <div class="product-details">
-                <div class="product-title" id="productTitle"></div>
-                <div class="product-desc" id="productDesc"></div>
-                <button id="buyProductBtn" class="buy-btn">Buy for <span id="productPrice"></span>🧊</button>
+        <div class="modal-content p-4 bg-gray-900 rounded-lg">
+            <img id="productImage" src="" alt="Product Image" class="w-full h-auto object-cover aspect-3/2 rounded-lg">
+            <div class="product-details space-y-4">
+                <div class="product-title text-xl font-semibold" id="productTitle"></div>
+                <div class="product-desc text-gray-300" id="productDesc"></div>
+                <button id="buyProductBtn" class="btn">Buy for <span id="productPrice"></span>🧊</button>
             </div>
         </div>
     </div>
@@ -1161,7 +788,7 @@
         <div class="confirm-modal-content">
             <h3 id="confirmTitle" class="confirm-title"></h3>
             <p id="confirmText" class="confirm-text"></p>
-            <div class="confirm-buttons">
+            <div class="confirm-buttons flex justify-center space-x-4">
                 <button id="confirmBtn" class="btn">Confirm</button>
                 <button id="cancelBtn" class="btn">Cancel</button>
             </div>
@@ -1509,8 +1136,8 @@
 
         function selectPlan(id) {
             const cards = document.querySelectorAll('.subscription-card');
-            cards.forEach(card => card.classList.remove('active'));
-            cards[id - 1].classList.add('active');
+            cards.forEach(card => card.classList.remove('selected'));
+            cards[id - 1].classList.add('selected');
             selectedPlan = id;
             updateSectionContent();
         }
@@ -1522,7 +1149,7 @@
             }
             const planKeys = ['sub1Day', 'sub3Days', 'sub1Week', 'sub1Month', 'sub3Months', 'subForever', 'subDeluxe'];
             const plan = planKeys[selectedPlan - 1];
-            showConfirmModal(`Purchase ${translations[currentLanguage][plan]} for $${PRICES.subscriptions[plan].desc.toFixed(2)}?`, () => {
+            showConfirmModal(`Purchase ${translations[currentLanguage][plan]} for $${PRICES.subscriptions[plan].price.toFixed(2)}?`, () => {
                 alert(`${translations[currentLanguage][plan]} purchased successfully`);
                 photoLimit = plan === 'subDeluxe' ? { current: 0, max: Infinity } : { current: 0, max: 50 };
                 subscription.plan = plan === 'subDeluxe' ? 'Deluxe' : 'Standard';
@@ -1564,7 +1191,7 @@
 
         function updateUI() {
             document.getElementById('tokenCount').textContent = userTokens;
-            document.getElementById('photoLimitDisplay').textContent = `${photoLimit.current} / ${photoLimit.max}`;
+            document.getElementById('photoLimitDisplay').textContent = `${photoLimit.current} / ${photoLimit.max === Infinity ? '∞' : photoLimit.max}`;
             updateLanguage();
             revealElements();
         }
@@ -1578,42 +1205,14 @@
             });
         }
 
-        // Ensure content is visible on load
-        function ensureContentVisible() {
-            const storeSection = document.getElementById('storeSection');
-            const scenariosContent = document.getElementById('scenariosContent');
-            const mainContent = document.getElementById('mainContent');
-
-            if (storeSection && scenariosContent && mainContent) {
-                mainContent.classList.remove('hidden');
-                storeSection.classList.remove('hidden');
-                scenariosContent.classList.remove('hidden');
-
-                // Force visibility of cards
-                document.querySelectorAll('.card').forEach(card => {
-                    card.classList.remove('hidden');
-                    card.classList.add('reveal');
-                });
-
-                // Ensure active tab
-                document.getElementById('scenariosTab').classList.add('active');
-                document.getElementById('itemsTab').classList.remove('active');
-            } else {
-                console.error('Missing elements: storeSection, scenariosContent, or mainContent');
-            }
-        }
-
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('DOM loaded, initializing UI');
             updateUI();
             showSection('storeSection');
             showStoreTab('scenarios');
-            ensureContentVisible();
 
-            // Handle modal closing on background click
             document.getElementById('productModal').addEventListener('click', (event) => {
                 if (event.target === event.currentTarget) {
-                    closeProductModal();
+                    closeProductDetailsModal();
                 }
             });
 
@@ -1622,72 +1221,69 @@
                     document.getElementById('confirmModal').classList.add('hidden');
                 }
             });
-
-            // Initialize constants for images and prices
-            const IMAGES = {
-                scenarios: {
-                    scenario1: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=360',
-                    scenario2: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&auto=format&crop&w=600&q=360',
-                    scenario3: 'https://images.unsplash.com/photo-1525824236856-0a31dfe3be?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
-                    scenario4: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'
-                },
-                items: {
-                    analPlug: 'https://i.ibb.co/23C2JXvQ/653ee620-307c-4c91-9eaa-7ebc5b1cac16-653ee620-307c-4c91-9eaa-7ebc5b1cac16.png',
-                    seductivePajamas: 'https://via.placeholder.com/360x240?text=Silk+Pajama+Set',
-                    seductiveStockings: 'https://via.placeholder.com/360x240?text=Lace+Stockings',
-                    furryHandcuffs: 'https://via.placeholder.com/360x240?text=Soft+Furry+Cuffs',
-                    waterBasedLube: 'https://via.placeholder.com/360x240?text=Water+Lube+Gel',
-                    truthOrDareGame: 'https://via.placeholder.com/360x240?text=Spicy+Dare+Game',
-                    masksBlindfolds: 'https://via.placeholder.com/360x240?text=Satin+Mask+Set',
-                    massageFoam: 'https://via.placeholder.com/360x240?text=Sensual+Foam',
-                    sexSwing: 'https://via.placeholder.com/360x240?text=Swing+for+Play'
-                },
-                currency: {
-                    morePhotos: 'https://via.placeholder.com/360x240?text=More+Photos',
-                    smallPack: 'https://via.placeholder.com/360x240?text=Small+Ice+Pack',
-                    mediumPack: 'https://via.placeholder.com/360x240?text=Medium+Ice+Pack',
-                    largePack: 'https://via.placeholder.com/360x240?text=Large+Ice+Pack',
-                    megaPack: 'https://via.placeholder.com/360x240?text=Mega+Ice+Pack'
-                }
-            };
-
-            const PRICES = {
-                scenarios: {
-                    scenario1: { ice: 50 },
-                    scenario2: { ice: 60 },
-                    scenario3: { ice: 70 },
-                    scenario4: { ice: 80 }
-                },
-                items: {
-                    analPlug: { ice: 25 },
-                    seductivePajamas: { ice: 30 },
-                    seductiveStockings: { ice: 25 },
-                    furryHandcuffs: { ice: 15 },
-                    waterBasedLube: { ice: 10 },
-                    truthOrDareGame: { ice: 35 },
-                    masksBlindfolds: { ice: 20 },
-                    massageFoam: { ice: 15 },
-                    sexSwing: { ice: 50 }
-                },
-                currency: {
-                    smallPack: { price: 1.00 },
-                    mediumPack: { price: 1.50 },
-                    largePack: { price: 3.00 },
-                    megaPack: { price: 5.00 }
-                },
-                subscriptions: {
-                    sub1Day: { price: 2.00 },
-                    sub3Days: { price: 5.00 },
-                    sub1Week: { price: 13.00 },
-                    sub1Month: { price: 25.00 },
-                    sub3Months: { price: 70.00 },
-                    subForever: { price: 50.00 },
-                    subDeluxe: { price: 100.00 }
-                }
-            };
-
-            console.log('Initialization complete. Current section:', currentSection, 'Current tab:', currentStoreTab);
         });
+
+        const IMAGES = {
+            scenarios: {
+                scenario1: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=360',
+                scenario2: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&auto=format&crop&w=600&q=360',
+                scenario3: 'https://images.unsplash.com/photo-1525824236856-0a31dfe3be?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+                scenario4: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'
+            },
+            items: {
+                analPlug: 'https://i.ibb.co/23C2JXvQ/653ee620-307c-4c91-9eaa-7ebc5b1cac16-653ee620-307c-4c91-9eaa-7ebc5b1cac16.png',
+                seductivePajamas: 'https://via.placeholder.com/360x240?text=Silk+Pajama+Set',
+                seductiveStockings: 'https://via.placeholder.com/360x240?text=Lace+Stockings',
+                furryHandcuffs: 'https://via.placeholder.com/360x240?text=Soft+Furry+Cuffs',
+                waterBasedLube: 'https://via.placeholder.com/360x240?text=Water+Lube+Gel',
+                truthOrDareGame: 'https://via.placeholder.com/360x240?text=Spicy+Dare+Game',
+                masksBlindfolds: 'https://via.placeholder.com/360x240?text=Satin+Mask+Set',
+                massageFoam: 'https://via.placeholder.com/360x240?text=Sensual+Foam',
+                sexSwing: 'https://via.placeholder.com/360x240?text=Swing+for+Play'
+            },
+            currency: {
+                morePhotos: 'https://via.placeholder.com/360x240?text=More+Photos',
+                smallPack: 'https://via.placeholder.com/360x240?text=Small+Ice+Pack',
+                mediumPack: 'https://via.placeholder.com/360x240?text=Medium+Ice+Pack',
+                largePack: 'https://via.placeholder.com/360x240?text=Large+Ice+Pack',
+                megaPack: 'https://via.placeholder.com/360x240?text=Mega+Ice+Pack'
+            }
+        };
+
+        const PRICES = {
+            scenarios: {
+                scenario1: { ice: 50 },
+                scenario2: { ice: 60 },
+                scenario3: { ice: 70 },
+                scenario4: { ice: 80 }
+            },
+            items: {
+                analPlug: { ice: 25 },
+                seductivePajamas: { ice: 30 },
+                seductiveStockings: { ice: 25 },
+                furryHandcuffs: { ice: 15 },
+                waterBasedLube: { ice: 10 },
+                truthOrDareGame: { ice: 35 },
+                masksBlindfolds: { ice: 20 },
+                massageFoam: { ice: 15 },
+                sexSwing: { ice: 50 }
+            },
+            currency: {
+                smallPack: { price: 1.00 },
+                mediumPack: { price: 1.50 },
+                largePack: { price: 3.00 },
+                megaPack: { price: 5.00 }
+            },
+            subscriptions: {
+                sub1Day: { price: 2.00 },
+                sub3Days: { price: 5.00 },
+                sub1Week: { price: 13.00 },
+                sub1Month: { price: 25.00 },
+                sub3Months: { price: 70.00 },
+                subForever: { price: 50.00 },
+                subDeluxe: { price: 100.00 }
+            }
+        };
     </script>
 </body>
 </html>
